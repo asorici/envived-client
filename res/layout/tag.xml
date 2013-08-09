@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.envsocial.android.widget.StaticTagView
+<com.envived.android.widget.StaticTagView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tag="http://schemas.android.com/apk/res-auto"
 	

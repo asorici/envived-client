@@ -133,7 +133,6 @@
     <string name="msg_checkout_error">Error checking out. Please try again later.</string>
     <string name="msg_bad_login_response">Service login problem. Please try again later.</string>
     <string name="msg_logout_error">Error performing sign out. Please try again later.</string>
-    <string name="msg_bad_login_response">Service login problem. Please try again later.</string>
     <string name="msg_bad_register_response">Service registration problem. Please try again later.</string>
     
     <string name="msg_gcm_registered">Envived Notification Service is now registered.</string>
@@ -215,6 +214,6 @@
 	<string name="gcm_register_error">Error registering for ENVIVED notifications. Please try again later.</string>
 	
     <!-- Action strings -->
-    <string name="action_notification">com.envsocial.android.intent.RECEIVE_NOTIFICATION</string>
+    <string name="action_notification">com.envived.android.intent.RECEIVE_NOTIFICATION</string>
     
 </resources>

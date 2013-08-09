@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.envsocial.android"
+    package="com.envived.android"
     android:versionCode="5"
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8"
         		android:targetSdkVersion="17" />
     
-    <permission android:name="com.envsocial.android.permission.C2D_MESSAGE" 
+    <permission android:name="com.envived.android.permission.C2D_MESSAGE" 
         android:protectionLevel="signature" />
-    <permission android:name="com.envsocial.android.permission.NOTIFICATION" 
+    <permission android:name="com.envived.android.permission.NOTIFICATION" 
         android:protectionLevel="signature" />
-    <permission android:name="com.envsocial.android.permission.FEATURE_RETRIEVE_DATA" 
+    <permission android:name="com.envived.android.permission.FEATURE_RETRIEVE_DATA" 
         android:protectionLevel="signature" />
     
-    <uses-permission android:name="com.envsocial.android.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.envsocial.android.permission.NOTIFICATION" />
-    <uses-permission android:name="com.envsocial.android.permission.FEATURE_RETRIEVE_DATA" />
+    <uses-permission android:name="com.envived.android.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.envived.android.permission.NOTIFICATION" />
+    <uses-permission android:name="com.envived.android.permission.FEATURE_RETRIEVE_DATA" />
     
     <!-- App receives GCM messages. -->
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -35,12 +35,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	
     <application
-    	android:name=".Envived"
+    	android:name="com.envived.android.Envived"
         android:icon="@drawable/ic_envived_white"
         android:theme="@style/Theme.Envived"
         android:label="@string/app_name" >
         <activity
-            android:name=".EnvSocialAppActivity"
+            android:name="com.envived.android.EnvivedAppActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -112,7 +112,7 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.envsocial.android" />
+                <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
         
@@ -123,10 +123,10 @@
             android:exported="false" />
         
         <receiver android:name=".utils.EnvivedNotificationDispatcher"
-            android:permission="com.envsocial.android.permission.NOTIFICATION" >
+            android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>
-                <action android:name="com.envsocial.android.intent.RECEIVE_NOTIFICATION" />
-                <category android:name="com.envsocial.android" />
+                <action android:name="com.envived.android.intent.RECEIVE_NOTIFICATION" />
+                <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
         

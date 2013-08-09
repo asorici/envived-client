@@ -118,7 +118,7 @@
 	
 	</LinearLayout>
 	
-	<com.envsocial.android.widget.Tour android:id="@+id/tour"
+	<com.envived.android.widget.Tour android:id="@+id/tour"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/buttons"
