@@ -39,7 +39,7 @@ import android.util.Log;
 
 import com.envived.android.utils.Utils;
 import com.envived.android.utils.disklrucache.DiskLruCache;
-import com.envsocial.android.BuildConfig;
+import com.envived.android.BuildConfig;
 
 /**
  * This class holds our bitmap caches (memory and disk).

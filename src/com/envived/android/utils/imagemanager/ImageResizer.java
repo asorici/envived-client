@@ -24,7 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.envsocial.android.BuildConfig;
+import com.envived.android.BuildConfig;
 
 /**
  * A simple subclass of {@link ImageWorker} that resizes images from resources given a target width

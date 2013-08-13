@@ -36,7 +36,7 @@ import android.widget.Toast;
 
 import com.envived.android.R;
 import com.envived.android.utils.disklrucache.DiskLruCache;
-import com.envsocial.android.BuildConfig;
+import com.envived.android.BuildConfig;
 
 /**
  * A simple subclass of {@link ImageResizer} that fetches and resizes images fetched from a URL.
