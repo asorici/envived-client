@@ -221,7 +221,8 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 					}
 				}
 			}
-			else if (i == len - 1) {
+			
+			if (i == len - 1) {
 				if (mOldestCommentTimestamp == null) {
 					mOldestCommentTimestamp = comment.getTimestamp();
 				}
@@ -336,9 +337,11 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 					String timeStr = Utils.calendarToString(mTimestamp, "yyyy-MM-dd HH:mm:ss");
 					if (mGetNew) {
 						extra.put("timestamp__gt", timeStr);
+						Log.d(TAG, "TIMESTAMP true " + timeStr);
 					}
 					else {
 						extra.put("timestamp__lt", timeStr);
+						Log.d(TAG, "TIMESTAMP " + timeStr);
 					}
 				}
 				
