@@ -272,6 +272,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		
 		String featureLabelMessage = getResources().getString(R.string.lbl_details_features, mLocation.getName());
 		mLabelView.setText(featureLabelMessage);
+		mLabelView.setVisibility(View.VISIBLE);
 		
 		initializeGrid();
 	}

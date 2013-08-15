@@ -19,11 +19,11 @@
     	android:textColor="@color/white"
     	android:textSize="16sp"
     	android:textStyle="bold"
+    	android:visibility="gone"
     	android:text="@string/lbl_details_features"
     />
     
     <View
-    	xmlns:android="http://schemas.android.com/apk/res/android"
     	android:id="@+id/layout_separator"
     	android:layout_width="fill_parent"
     	android:layout_height="1dip"
