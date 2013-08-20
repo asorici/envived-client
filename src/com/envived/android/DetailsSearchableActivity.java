@@ -32,7 +32,7 @@ public class DetailsSearchableActivity extends SherlockFragmentActivity implemen
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.feature_search);
-	    
+	    Log.d(TAG, "--- START in DetailsSearchableActivity !!!!!!!!!!!!!!");
 	    handleIntent(getIntent());
 	}
 

@@ -59,7 +59,7 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Log.d(TAG, "--- START in EnvivedFeatureActivity !!!!!!!!!!!!!!");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         mLocation = (Location)getIntent().getExtras().get("location");

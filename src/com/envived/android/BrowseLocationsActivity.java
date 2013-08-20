@@ -32,7 +32,7 @@ public class BrowseLocationsActivity extends SherlockFragmentActivity implements
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Log.d(TAG, "--- START in BrowseLocationsActivity !!!!!!!!!!!!!!");
         mLocation = (Location) getIntent().getExtras().get("location");
         
         // define a custom screen layout here

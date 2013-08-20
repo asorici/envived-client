@@ -2,13 +2,17 @@ package com.envived.android;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.envived.android.utils.FeatureLRUTracker;
 import com.envived.android.utils.LocationHistory;
-import com.envived.android.utils.imagemanager.ImageFetcher;
 import com.envived.android.utils.imagemanager.ImageCache.ImageCacheParams;
+import com.envived.android.utils.imagemanager.ImageFetcher;
 
 
 public class Envived extends Application {
@@ -22,6 +26,19 @@ public class Envived extends Application {
         Envived.context = getApplicationContext();
         
     }
+	
+	public static boolean isNetworkAvailable() {
+		ConnectivityManager conMan = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = conMan.getActiveNetworkInfo();
+		boolean isConnected = ni != null
+				&& ni.isConnectedOrConnecting();
+		
+		if (isConnected)
+			return true;
+		else
+			return false;
+	}
 
     public static Context getContext() {
         return Envived.context;

@@ -78,7 +78,7 @@ public class HomeActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         //Log.d(TAG, "--- onCreate called in HomeActivity");
 		super.onCreate(savedInstanceState);
-        
+		Log.d(TAG, "--- START in HomeActivity !!!!!!!!!!!!!!");
 		
 		// -------------------------- feature LRU tracker loading ------------------------- //
 		// look in the shared preferences to see if we have a FeatureLRUTracker
@@ -598,10 +598,28 @@ public class HomeActivity extends SherlockFragmentActivity
 		final Context context = getApplicationContext();
 		switch (item.getItemId()) {
 			case R.id.home_menu_logout:
-				new LogoutTask().execute(LogoutTask.REAL_LOGOUT);
+				// Verifying network connectivity
+				if (Envived.isNetworkAvailable()) {
+					Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+					new LogoutTask().execute(LogoutTask.REAL_LOGOUT);
+				}
+				else {
+					Toast toast = Toast.makeText(HomeActivity.this, 
+							R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+					toast.show();
+				}
 				return true;
 			case R.id.home_menu_quit_anonymous:
-				new LogoutTask().execute(LogoutTask.ANONYMOUS_LOGOUT);
+				// Verifying network connectivity
+				if (Envived.isNetworkAvailable()) {
+					Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+					new LogoutTask().execute(LogoutTask.ANONYMOUS_LOGOUT);
+				}
+				else {
+					Toast toast = Toast.makeText(HomeActivity.this, 
+							R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+					toast.show();
+				}
 				return true;
 			case R.id.home_menu_checkout:
 				new CheckoutTask().execute();

@@ -83,7 +83,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Log.d(TAG, "--- START in DetailsActivity !!!!!!!!!!!!!!");
         setContentView(R.layout.details);
         
         mMainView = (LinearLayout) findViewById(R.id.details_container);

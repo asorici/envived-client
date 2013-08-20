@@ -41,7 +41,7 @@ public class EnvivedAppActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Log.d(TAG, "--- START in EnvivedAppActivity !!!!!!!!!!!!!!");
         if (Preferences.getUserUri(this) != null && Preferences.getSessionId(this) != null) {
         	// If we already have a session, forward to HomeActivity
         	Intent intent = new Intent(this, HomeActivity.class);
@@ -113,8 +113,17 @@ public class EnvivedAppActivity extends Activity implements OnClickListener {
     	if (v == mBtnAnonymous) {
     		// Use app as anonymous, a temporary user account will be created
     		if (Preferences.getUserUri(getApplicationContext()) == null) {
-	    		mHandleAnonymousTask = new CreateDeleteAnonymousTask();
-	    		mHandleAnonymousTask.execute(CreateDeleteAnonymousTask.CREATE_ANONYMOUS);
+    			// Verifying network connectivity
+    			if (Envived.isNetworkAvailable()) {
+    				Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+    				mHandleAnonymousTask = new CreateDeleteAnonymousTask();
+    	    		mHandleAnonymousTask.execute(CreateDeleteAnonymousTask.CREATE_ANONYMOUS);
+    			}
+    			else {
+    				Toast toast = Toast.makeText(EnvivedAppActivity.this, 
+    						R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+    				toast.show();
+    			}
     		}
     		else {
     			// if a user uri already exists go directly to the HomeActivity

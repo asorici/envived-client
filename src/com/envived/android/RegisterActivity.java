@@ -46,7 +46,7 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-        
+        Log.d(TAG, "--- START in RegisterActivity !!!!!!!!!!!!!!");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         
         mTxtEmail = (EditText) findViewById(R.id.txt_email);
@@ -64,7 +64,16 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
 
 	public void onClick(View v) {
 		if (v == mBtnSubmit) {
-			new LoginTask().execute();
+			// Verifying network connectivity
+			if (Envived.isNetworkAvailable()) {
+				Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+				new LoginTask().execute();
+			}
+			else {
+				Toast toast = Toast.makeText(RegisterActivity.this, 
+						R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+				toast.show();
+			}
 		}
 	}
 	

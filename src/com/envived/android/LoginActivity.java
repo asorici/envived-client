@@ -39,7 +39,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        
+        Log.d(TAG, "--- START in LoginActivity !!!!!!!!!!!!!!");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         
         mTxtEmail = (EditText) findViewById(R.id.txt_email);
@@ -52,7 +52,16 @@ public class LoginActivity extends SherlockFragmentActivity implements OnClickLi
 
 	public void onClick(View v) {
 		if (v == mBtnLogin) {
-			new LoginTask().execute();
+			// Verifying network connectivity
+			if (Envived.isNetworkAvailable()) {
+				Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+				new LoginTask().execute();
+			}
+			else {
+				Toast toast = Toast.makeText(LoginActivity.this, 
+						R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+				toast.show();
+			}
 		}
 	}
 	

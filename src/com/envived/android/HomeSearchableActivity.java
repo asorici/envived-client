@@ -3,6 +3,7 @@ package com.envived.android;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
@@ -15,13 +16,14 @@ import com.actionbarsherlock.view.MenuItem;
 public class HomeSearchableActivity extends SherlockFragmentActivity implements OnClickListener {
 	
 	private ListView mListView;
+	private static final String TAG = "HomeSearchableActivity";
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main_search);
-	    
+	    Log.d(TAG, "--- START in HomeSearchableActivity !!!!!!!!!!!!!!");
 	    handleIntent(getIntent());
 	}
 
