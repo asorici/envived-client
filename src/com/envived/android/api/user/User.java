@@ -40,7 +40,7 @@ public class User {
 	public static List<User> getUsers(Context context, Location location, String showprofile, String jsonString) throws Exception {
 		if (jsonString == null) { 
 			String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-			Url url = new Url(Url.RESOURCE, TAG);
+			Url url = new Url(Url.CORE_RESOURCE, TAG);
 			
 			if (showprofile != null) {
 				url.setParameters(
@@ -67,7 +67,7 @@ public class User {
 	
 	public static List<User> getUsers(Context context, Location location, String showprofile, int offset, int limit) throws Exception {
 		String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-		Url url = new Url(Url.RESOURCE, TAG);
+		Url url = new Url(Url.CORE_RESOURCE, TAG);
 		if (showprofile != null) {
 			url.setParameters(
 				new String[] { type, "showprofile", "offset", "limit" }, 

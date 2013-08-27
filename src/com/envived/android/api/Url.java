@@ -9,26 +9,25 @@ public class Url {
 	public static final String HTTP = "http://";
 	public static final String HTTPS = "https://";
 	//public static final String HOSTNAME = "envived.com:8800";
-	//public static final String HOSTNAME = "192.168.100.102:8080";
-	//public static final String HOSTNAME = "192.168.1.103:8080";
-	public static final String HOSTNAME = "172.16.2.145";
+	//public static final String HOSTNAME = "192.168.100.101:8080";
+	public static final String HOSTNAME = "192.168.1.102:8080";
 	
-	//public static final String BASE_URL = "/envived/envsocial/client/v1/";
-	public static final String BASE_URL = "/envsocial/client/v1/";
+	public static final String BASE_URL = "/envived/client/v2/";
 	public static final String ACTION_RELATIVE_URL = BASE_URL + "actions/";
 	public static final String RESOURCE_RELATIVE_URL = BASE_URL + "resources/";
-	//public static final String RESOURCE_STATIC_URL = "/envsocial/client/v1/resources/";
-
+	public static final String FEATURE_RELATIVE_URL = RESOURCE_RELATIVE_URL + "features/";
+	public static final String ANNOTATION_RELATIVE_URL = RESOURCE_RELATIVE_URL + "annotations/";
 	
 	private static final Pattern ENVIVED_RESOURCE_GENERAL_URL_PATTERN = 
-			//Pattern.compile(RESOURCE_STATIC_URL + "(\\w+)" + "/");
 			Pattern.compile(RESOURCE_RELATIVE_URL + "(\\w+)" + "/");
 	private static final Pattern ENVIVED_RESOURCE_SPECIFIC_URL_PATTERN = 
-			//Pattern.compile(RESOURCE_STATIC_URL + "(\\w+)" + "/" + "(\\d+)" + "/");
 			Pattern.compile(RESOURCE_RELATIVE_URL + "(\\w+)" + "/" + "(\\d+)" + "/");
 	
+	
 	public static final int ACTION = 0;
-	public static final int RESOURCE = 1;
+	public static final int CORE_RESOURCE = 1;
+	public static final int FEATURE_RESOURCE = 2;
+	public static final int ANNOTATION_RESOURCE = 3;
 	
 	
 	private String mProtocol;
@@ -96,10 +95,21 @@ public class Url {
 		}
 		
 		// Add relative url
-		if (mType == ACTION) {
+		switch(mType) {
+		case ACTION:
 			url.append(ACTION_RELATIVE_URL);
-		} else {
+			break;
+		case CORE_RESOURCE:
 			url.append(RESOURCE_RELATIVE_URL);
+			break;
+		case FEATURE_RESOURCE:
+			url.append(FEATURE_RELATIVE_URL);
+			break;
+		case ANNOTATION_RESOURCE:
+			url.append(ANNOTATION_RELATIVE_URL);
+			break;
+		default:
+			break;
 		}
 		
 		// Add item and id if any
@@ -153,6 +163,14 @@ public class Url {
 	
 	public static String resourceUrl(String resource) {
 		return HTTP + HOSTNAME + RESOURCE_RELATIVE_URL + resource + "/";
+	}
+	
+	public static String featureUrl(String resource) {
+		return HTTP + HOSTNAME + FEATURE_RELATIVE_URL + resource + "/";
+	}
+	
+	public static String annotationUrl(String resource) {
+		return HTTP + HOSTNAME + ANNOTATION_RELATIVE_URL + resource + "/";
 	}
 	
 	static String signUrl(String url) {
@@ -237,14 +255,14 @@ public class Url {
 			String item = specificMatcher.group(1);
 			String itemId = specificMatcher.group(2);
 
-			Url url = new Url(Url.RESOURCE, item);
+			Url url = new Url(Url.CORE_RESOURCE, item);
 			url.setItemId(itemId);
 
 			return url;
 		}
 		else if (generalMatcher.matches()) {
 			String item = specificMatcher.group(1);
-			return new Url(Url.RESOURCE, item);
+			return new Url(Url.CORE_RESOURCE, item);
 		}
 		
 		return null;

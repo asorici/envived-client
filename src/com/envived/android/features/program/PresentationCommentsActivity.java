@@ -184,7 +184,7 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 	
 	
 	public void sendComment(String commentJSON) {
-		Annotation presentationComment = new Annotation(mLocation, Feature.PROGRAM, Calendar.getInstance(), commentJSON);
+		Annotation presentationComment = new Annotation(mLocation, Annotation.PROGRAM, Calendar.getInstance(), commentJSON);
 		
 		mSendCommentTask = new SendPresentationCommentTask(this, presentationComment);
 		mSendCommentTask.execute();
@@ -344,7 +344,7 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 				
 				try {
 					List<Annotation> presentationComments = Annotation.getAnnotations(mContext, mLocation, 
-							Feature.PROGRAM, extra, false);
+							Annotation.PROGRAM, extra, false);
 					
 					//Log.d(TAG, " " + presentationComments.size());
 					

@@ -341,7 +341,7 @@ public class OrderFragment extends SherlockFragment implements OnClickListener, 
 		mCurrentOrderSelections = dialog.getOrderSelections();
 		dialog.dismiss();
 		
-		Annotation order = new Annotation(mLocation, Feature.ORDER, Calendar.getInstance(), orderJSON);
+		Annotation order = new Annotation(mLocation, Annotation.ORDER, Calendar.getInstance(), orderJSON);
 		new SendOrderRequestTask(getActivity(), this, OrderFeature.NEW_ORDER_NOTIFICATION, order).execute();
 	}
 	
