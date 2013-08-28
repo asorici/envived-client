@@ -31,7 +31,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.envived.android.Envived;
 import com.envived.android.HomeActivity;
+import com.envived.android.LoginActivity;
 import com.envived.android.R;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
@@ -175,7 +177,16 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 	        case R.id.presentation_comments_refresh:
 	        	mRetrieveCommentsTask = 
 	        		new RetrievePresentationCommentsTask(mPresentationId, this, mNewestCommentTimestamp, true);
-	        	mRetrieveCommentsTask.execute();
+	        	// Verifying network connectivity
+	    		if (Envived.isNetworkAvailable()) {
+	    			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+	    			mRetrieveCommentsTask.execute();
+	    		}
+	    		else {
+	    			Toast toast = Toast.makeText(PresentationCommentsActivity.this, 
+	    					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+	    			toast.show();
+	    		}
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -187,13 +198,31 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 		Annotation presentationComment = new Annotation(mLocation, Feature.PROGRAM, Calendar.getInstance(), commentJSON);
 		
 		mSendCommentTask = new SendPresentationCommentTask(this, presentationComment);
-		mSendCommentTask.execute();
+		// Verifying network connectivity
+		if (Envived.isNetworkAvailable()) {
+			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+			mSendCommentTask.execute();
+		}
+		else {
+			Toast toast = Toast.makeText(PresentationCommentsActivity.this, 
+					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 	
 	
 	private void getPresentationComments(Calendar timestamp, boolean getNew) {
 		mRetrieveCommentsTask = new RetrievePresentationCommentsTask(mPresentationId, this, timestamp, getNew);
-		mRetrieveCommentsTask.execute();
+		// Verifying network connectivity
+		if (Envived.isNetworkAvailable()) {
+			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+			mRetrieveCommentsTask.execute();
+		}
+		else {
+			Toast toast = Toast.makeText(PresentationCommentsActivity.this, 
+					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 	
 	

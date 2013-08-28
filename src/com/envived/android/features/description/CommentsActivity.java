@@ -32,7 +32,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.envived.android.Envived;
 import com.envived.android.HomeActivity;
+import com.envived.android.LoginActivity;
 import com.envived.android.R;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
@@ -167,7 +169,16 @@ public class CommentsActivity extends SherlockFragmentActivity implements OnClic
 			
 		case R.id.comments_refresh:
 			mRetrieveCommentsTask = new RetrieveCommentsTask(this, this, mNewestCommentTimestamp, true);
-			mRetrieveCommentsTask.execute();
+			// Verifying network connectivity
+			if (Envived.isNetworkAvailable()) {
+				Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+				mRetrieveCommentsTask.execute();
+			}
+			else {
+				Toast toast = Toast.makeText(CommentsActivity.this, 
+						R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+				toast.show();
+			}
 			return true;
 			
 		case R.id.comments_filter:
@@ -217,7 +228,16 @@ public class CommentsActivity extends SherlockFragmentActivity implements OnClic
 		Annotation comment = new Annotation(mLocation, Feature.BOOTH_DESCRIPTION, Calendar.getInstance(), commentJSON);
 		
 		mSendCommentTask = new SendCommentTask(this, this, comment);
-		mSendCommentTask.execute();
+		// Verifying network connectivity
+		if (Envived.isNetworkAvailable()) {
+			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+			mSendCommentTask.execute();
+		}
+		else {
+			Toast toast = Toast.makeText(CommentsActivity.this, 
+					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 	
 	public void postSendComment() {
@@ -226,7 +246,16 @@ public class CommentsActivity extends SherlockFragmentActivity implements OnClic
 	
 	private void getComments(Calendar timestamp, boolean getNew) {
 		mRetrieveCommentsTask = new RetrieveCommentsTask(this, this, timestamp, getNew);
-		mRetrieveCommentsTask.execute(timestamp);
+		// Verifying network connectivity
+		if (Envived.isNetworkAvailable()) {
+			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+			mRetrieveCommentsTask.execute(timestamp);
+		}
+		else {
+			Toast toast = Toast.makeText(CommentsActivity.this, 
+					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 	
 	private Comment parseComment(Annotation commentObj) throws JSONException {

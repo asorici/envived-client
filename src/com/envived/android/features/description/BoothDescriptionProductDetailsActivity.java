@@ -36,6 +36,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.Envived;
 import com.envived.android.HomeActivity;
+import com.envived.android.LoginActivity;
 import com.envived.android.R;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.EnvSocialResource;
@@ -82,7 +83,7 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		Log.d(TAG, "--- START in BoothDescriptionProductDetailsActivity !!!!!!!!!!!!!!");
 		getSupportActionBar().setTitle(TITLE_TAG);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -104,7 +105,17 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 		
 		// call feature initialization task here
 		mInitBoothProductTask = new InitializeBoothProductTask(mDescriptionFeature);
-		mInitBoothProductTask.execute();
+		// Verifying network connectivity
+		if (Envived.isNetworkAvailable()) {
+			Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+			mInitBoothProductTask.execute();
+		}
+		else {
+			Toast toast = Toast.makeText(BoothDescriptionProductDetailsActivity.this, 
+					R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+			toast.show();
+		}
+		
 	}
 	
 	@Override
@@ -300,7 +311,16 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 				
 				Annotation voteRequest = new Annotation(mLocation, "booth_product_vote", Calendar.getInstance(), voteContent.toString());
 				mSendVoteTask = new SendVoteTask(this, voteRequest);
-				mSendVoteTask.execute();
+				// Verifying network connectivity
+				if (Envived.isNetworkAvailable()) {
+					Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+					mSendVoteTask.execute();
+				}
+				else {
+					Toast toast = Toast.makeText(BoothDescriptionProductDetailsActivity.this, 
+							R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+					toast.show();
+				}
 			}
 		}
 	}
@@ -353,7 +373,16 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 				bindData(cursor);
 				
 				mUpdateVotesTask = new UpdateProductVotesTask();
-				mUpdateVotesTask.execute();
+				// Verifying network connectivity
+				if (Envived.isNetworkAvailable()) {
+					Log.d(TAG, "--- NETWORK AVAILABLE !!!!!!!!!!!!!!");
+					mUpdateVotesTask.execute();
+				}
+				else {
+					Toast toast = Toast.makeText(BoothDescriptionProductDetailsActivity.this, 
+							R.string.no_network_connection_toast, Toast.LENGTH_LONG);
+					toast.show();
+				}
 			}
 		}
 	}

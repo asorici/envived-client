@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -43,7 +44,7 @@ public class BoothDescriptionActivity extends EnvivedFeatureActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Log.d(TAG, "--- START in BoothDescriptionActivity !!!!!!!!!!!!!!");
         setContentView(R.layout.description_booth);
         
         mActionBar = getSupportActionBar();
