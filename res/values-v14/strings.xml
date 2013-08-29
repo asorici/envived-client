@@ -92,6 +92,7 @@
     <string name="lbl_last">Last Name</string>
     <string name="lbl_affiliation">Affiliation</string>
     <string name="lbl_interests">Interests</string>
+    <string name="lbl_interest">Android</string>
     <string name="lbl_group">Group</string>
     <string name="lbl_item">Item</string>
     <string name="lbl_no_orders">No orders.</string>
