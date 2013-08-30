@@ -4,4 +4,5 @@ lint.xml
 libraries/
 .classpath
 .project
+.settings/
 project.properties
