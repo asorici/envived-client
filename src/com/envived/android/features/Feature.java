@@ -350,13 +350,20 @@ public abstract class Feature implements Serializable {
 			String featureResourceUrl, boolean virtualAccess) {
 		AppClient client = new AppClient(context);
 		
+		Log.d(TAG, "retrieving feature with URI: " + featureResourceUrl);
 		
-		Url url = new Url(Url.RESOURCE, "feature");
+		Url url = new Url(Url.FEATURE_RESOURCE, category);
 		url.setItemId(Url.resourceIdFromUrl(featureResourceUrl));
 		
+		/*
 		url.setParameters(
 			new String[] { "virtual", "category" }, 
 			new String[] { Boolean.toString(virtualAccess), category }
+		);
+		*/
+		url.setParameters(
+			new String[] { "virtual"}, 
+			new String[] { Boolean.toString(virtualAccess)}
 		);
 		
 		

@@ -396,7 +396,7 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 				extra.put("product_id", String.valueOf(mProductId));
 				
 				List<Annotation> voteAnnotations = Annotation.getAnnotations(BoothDescriptionProductDetailsActivity.this, 
-						mLocation, "booth_product_vote", extra, 0, 1); 
+						mLocation, Annotation.BOOTH_PRODUCT_VOTE, extra, 0, 1); 
 				
 				
 				if (!voteAnnotations.isEmpty()) {

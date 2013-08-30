@@ -356,7 +356,7 @@ public class OrderManagerFragment extends SherlockFragment {
 			try {
 				List<Annotation> orderRequests = Annotation.getAllAnnotationsForEnvironment(getActivity(), 
 						mLocation, 
-						Feature.ORDER,
+						Annotation.ORDER,
 						cal
 				);
 				

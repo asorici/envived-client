@@ -27,6 +27,13 @@ import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.Utils;
 
 public class Annotation {
+	public static final String DESCRIPTION 			= 	"description_ann";
+	public static final String BOOTH_DESCRIPTION 	= 	"booth_description_ann";
+	public static final String BOOTH_PRODUCT_VOTE 	= 	"booth_product_vote_ann";
+	
+	public static final String ORDER 				= 	"order_ann";
+	public static final String PROGRAM 				= 	"program_ann";
+	
 	
 	public static final String TAG = "annotation";
 	
@@ -67,7 +74,7 @@ public class Annotation {
 		
 		// build annotation request uri taking into account the type of access that is made
 		boolean virtualAccess = mLocation.hasVirtualAccess();
-		String annotationRequestUri = Url.appendOrReplaceParameter(Url.resourceUrl(TAG), "virtual", 
+		String annotationRequestUri = Url.appendOrReplaceParameter(Url.annotationUrl(mCategory), "virtual", 
 				Boolean.toString(virtualAccess));
 		
 		
@@ -102,7 +109,7 @@ public class Annotation {
 	private String toJSON() throws JSONException {
 		/*
 		String locationType = (mLocation.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-		Url url = new Url(Url.RESOURCE, locationType, false, Url.HTTP);
+		Url url = new Url(Url.CORE_RESOURCE, locationType, false, Url.HTTP);
 		url.setItemId(mLocation.getId());
 		String locationUri = url.toString();
 		*/
@@ -118,7 +125,7 @@ public class Annotation {
 		
 		JSONObject jsonData = new JSONObject();
 		jsonData.put(locationType, locationUri);
-		jsonData.put("category", mCategory);
+		//jsonData.put("category", mCategory);
 		jsonData.put("data", data);
 		
 		return jsonData.toString();
@@ -130,9 +137,10 @@ public class Annotation {
 		
 		if (retrieveAll) {
 			String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-			Url url = new Url(Url.RESOURCE, TAG);
-			url.setParameters(new String[] { type, "category" }, 
-					new String[] { location.getId(), category }
+			Url url = new Url(Url.ANNOTATION_RESOURCE, category);
+			
+			url.setParameters(new String[] { type }, 
+					new String[] { location.getId() }
 			);
 			
 			return getAnnotationsList(context, url.toString(), location, true);
@@ -150,7 +158,7 @@ public class Annotation {
 		
 		if (retrieveAll) {
 			String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-			Url url = new Url(Url.RESOURCE, TAG);
+			Url url = new Url(Url.ANNOTATION_RESOURCE, category);
 			
 			int extraSize = 0;
 			if (extra != null) {
@@ -162,11 +170,9 @@ public class Annotation {
 			
 			keys[0] = type;
 			values[0] = location.getId();
-			keys[1] = "category";
-			values[1] = category;
-			
+	
 			if (extra != null) {
-				int i = 2;
+				int i = 1;
 				for (String key : extra.keySet()) {
 					keys[i] = key;
 					
@@ -194,9 +200,10 @@ public class Annotation {
 			int offset, int limit) throws EnvSocialComException, EnvSocialContentException {
 		
 		String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-		Url url = new Url(Url.RESOURCE, TAG);
-		url.setParameters(new String[] { type, "category", "offset", "limit"}, 
-				new String[] { location.getId(), category, offset + "", limit + "" }
+		Url url = new Url(Url.ANNOTATION_RESOURCE, category);
+		
+		url.setParameters(new String[] { type, "offset", "limit"}, 
+				new String[] { location.getId(), offset + "", limit + "" }
 		);
 		
 		return getAnnotationsList(context, url.toString(), location, false);
@@ -208,7 +215,7 @@ public class Annotation {
 			int offset, int limit) throws EnvSocialComException, EnvSocialContentException {
 		
 		String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
-		Url url = new Url(Url.RESOURCE, TAG);
+		Url url = new Url(Url.ANNOTATION_RESOURCE, category);
 		
 		int extraSize = 0;
 		if (extra != null) {
@@ -220,14 +227,12 @@ public class Annotation {
 		
 		keys[0] = type;
 		values[0] = location.getId();
-		keys[1] = "category";
-		values[1] = category;
 		
-		keys[2] = "offset"; keys[3] = "limit";
-		values[2] = offset + ""; values[3] = limit + "";
+		keys[1] = "offset"; keys[2] = "limit";
+		values[1] = offset + ""; values[2] = limit + "";
 		
 		if (extra != null) {
-			int i = 4;
+			int i = 3;
 			for (String key : extra.keySet()) {
 				keys[i] = key;
 				
@@ -255,11 +260,11 @@ public class Annotation {
 			envId = Url.resourceIdFromUrl(location.getParentUrl());
 		}
 		
-		Url url = new Url(Url.RESOURCE, TAG);
+		Url url = new Url(Url.ANNOTATION_RESOURCE, category);
 		url.setParameters(
-				new String[] { "virtual", Location.ENVIRONMENT, "all", "category", "order_by" }, 
+				new String[] { "virtual", Location.ENVIRONMENT, "all", "order_by" }, 
 				new String[] { Boolean.toString(location.hasVirtualAccess()), 
-						envId, "true", category, "timestamp" }
+						envId, "true", "timestamp" }
 		);
 		
 		String annotationRequestUrl  = url.toString();

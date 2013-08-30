@@ -163,7 +163,7 @@ public class OrderSearchResultFragment extends SherlockFragment
 		dialog.dismiss();
 		
 		Location location = Preferences.getCheckedInLocation(getActivity());
-		Annotation order = new Annotation(location, Feature.ORDER, Calendar.getInstance(), orderJSON);
+		Annotation order = new Annotation(location, Annotation.ORDER, Calendar.getInstance(), orderJSON);
 		new SendOrderRequestTask(getActivity(), this, OrderFeature.NEW_ORDER_NOTIFICATION, order).execute();
 		
 	}

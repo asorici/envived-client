@@ -225,7 +225,7 @@ public class CommentsActivity extends SherlockFragmentActivity implements OnClic
 	public void sendComment(CommentsDialogFragment dialog) {
 		String commentJSON = dialog.getCommentJSONString();
 		
-		Annotation comment = new Annotation(mLocation, Feature.BOOTH_DESCRIPTION, Calendar.getInstance(), commentJSON);
+		Annotation comment = new Annotation(mLocation, Annotation.BOOTH_DESCRIPTION, Calendar.getInstance(), commentJSON);
 		
 		mSendCommentTask = new SendCommentTask(this, this, comment);
 		// Verifying network connectivity
@@ -431,7 +431,7 @@ public class CommentsActivity extends SherlockFragmentActivity implements OnClic
 			try {
 				List<Annotation> commentRequests = Annotation.getAnnotations(mCommentsActivity, 
 						mLocation, 
-						Feature.BOOTH_DESCRIPTION, 
+						Annotation.BOOTH_DESCRIPTION, 
 						extra,
 						false
 				);

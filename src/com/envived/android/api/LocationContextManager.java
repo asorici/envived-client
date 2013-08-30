@@ -34,7 +34,7 @@ public class LocationContextManager implements Serializable {
 			environmentId = Url.resourceIdFromUrl(mLocation.getParentUrl());
 		}
 		
-		Url url = new Url(Url.RESOURCE, CONTEXT_RESOURCE);
+		Url url = new Url(Url.CORE_RESOURCE, CONTEXT_RESOURCE);
 		url.setItemId(environmentId);
 		mResourceUri = url.toString();
 	}
