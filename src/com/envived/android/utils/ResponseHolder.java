@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.envived.android.api.exceptions.EnvSocialException;
+import com.envived.android.api.exceptions.EnvivedException;
 
 public class ResponseHolder {
 	
@@ -38,7 +38,7 @@ public class ResponseHolder {
 		return error;
 	}
 	
-	public void setError(EnvSocialException error) {
+	public void setError(EnvivedException error) {
 		this.error = error;
 	}
 	

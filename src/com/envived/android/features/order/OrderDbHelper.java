@@ -12,7 +12,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.envived.android.api.EnvSocialResource;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.FeatureDbHelper;
 
 public class OrderDbHelper extends FeatureDbHelper {
@@ -47,7 +47,7 @@ public class OrderDbHelper extends FeatureDbHelper {
 												 COL_ORDER_FTS_DESCRIPTION };
 	
 	
-	public OrderDbHelper(Context context, String databaseName, OrderFeature orderFeature, int version) throws EnvSocialContentException {
+	public OrderDbHelper(Context context, String databaseName, OrderFeature orderFeature, int version) throws EnvivedContentException {
 		super(context, databaseName, orderFeature, version);
 		
 		//this.database = this.getWritableDatabase();
@@ -104,7 +104,7 @@ public class OrderDbHelper extends FeatureDbHelper {
 	}
 	
 	@Override
-	public void init(boolean insert) throws EnvSocialContentException {
+	public void init(boolean insert) throws EnvivedContentException {
 		Log.d(TAG, "[DEBUG] >> ----------- Init " + getDBName() + ". ------------");
 		
 		// if new data is to be inserted - call insertMenu here
@@ -114,7 +114,7 @@ public class OrderDbHelper extends FeatureDbHelper {
 	}
 	
 	@Override
-	public void update() throws EnvSocialContentException {
+	public void update() throws EnvivedContentException {
 		// since the update message does not yet specify individual entries do delete and insert
 		// the update procedure is a simple DELETE TABLES followed by a new insertion of the program
 		cleanupTables();
@@ -126,7 +126,7 @@ public class OrderDbHelper extends FeatureDbHelper {
 		// feature.setSerializedData(null);
 	}
 	
-	public void insertMenu() throws EnvSocialContentException {
+	public void insertMenu() throws EnvivedContentException {
 		if (dbStatus == DB_CREATED) {
 			Log.d(TAG, "[DEBUG] >> ----------- INSERTING MENU DATA ------------");
 			
@@ -213,7 +213,7 @@ public class OrderDbHelper extends FeatureDbHelper {
 				} catch (JSONException e) {
 					cleanupTables();
 					e.printStackTrace();
-					throw new EnvSocialContentException(encodedJsonData, EnvSocialResource.FEATURE, e);
+					throw new EnvivedContentException(encodedJsonData, EnvSocialResource.FEATURE, e);
 				}
 				
 				dbStatus = DB_POPULATED;

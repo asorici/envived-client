@@ -11,7 +11,7 @@ import com.envived.android.R;
 import com.envived.android.api.AppClient;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.EnvivedNotificationDispatcher;
 import com.envived.android.utils.EnvivedNotificationHandler;
@@ -60,14 +60,14 @@ public class ProgramFeature extends Feature {
 	
 	public ProgramFeature(String category, int version, Calendar timestamp, boolean isGeneral, 
 			String resourceUri, String environmentUri, String areaUri, String data, boolean virtualAccess) 
-					throws EnvSocialContentException {
+					throws EnvivedContentException {
 		super(category, version, timestamp, isGeneral, resourceUri, environmentUri, areaUri, data, virtualAccess);
 
 	}
 	
 	
 	@Override
-	protected void featureInit(boolean insert) throws EnvSocialContentException {
+	protected void featureInit(boolean insert) throws EnvivedContentException {
 		// register program notification handler
 		notificationHandler = new ProgramFeatureNotificationHandler();
 		EnvivedNotificationDispatcher.registerNotificationHandler(notificationHandler);
@@ -85,7 +85,7 @@ public class ProgramFeature extends Feature {
 	}
 
 	@Override
-	protected void featureUpdate() throws EnvSocialContentException {
+	protected void featureUpdate() throws EnvivedContentException {
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
 		

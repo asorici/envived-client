@@ -42,8 +42,9 @@ import com.envived.android.api.Annotation;
 import com.envived.android.api.EnvSocialResource;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.EnvivedCommentAlertDialog;
 import com.envived.android.utils.Preferences;
@@ -351,7 +352,10 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 				}
 				
 				return null;
-			} catch (EnvSocialContentException e) {
+			} catch (EnvivedContentException e) {
+				Log.d(TAG, "ERROR initializing feature " + mNewFeature.getCategory(), e);
+				return null;
+			} catch (EnvivedConnectivityException e) {
 				Log.d(TAG, "ERROR initializing feature " + mNewFeature.getCategory(), e);
 				return null;
 			}
@@ -409,15 +413,15 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 						mDescriptionFeature.updateVotesValue(mProductId, productVotes);
 						return productVotes;
 					} catch (JSONException e) {
-						throw new EnvSocialContentException(vote.getData(), EnvSocialResource.ANNOTATION, e);
+						throw new EnvivedContentException(vote.getData(), EnvSocialResource.ANNOTATION, e);
 					}
 				}
 				
 				return 0;
-			} catch (EnvSocialContentException e) {
+			} catch (EnvivedContentException e) {
 				Log.d(TAG, "ERROR retrieving vote annotation for product id: " + mProductId, e);
 				return null;
-			} catch (EnvSocialComException e) {
+			} catch (EnvivedComException e) {
 				Log.d(TAG, "ERROR retrieving vote annotation for product id: " + mProductId, e);
 				return null;
 			}
@@ -520,10 +524,10 @@ public class BoothDescriptionProductDetailsActivity extends SherlockFragmentActi
 
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_unavailable;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_error;
 				} catch (Exception e) {

@@ -15,9 +15,9 @@ import org.json.JSONStringer;
 import android.content.Context;
 import android.util.Log;
 
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
-import com.envived.android.api.exceptions.EnvSocialComException.HttpMethod;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
+import com.envived.android.api.exceptions.EnvivedComException.HttpMethod;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 
@@ -65,10 +65,10 @@ public class ActionHandler {
 					new String[] {"application/json", "json"}
 					);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(null, 
+			return new ResponseHolder(new EnvivedComException(null, 
 					HttpMethod.POST, EnvSocialResource.GCM, e));
 		} catch (JSONException e) {
-			return new ResponseHolder(new EnvSocialContentException((String)value, EnvSocialResource.GCM, e));
+			return new ResponseHolder(new EnvivedContentException((String)value, EnvSocialResource.GCM, e));
 		}
 		
 		// handle GCM registration response from server
@@ -85,7 +85,7 @@ public class ActionHandler {
 		try {
 			response = client.makeGetRequest(Url.actionUrl(CREATE_ANONYMOUS));
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(null, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(null, HttpMethod.GET, 
 											EnvSocialResource.CREATE_ANONYMOUS, e));
 		}
 		
@@ -107,7 +107,7 @@ public class ActionHandler {
 			
 			return holder;
 		} catch (JSONException e) {
-			return new ResponseHolder(new EnvSocialContentException(holder.getResponseBody(), 
+			return new ResponseHolder(new EnvivedContentException(holder.getResponseBody(), 
 											EnvSocialResource.LOGIN, e));
 		}
 	}
@@ -121,7 +121,7 @@ public class ActionHandler {
 		try {
 			response = client.makeGetRequest(Url.actionUrl(DELETE_ANONYMOUS));
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.GET, 
 											EnvSocialResource.DELETE_ANONYMOUS, e));
 		}
 		
@@ -156,7 +156,7 @@ public class ActionHandler {
 			String url = Url.actionUrl(LOGIN);
 			response = client.makePostRequest(url, data, null, null);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(null, 
+			return new ResponseHolder(new EnvivedComException(null, 
 					HttpMethod.POST, EnvSocialResource.LOGIN, e));
 		}
 		
@@ -179,7 +179,7 @@ public class ActionHandler {
 			
 			return holder;
 		} catch (JSONException e) {
-			return new ResponseHolder(new EnvSocialContentException(holder.getResponseBody(), 
+			return new ResponseHolder(new EnvivedContentException(holder.getResponseBody(), 
 											EnvSocialResource.LOGIN, e));
 		}
 	}
@@ -193,7 +193,7 @@ public class ActionHandler {
 		try {
 			response = client.makeGetRequest(Url.actionUrl(LOGOUT));
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.GET, 
 											EnvSocialResource.LOGOUT, e));
 		}
 		
@@ -227,7 +227,7 @@ public class ActionHandler {
 		try {
 			response = client.makeGetRequest(url);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.GET, 
 											EnvSocialResource.CHECKIN, e));
 		}
 		
@@ -252,7 +252,7 @@ public class ActionHandler {
 			return holder;
 			
 		} catch (JSONException e) {
-			return new ResponseHolder(new EnvSocialContentException(holder.getResponseBody(), 
+			return new ResponseHolder(new EnvivedContentException(holder.getResponseBody(), 
 											EnvSocialResource.CHECKIN, e));
 		} 
 	}
@@ -265,7 +265,7 @@ public class ActionHandler {
 		try {
 			response = client.makeGetRequest(Url.actionUrl(CHECKOUT));
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.GET, 
 											EnvSocialResource.CHECKOUT, e));
 		}
 		
@@ -309,7 +309,7 @@ public class ActionHandler {
 			String url = Url.actionUrl(REGISTER);
 			response = client.makePostRequest(url, data, null, null);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(null, HttpMethod.POST, 
+			return new ResponseHolder(new EnvivedComException(null, HttpMethod.POST, 
 											EnvSocialResource.REGISTER, e));
 		}
 		
@@ -329,7 +329,7 @@ public class ActionHandler {
 			
 			return holder;
 		} catch (JSONException e) {
-			return new ResponseHolder(new EnvSocialContentException(holder.getResponseBody(), 
+			return new ResponseHolder(new EnvivedContentException(holder.getResponseBody(), 
 											EnvSocialResource.REGISTER, e));
 		}
 	}

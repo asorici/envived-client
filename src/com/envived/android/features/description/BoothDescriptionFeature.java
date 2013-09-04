@@ -8,7 +8,7 @@ import android.database.Cursor;
 
 import com.envived.android.Envived;
 import com.envived.android.R;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.FeatureDbHelper;
 
@@ -44,7 +44,7 @@ public class BoothDescriptionFeature extends Feature {
 	}
 
 	@Override
-	protected void featureInit(boolean insert) throws EnvSocialContentException {
+	protected void featureInit(boolean insert) throws EnvivedContentException {
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
 				
@@ -58,7 +58,7 @@ public class BoothDescriptionFeature extends Feature {
 	}
 
 	@Override
-	protected void featureUpdate() throws EnvSocialContentException {
+	protected void featureUpdate() throws EnvivedContentException {
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl,
 				areaUrl, version);

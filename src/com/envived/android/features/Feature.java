@@ -14,14 +14,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.envived.android.Envived;
 import com.envived.android.EnvivedFeatureDataRetrievalService;
+import com.envived.android.R;
 import com.envived.android.api.AppClient;
+import com.envived.android.api.EnvSocialResource;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
+import com.envived.android.api.exceptions.EnvivedComException.HttpMethod;
 import com.envived.android.features.description.BoothDescriptionFeature;
+import com.envived.android.features.description.BoothDescriptionProductDetailsActivity;
 import com.envived.android.features.description.DescriptionFeature;
 import com.envived.android.features.order.OrderFeature;
 import com.envived.android.features.people.PeopleFeature;
@@ -100,7 +106,7 @@ public abstract class Feature implements Serializable {
 		//this.displayName = "Feature";
 	}
 	
-	public void init() throws EnvSocialContentException {
+	public void init() throws EnvivedContentException, EnvivedConnectivityException {
 		if (hasData()) {
 			String featureCacheFileName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
 			
@@ -168,8 +174,16 @@ public abstract class Feature implements Serializable {
 	}
 	
 	
-	private void startFeatureDataRetrievalService() {
+	private void startFeatureDataRetrievalService() throws EnvivedConnectivityException {
 		Context context = Envived.getContext();
+		
+		// Verifying network connectivity
+		if (!Envived.isNetworkAvailable()) {
+			String userUri = Preferences.getUserUri(context);
+					
+			throw new EnvivedConnectivityException(userUri, HttpMethod.GET, EnvSocialResource.FEATURE, null);
+		}
+		
 		String locationUri = (environmentUrl != null) ? environmentUrl : areaUrl;
 		JSONObject paramsJSON = new JSONObject();
 
@@ -194,7 +208,7 @@ public abstract class Feature implements Serializable {
 	}
 	
 	
-	public void doUpdate() throws EnvSocialContentException {
+	public void doUpdate() throws EnvivedContentException {
 		if (hasData()) {
 			featureUpdate();
 			
@@ -416,7 +430,7 @@ public abstract class Feature implements Serializable {
 	
 	public static Feature getInstance(String category, int version, Calendar timestamp, boolean isGeneral,  
 			String resourceUri, String environmentUri, String areaUri, String data, boolean virtualAccess) 
-					throws IllegalArgumentException, EnvSocialContentException {
+					throws IllegalArgumentException, EnvivedContentException {
 		
 		if (category == null) {
 			throw new IllegalArgumentException("No feature category specified.");
@@ -462,9 +476,9 @@ public abstract class Feature implements Serializable {
 	}
 	
 	
-	protected abstract void featureInit(boolean insert) throws EnvSocialContentException;
+	protected abstract void featureInit(boolean insert) throws EnvivedContentException;
 	
-	protected abstract void featureUpdate() throws EnvSocialContentException;
+	protected abstract void featureUpdate() throws EnvivedContentException;
 	
 	protected abstract void featureCleanup(Context context);
 	

@@ -23,7 +23,8 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 
 import com.envived.android.Envived;
 import com.envived.android.R;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.IFeatureAdapter;
 import com.envived.android.utils.UIUtils;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -266,8 +267,10 @@ public class OrderCatalogPagerAdapter extends PagerAdapter
 		try {
 			retrievedOrderFeature.init();
 			mParentFragment.setOrderFeature(retrievedOrderFeature);
-		} catch (EnvSocialContentException ex) {
+		} catch (EnvivedContentException ex) {
 			Log.d(TAG,"[DEBUG] >> OrderFeature update failed. Content could not be parsed.", ex);
+		} catch (EnvivedConnectivityException e) {
+			Log.d(TAG,"[DEBUG] >> OrderFeature update failed. No network connectivity.", e);
 		}
 		
 		int pageCt = getCount();
@@ -289,7 +292,7 @@ public class OrderCatalogPagerAdapter extends PagerAdapter
 		try {
 			updatedOrderFeature.doUpdate();
 			mParentFragment.setOrderFeature(updatedOrderFeature);
-		} catch (EnvSocialContentException ex) {
+		} catch (EnvivedContentException ex) {
 			Log.d(TAG, "[DEBUG] >> OrderFeature update failed. Content could not be parsed.", ex);
 		}
 		

@@ -18,7 +18,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.Utils;
 
@@ -153,7 +154,7 @@ public class Location implements Serializable {
 				mFeatures.put(category, feat);
 			} catch (IllegalArgumentException ex) {
 				Log.d("Location", ex.getMessage());
-			} catch (EnvSocialContentException ex) {
+			} catch (EnvivedContentException ex) {
 				Log.d("Location", "Failed to add feature of category :: " + category.toUpperCase(Locale.US) + ". Reason: " + ex.getMessage());
 			} catch (SQLiteException ex) {
 				Log.d("Location", "Failed to add feature of category ::" + category.toUpperCase(Locale.US) + ". Feature local DB error: " + ex.getMessage());
@@ -219,7 +220,7 @@ public class Location implements Serializable {
 	}
 	
 	
-	public void initFeatures() throws EnvSocialContentException {
+	public void initFeatures() throws EnvivedContentException, EnvivedConnectivityException {
 		for (String category : mFeatures.keySet()) {
 			Feature feat = mFeatures.get(category);
 			if (feat != null ) {

@@ -19,9 +19,9 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
-import com.envived.android.api.exceptions.EnvSocialComException.HttpMethod;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
+import com.envived.android.api.exceptions.EnvivedComException.HttpMethod;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.Utils;
@@ -83,7 +83,7 @@ public class Annotation {
 			jsonContent = toJSON();
 		}
 		catch (JSONException e) {
-			return new ResponseHolder (new EnvSocialContentException(jsonContent, 
+			return new ResponseHolder (new EnvivedContentException(jsonContent, 
 											EnvSocialResource.ANNOTATION, e));
 		}
 		
@@ -95,10 +95,10 @@ public class Annotation {
 					new String[] {"application/json", "json"}
 			);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.POST, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.POST, 
 											EnvSocialResource.ANNOTATION, e));
 		} catch (org.apache.http.ParseException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.POST, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.POST, 
 					EnvSocialResource.ANNOTATION, e));
 		} 
 		
@@ -133,7 +133,7 @@ public class Annotation {
 	
 	
 	public static List<Annotation> getAnnotations(Context context, Location location, String category, 
-			boolean retrieveAll) throws EnvSocialComException, EnvSocialContentException {
+			boolean retrieveAll) throws EnvivedComException, EnvivedContentException {
 		
 		if (retrieveAll) {
 			String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
@@ -154,7 +154,7 @@ public class Annotation {
 	public static List<Annotation> getAnnotations(Context context, 
 			Location location, String category, 
 			Map<String, String> extra, 
-			boolean retrieveAll) throws EnvSocialComException, EnvSocialContentException {
+			boolean retrieveAll) throws EnvivedComException, EnvivedContentException {
 		
 		if (retrieveAll) {
 			String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
@@ -179,7 +179,7 @@ public class Annotation {
 					try {
 						values[i] = URLEncoder.encode(extra.get(key), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
-						throw new EnvSocialContentException(null, EnvSocialResource.ANNOTATION, e);
+						throw new EnvivedContentException(null, EnvSocialResource.ANNOTATION, e);
 					}
 					
 					i++;
@@ -197,7 +197,7 @@ public class Annotation {
 	
 	
 	public static List<Annotation> getAnnotations(Context context, Location location, String category, 
-			int offset, int limit) throws EnvSocialComException, EnvSocialContentException {
+			int offset, int limit) throws EnvivedComException, EnvivedContentException {
 		
 		String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
 		Url url = new Url(Url.ANNOTATION_RESOURCE, category);
@@ -212,7 +212,7 @@ public class Annotation {
 	
 	public static List<Annotation> getAnnotations(Context context, Location location, 
 			String category, Map<String, String> extra, 
-			int offset, int limit) throws EnvSocialComException, EnvSocialContentException {
+			int offset, int limit) throws EnvivedComException, EnvivedContentException {
 		
 		String type = (location.isEnvironment()) ? Location.ENVIRONMENT : Location.AREA;
 		Url url = new Url(Url.ANNOTATION_RESOURCE, category);
@@ -239,7 +239,7 @@ public class Annotation {
 				try {
 					values[i] = URLEncoder.encode(extra.get(key), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					throw new EnvSocialContentException(null, EnvSocialResource.ANNOTATION, e);
+					throw new EnvivedContentException(null, EnvSocialResource.ANNOTATION, e);
 				}
 				
 				i++;
@@ -253,7 +253,7 @@ public class Annotation {
 	
 	// this can be re-written in terms of getAnnotations + an extra
 	public static List<Annotation> getAllAnnotationsForEnvironment(Context context, 
-			Location location, String category, Calendar timestamp) throws EnvSocialComException, EnvSocialContentException {
+			Location location, String category, Calendar timestamp) throws EnvivedComException, EnvivedContentException {
 		
 		String envId = location.getId();
 		if (location.isArea()) {
@@ -273,7 +273,7 @@ public class Annotation {
 			try {
 				timeStr = URLEncoder.encode(timeStr, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				throw new EnvSocialContentException(timeStr, EnvSocialResource.ANNOTATION, e);
+				throw new EnvivedContentException(timeStr, EnvSocialResource.ANNOTATION, e);
 			}
 			annotationRequestUrl = Url.appendOrReplaceParameter(annotationRequestUrl, "timestamp__gt", timeStr);
 		}
@@ -285,7 +285,7 @@ public class Annotation {
 	
 	private static List<Annotation> getAnnotationsList(Context context, 
 			String annotationRequestUrl, Location location, 
-			boolean retrieveAll) throws EnvSocialComException, EnvSocialContentException {
+			boolean retrieveAll) throws EnvivedComException, EnvivedContentException {
 		
 		// get data of the user executing this action
 		String userUri = Preferences.getUserUri(context);
@@ -307,13 +307,13 @@ public class Annotation {
 			response = client.makeGetRequest(annotationRequestUrl);
 			responseData = EntityUtils.toString(response.getEntity());
 		} catch (Exception e) {
-			throw new EnvSocialComException(userUri, HttpMethod.GET, EnvSocialResource.ANNOTATION, e);
+			throw new EnvivedComException(userUri, HttpMethod.GET, EnvSocialResource.ANNOTATION, e);
 		} 
 		
 		// Check the status code
 		if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 			//Log.d(TAG, "[DEBUG]>> Error response on annotations list: " + responseData);
-			throw EnvSocialComException.newInstanceFrom(
+			throw EnvivedComException.newInstanceFrom(
 					response.getStatusLine().getStatusCode(), 
 					userUri, HttpMethod.GET, EnvSocialResource.ANNOTATION, null);
 		}
@@ -336,9 +336,9 @@ public class Annotation {
 			return annotations;
 		
 		} catch (JSONException e) {
-			throw new EnvSocialContentException(responseData, EnvSocialResource.ANNOTATION, e);
+			throw new EnvivedContentException(responseData, EnvSocialResource.ANNOTATION, e);
 		} catch (ParseException e) {
-			throw new EnvSocialContentException(responseData, EnvSocialResource.ANNOTATION, e);
+			throw new EnvivedContentException(responseData, EnvSocialResource.ANNOTATION, e);
 		}
 	}
 	

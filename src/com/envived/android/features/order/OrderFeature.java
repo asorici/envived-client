@@ -7,7 +7,7 @@ import android.database.Cursor;
 
 import com.envived.android.Envived;
 import com.envived.android.R;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.EnvivedNotificationDispatcher;
 import com.envived.android.utils.EnvivedNotificationHandler;
@@ -50,14 +50,14 @@ public class OrderFeature extends Feature {
 	
 	public OrderFeature(String category, int version, Calendar timestamp, boolean isGeneral, 
 			String resourceUri, String environmentUri, String areaUri, String data, boolean virtualAccess) 
-					throws EnvSocialContentException {
+					throws EnvivedContentException {
 		
 		super(category, version, timestamp, isGeneral, resourceUri, environmentUri, areaUri, data, virtualAccess);
 	}
 
 	
 	@Override
-	protected void featureInit(boolean insert) throws EnvSocialContentException {
+	protected void featureInit(boolean insert) throws EnvivedContentException {
 		// register order notification handler
 		notificationHandler = new OrderFeatureNotificationHandler();
 		EnvivedNotificationDispatcher.registerNotificationHandler(notificationHandler);
@@ -76,7 +76,7 @@ public class OrderFeature extends Feature {
 	}
 
 	@Override
-	protected void featureUpdate() throws EnvSocialContentException {
+	protected void featureUpdate() throws EnvivedContentException {
 		String databaseName = getLocalCacheFileName(category, 
 				environmentUrl, areaUrl, version);
 

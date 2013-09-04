@@ -29,8 +29,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment.OrderNoticeAlertDialogListener;
 import com.envived.android.utils.FeatureLRUTracker;
@@ -697,9 +697,9 @@ public class HomeActivity extends SherlockFragmentActivity
 				//			need to figure out a way to re-establish consistency 
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 				} catch (Exception e) {
 					Log.d(TAG, e.toString(), e);
@@ -788,9 +788,9 @@ public class HomeActivity extends SherlockFragmentActivity
 				
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 				} catch (Exception e) {
 					Log.d(TAG, e.toString(), e);

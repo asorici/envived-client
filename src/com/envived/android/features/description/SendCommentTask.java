@@ -14,8 +14,8 @@ import com.envived.android.R;
 import com.envived.android.R.string;
 import com.envived.android.R.style;
 import com.envived.android.api.Annotation;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.ResponseHolder;
 
 public class SendCommentTask extends AsyncTask<Void, Void, ResponseHolder> {
@@ -86,10 +86,10 @@ public class SendCommentTask extends AsyncTask<Void, Void, ResponseHolder> {
 
 			try {
 				throw holder.getError();
-			} catch (EnvSocialComException e) {
+			} catch (EnvivedComException e) {
 				Log.d(TAG, e.getMessage(), e);
 				msgId = R.string.msg_service_unavailable;
-			} catch (EnvSocialContentException e) {
+			} catch (EnvivedContentException e) {
 				Log.d(TAG, e.getMessage(), e);
 				msgId = R.string.msg_service_error;
 			} catch (Exception e) {

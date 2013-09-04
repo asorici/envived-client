@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.envived.android.api.ActionHandler;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.program.PresentationDetailsActivity;
 import com.envived.android.utils.ResponseHolder;
 
@@ -157,10 +157,10 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
 				
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_unavailable;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_bad_register_response;
 				} catch (Exception e) {

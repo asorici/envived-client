@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.envived.android.api.ActionHandler;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.ResponseHolder;
 
 public class LoginActivity extends SherlockFragmentActivity implements OnClickListener {
@@ -125,10 +125,10 @@ public class LoginActivity extends SherlockFragmentActivity implements OnClickLi
 
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_unavailable;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_bad_login_response;
 				} catch (Exception e) {

@@ -24,7 +24,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.Envived;
 import com.envived.android.HomeActivity;
 import com.envived.android.R;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.Utils;
 import com.envived.android.utils.imagemanager.ImageCache;
 import com.envived.android.utils.imagemanager.ImageFetcher;
@@ -62,7 +63,9 @@ public class SpeakerDetailsActivity extends SherlockFragmentActivity {
 		// initialize feature
 		try {
 			mProgramFeature.init();
-		} catch (EnvSocialContentException e) {
+		} catch (EnvivedContentException e) {
+			Log.d(TAG, "Error initializing program feature.", e);
+		} catch (EnvivedConnectivityException e) {
 			Log.d(TAG, "Error initializing program feature.", e);
 		}
 		

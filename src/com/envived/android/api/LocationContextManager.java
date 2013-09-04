@@ -7,8 +7,8 @@ import org.apache.http.HttpResponse;
 
 import android.content.Context;
 
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialComException.HttpMethod;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedComException.HttpMethod;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 
@@ -64,7 +64,7 @@ public class LocationContextManager implements Serializable {
 		try {
 			response = client.makeGetRequest(requestUri);
 		} catch (IOException e) {
-			return new ResponseHolder(new EnvSocialComException(userUri, HttpMethod.GET, 
+			return new ResponseHolder(new EnvivedComException(userUri, HttpMethod.GET, 
 					EnvSocialResource.ENVIRONMENTCONTEXT, e));
 		}
 		

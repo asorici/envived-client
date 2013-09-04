@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.envived.android.R;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.EnvivedFeatureActivity;
 import com.envived.android.features.Feature;
 import com.envived.android.features.socialmedia.SocialMediaFeature.SocialMediaLink;
@@ -117,7 +117,7 @@ public class SocialMediaActivity extends EnvivedFeatureActivity {
 	}
 	
 	@Override
-	protected Feature getLocationFeature(Location location) throws EnvSocialContentException {
+	protected Feature getLocationFeature(Location location) throws EnvivedContentException {
 		return location.getFeature(Feature.SOCIAL_MEDIA);
 	}
 

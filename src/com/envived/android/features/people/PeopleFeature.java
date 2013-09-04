@@ -5,7 +5,7 @@ import java.util.Calendar;
 import android.content.Context;
 
 import com.envived.android.R;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.FeatureDbHelper;
 
@@ -36,11 +36,11 @@ public class PeopleFeature extends Feature {
 
 
 	@Override
-	protected void featureInit(boolean insert) throws EnvSocialContentException {}
+	protected void featureInit(boolean insert) throws EnvivedContentException {}
 
 
 	@Override
-	protected void featureUpdate() throws EnvSocialContentException {}
+	protected void featureUpdate() throws EnvivedContentException {}
 
 
 	@Override

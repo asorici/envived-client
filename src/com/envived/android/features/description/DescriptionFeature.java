@@ -10,7 +10,7 @@ import android.content.Context;
 import com.envived.android.Envived;
 import com.envived.android.R;
 import com.envived.android.api.EnvSocialResource;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.FeatureDbHelper;
 import com.envived.android.utils.Preferences;
@@ -70,7 +70,7 @@ public class DescriptionFeature extends Feature {
 	}
 
 	@Override
-	protected void featureInit(boolean insert) throws EnvSocialContentException {
+	protected void featureInit(boolean insert) throws EnvivedContentException {
 		String serializedData = retrievedData;
 		try {
 			String localCacheFileName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
@@ -89,12 +89,12 @@ public class DescriptionFeature extends Feature {
 			mLogoImageUri = descriptionData.optString(IMG_URL, null);
 		} 
 		catch (JSONException e) {
-			throw new EnvSocialContentException(serializedData, EnvSocialResource.FEATURE, e);
+			throw new EnvivedContentException(serializedData, EnvSocialResource.FEATURE, e);
 		}
 	}
 
 	@Override
-	protected void featureUpdate() throws EnvSocialContentException {
+	protected void featureUpdate() throws EnvivedContentException {
 		try {
 			if (retrievedData != null) {
 				JSONObject descriptionData = new JSONObject(retrievedData);
@@ -103,7 +103,7 @@ public class DescriptionFeature extends Feature {
 				mLogoImageUri = descriptionData.optString(IMG_URL, null);
 			}
 		} catch (JSONException e) {
-			throw new EnvSocialContentException(retrievedData, EnvSocialResource.FEATURE, e);
+			throw new EnvivedContentException(retrievedData, EnvSocialResource.FEATURE, e);
 		}
 	}
 

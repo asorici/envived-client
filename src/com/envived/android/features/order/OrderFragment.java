@@ -44,7 +44,8 @@ import com.envived.android.R;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -142,7 +143,9 @@ public class OrderFragment extends SherlockFragment implements OnClickListener, 
 		if (!mOrderFeature.isInitialized()) {
 			try {
 				mOrderFeature.init();
-			} catch (EnvSocialContentException e) {
+			} catch (EnvivedContentException e) {
+				Log.d(TAG, "[ERROR] >> Could not initialize order feature. ", e);
+			} catch (EnvivedConnectivityException e) {
 				Log.d(TAG, "[ERROR] >> Could not initialize order feature. ", e);
 			}
 		}

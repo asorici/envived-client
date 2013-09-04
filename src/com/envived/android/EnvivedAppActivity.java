@@ -21,8 +21,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.envived.android.api.ActionHandler;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.widget.Tour;
@@ -217,9 +217,9 @@ public class EnvivedAppActivity extends Activity implements OnClickListener {
 				
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 				} catch (Exception e) {
 					Log.d(TAG, e.toString(), e);
@@ -274,9 +274,9 @@ public class EnvivedAppActivity extends Activity implements OnClickListener {
 				
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 				} catch (Exception e) {
 					Log.d(TAG, e.toString(), e);

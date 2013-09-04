@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 
 public abstract class FeatureDbHelper extends SQLiteOpenHelper implements Serializable {
@@ -87,10 +87,10 @@ public abstract class FeatureDbHelper extends SQLiteOpenHelper implements Serial
 	 * Default method does nothing.
 	 * 
 	 * @param insert flag specifying if new data is to be inserted in this feature's database tables
-	 * @throws {@link EnvSocialContentException} if the parsing of the serialized data
+	 * @throws {@link EnvivedContentException} if the parsing of the serialized data
 	 * from the feature is unsuccessful.
 	 */
-	public void init(boolean insert) throws EnvSocialContentException {
+	public void init(boolean insert) throws EnvivedContentException {
 		
 	}
 	
@@ -100,10 +100,10 @@ public abstract class FeatureDbHelper extends SQLiteOpenHelper implements Serial
 	 * <br/>
 	 * Default method does nothing.
 	 * 
-	 * @throws {@link EnvSocialContentException} if the parsing of the serialized data
+	 * @throws {@link EnvivedContentException} if the parsing of the serialized data
 	 * from the feature is unsuccessful.
 	 */
-	public void update() throws EnvSocialContentException {
+	public void update() throws EnvivedContentException {
 		
 	}
 	

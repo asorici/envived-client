@@ -18,7 +18,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.envived.android.R;
 import com.envived.android.api.EnvSocialResource;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.EnvivedFeatureActivity;
 import com.envived.android.features.Feature;
 
@@ -225,14 +225,14 @@ public class ProgramActivity extends EnvivedFeatureActivity implements ProgramUp
 
 
 	@Override
-	protected Feature getLocationFeature(Location location) throws EnvSocialContentException {
+	protected Feature getLocationFeature(Location location) throws EnvivedContentException {
 		// return the Program location associated to the specified location or throw an Exception
 		// if no such feature exists
 		Feature programFeature = location.getFeature(Feature.PROGRAM);
 		if (programFeature == null) {
 			EnvSocialResource locationResource = 
 					location.isEnvironment() ? EnvSocialResource.ENVIRONMENT : EnvSocialResource.AREA;
-			throw new EnvSocialContentException(location.serialize(), locationResource, null);
+			throw new EnvivedContentException(location.serialize(), locationResource, null);
 		}
 		
 		return programFeature;

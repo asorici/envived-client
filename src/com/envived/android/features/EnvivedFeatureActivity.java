@@ -26,7 +26,8 @@ import com.envived.android.EnvivedFeatureDataRetrievalService;
 import com.envived.android.HomeActivity;
 import com.envived.android.R;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedConnectivityException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 
 public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 	private static final String TAG = "EnvivedFeatureActivity";
@@ -66,7 +67,7 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
         
         try {
 			mFeature = getLocationFeature(mLocation);
-		} catch (EnvSocialContentException e) {
+		} catch (EnvivedContentException e) {
 			Log.d(TAG, "Error retrieving feature from location: " + mLocation.getName(), e.getCause());
 			Toast toast = Toast.makeText(this, "Error starting feature activity.", Toast.LENGTH_LONG);
 			toast.show();
@@ -181,7 +182,7 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 	}
 	
 	
-	protected abstract Feature getLocationFeature(Location location) throws EnvSocialContentException;
+	protected abstract Feature getLocationFeature(Location location) throws EnvivedContentException;
 	
 	protected abstract void onFeatureDataInitialized(Feature newFeature, boolean success);
 
@@ -308,7 +309,10 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 				try {
 					mNewFeature.init();
 					return true;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
+					Log.d(TAG, "ERROR initializing feature " + mNewFeature.getCategory(), e);
+					return false;
+				} catch (EnvivedConnectivityException e) {
 					Log.d(TAG, "ERROR initializing feature " + mNewFeature.getCategory(), e);
 					return false;
 				}
@@ -317,7 +321,7 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 				try {
 					mNewFeature.doUpdate();
 					return true;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, "ERROR initializing feature " + mNewFeature.getCategory(), e);
 					return false;
 				}
@@ -327,26 +331,23 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 		
 		@Override
 		protected void onPostExecute(Boolean success) {
-			if (mNewFeature.hasData()) {
-				// stop the feature loading dialog
-				if (mFeatureLoadingDialog != null) {
-					mFeatureLoadingDialog.cancel();
-					mFeatureLoadingDialog = null;
-				}
-				
-				// on successful initialization / update set newly initialized feature as current one
-				if (success) {
-					mFeature = mNewFeature;
-					//mLocation.setFeature(mFeature.getCategory(), mFeature);
-				}
-				
-				// do the post init / update logic in the activities inheriting from EnvivedFeatureActivity 
-				if (!mUpdate) {
-					onFeatureDataInitialized(mFeature, success);
-				}
-				else {
-					onFeatureDataUpdated(mFeature, success);
-				}
+			// stop the feature loading dialog
+			if (mFeatureLoadingDialog != null) {
+				mFeatureLoadingDialog.cancel();
+				mFeatureLoadingDialog = null;
+			}
+			
+			if (success && mNewFeature.hasData()) {
+				mFeature = mNewFeature;
+			}
+			
+			// do the post init / update logic in the activities inheriting from
+			// EnvivedFeatureActivity
+			if (!mUpdate) {
+				onFeatureDataInitialized(mFeature, success);
+			} 
+			else {
+				onFeatureDataUpdated(mFeature, success);
 			}
 		}
 	}

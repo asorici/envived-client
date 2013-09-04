@@ -27,8 +27,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.features.description.BoothDescriptionActivity;
 import com.envived.android.features.description.DescriptionActivity;
@@ -398,10 +398,10 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				
 				try {
 					throw holder.getError();
-				} catch (EnvSocialComException e) {
+				} catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_unavailable;
-				} catch (EnvSocialContentException e) {
+				} catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_bad_checkin_response;
 				} catch (Exception e) {

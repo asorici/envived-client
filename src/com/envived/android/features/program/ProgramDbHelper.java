@@ -18,7 +18,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.envived.android.api.EnvSocialResource;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.utils.FeatureDbHelper;
 
 public class ProgramDbHelper extends FeatureDbHelper {
@@ -74,7 +74,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 	
 	
 	
-	public ProgramDbHelper(Context context, String databaseName, ProgramFeature feature, int version) throws EnvSocialContentException {
+	public ProgramDbHelper(Context context, String databaseName, ProgramFeature feature, int version) throws EnvivedContentException {
 		super(context, databaseName, feature, version);
 		//database = this.getWritableDatabase();
 	}
@@ -188,7 +188,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 	}
 	
 	@Override
-	public void init (boolean insert) throws EnvSocialContentException {
+	public void init (boolean insert) throws EnvivedContentException {
 		// do initial program insertion here if new data available
 		if (insert) {
 			insertProgram();
@@ -196,7 +196,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 	}
 	
 	@Override
-	public void update () throws EnvSocialContentException {
+	public void update () throws EnvivedContentException {
 		// since the update message does not yet specify individual entries do delete and insert
 		// the update procedure is a simple DELETE TABLES followed by a new insertion of the program
 		cleanupTables();
@@ -216,7 +216,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 		database.delete(SPEAKER_FTS_TABLE, null, null);
 	}
 	
-	private void insertProgram() throws EnvSocialContentException {
+	private void insertProgram() throws EnvivedContentException {
 		// perform initial insertion of the program if and only if the database is created
 		//Log.d(TAG, "Inserting program");
 		
@@ -236,7 +236,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 			insertPresentationSpeakers(presentationSpeakersArray);
 		} catch (JSONException ex) {
 			cleanupTables();
-			throw new EnvSocialContentException(programJSON, EnvSocialResource.FEATURE, ex);
+			throw new EnvivedContentException(programJSON, EnvSocialResource.FEATURE, ex);
 		}
 		
 		dbStatus = DB_POPULATED;

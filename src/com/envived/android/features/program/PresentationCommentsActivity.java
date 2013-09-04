@@ -37,8 +37,8 @@ import com.envived.android.LoginActivity;
 import com.envived.android.R;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
-import com.envived.android.api.exceptions.EnvSocialComException;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedComException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.EnvivedCommentAlertDialog;
 import com.envived.android.utils.Preferences;
@@ -509,11 +509,11 @@ public class PresentationCommentsActivity extends SherlockFragmentActivity imple
 				try {
 					throw holder.getError();
 				} 
-				catch (EnvSocialComException e) {
+				catch (EnvivedComException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_unavailable;
 				} 
-				catch (EnvSocialContentException e) {
+				catch (EnvivedContentException e) {
 					Log.d(TAG, e.getMessage(), e);
 					msgId = R.string.msg_service_error;
 				} 

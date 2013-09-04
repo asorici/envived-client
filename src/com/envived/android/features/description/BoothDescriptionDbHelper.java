@@ -14,7 +14,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.envived.android.api.EnvSocialResource;
-import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.exceptions.EnvivedContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.FeatureDbHelper;
 
@@ -123,7 +123,7 @@ public class BoothDescriptionDbHelper extends FeatureDbHelper {
 	
 	
 	@Override
-	public void init(boolean insert) throws EnvSocialContentException {
+	public void init(boolean insert) throws EnvivedContentException {
 		// do initial description insertion here if new data available
 		if (insert) {
 			insertDescriptionData();
@@ -131,7 +131,7 @@ public class BoothDescriptionDbHelper extends FeatureDbHelper {
 	}
 	
 	@Override
-	public void update() throws EnvSocialContentException {
+	public void update() throws EnvivedContentException {
 		// since the update message does not yet specify individual entries do delete and insert
 		// the update procedure is a simple DELETE TABLES followed by a new insertion of the program
 		cleanupTables();
@@ -150,7 +150,7 @@ public class BoothDescriptionDbHelper extends FeatureDbHelper {
 	}
 	
 	
-	private void insertDescriptionData() throws EnvSocialContentException {
+	private void insertDescriptionData() throws EnvivedContentException {
 		// perform initial insertion of the program if and only if the database is created
 		//Log.d(TAG, "Inserting booth description");
 			
@@ -261,7 +261,7 @@ public class BoothDescriptionDbHelper extends FeatureDbHelper {
 			
 		} catch (JSONException ex) {
 			cleanupTables();
-			throw new EnvSocialContentException(descriptionJSON, EnvSocialResource.FEATURE, ex);
+			throw new EnvivedContentException(descriptionJSON, EnvSocialResource.FEATURE, ex);
 		}
 		
 		dbStatus = DB_POPULATED;
