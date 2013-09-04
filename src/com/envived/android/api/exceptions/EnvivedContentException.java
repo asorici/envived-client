@@ -2,13 +2,13 @@ package com.envived.android.api.exceptions;
 
 import com.envived.android.api.EnvSocialResource;
 
-public class EnvSocialContentException extends EnvSocialException {
+public class EnvivedContentException extends EnvivedException {
 	private static final long serialVersionUID = 1L;
 	
 	protected String mContent;
 	protected EnvSocialResource mResource;
 	
-	public EnvSocialContentException(String jsonContent, EnvSocialResource resource, Throwable cause) {
+	public EnvivedContentException(String jsonContent, EnvSocialResource resource, Throwable cause) {
 		super(cause);
 		
 		mContent = jsonContent;

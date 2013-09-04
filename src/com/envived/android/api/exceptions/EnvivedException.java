@@ -1,9 +1,9 @@
 package com.envived.android.api.exceptions;
 
-public abstract class EnvSocialException extends Exception {
+public abstract class EnvivedException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	protected EnvSocialException(Throwable cause) {
+	protected EnvivedException(Throwable cause) {
 		if (cause != null) {
 			initCause(cause);
 		}

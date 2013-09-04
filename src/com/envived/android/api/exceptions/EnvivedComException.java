@@ -5,7 +5,7 @@ import org.apache.http.HttpStatus;
 import com.envived.android.api.EnvSocialResource;
 
 
-public class EnvSocialComException extends EnvSocialException {
+public class EnvivedComException extends EnvivedException {
 	private static final long serialVersionUID = -7015287749039137733L;
 
 	public static enum HttpMethod {GET, POST, PUT, DELETE}; 
@@ -17,7 +17,7 @@ public class EnvSocialComException extends EnvSocialException {
 	protected String prologErrorMessage = "Error";
 	protected String responseContent;
 	
-	public EnvSocialComException(String userUri, HttpMethod method, EnvSocialResource resource, Throwable cause) {
+	public EnvivedComException(String userUri, HttpMethod method, EnvSocialResource resource, Throwable cause) {
 		super(cause);
 		
 		this.communicationMethod = method;
@@ -54,7 +54,7 @@ public class EnvSocialComException extends EnvSocialException {
 	 * @param userUri
 	 * @return The EnvSocialComException corresponding to the encountered status code
 	 */
-	public static EnvSocialComException newInstanceFrom(int statusCode, 
+	public static EnvivedComException newInstanceFrom(int statusCode, 
 			String userUri, 
 			HttpMethod commMethod, 
 			EnvSocialResource commResource,
@@ -62,13 +62,13 @@ public class EnvSocialComException extends EnvSocialException {
 		
 		switch(statusCode) {
 			case HttpStatus.SC_BAD_REQUEST:
-				return new EnvSocialCom400(userUri, commMethod, commResource, cause);
+				return new EnvivedCom400(userUri, commMethod, commResource, cause);
 			case HttpStatus.SC_UNAUTHORIZED:
-				return new EnvSocialCom401(userUri, commMethod, commResource, cause);
+				return new EnvivedCom401(userUri, commMethod, commResource, cause);
 			case HttpStatus.SC_METHOD_NOT_ALLOWED:
-				return new EnvSocialCom405(userUri, commMethod, commResource, cause);
+				return new EnvivedCom405(userUri, commMethod, commResource, cause);
 			default:
-				return new EnvSocialComException(userUri, commMethod, commResource, cause);
+				return new EnvivedComException(userUri, commMethod, commResource, cause);
 		}
 	}
 }
