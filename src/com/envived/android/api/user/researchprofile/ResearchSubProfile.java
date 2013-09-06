@@ -1,10 +1,11 @@
-package com.envived.android.api.user;
+package com.envived.android.api.user.researchprofile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.envived.android.api.user.UserProfileConfig.UserSubProfileType;
+import com.envived.android.api.user.UserSubProfile;
 
 public class ResearchSubProfile extends UserSubProfile {
 	private String affiliation;
