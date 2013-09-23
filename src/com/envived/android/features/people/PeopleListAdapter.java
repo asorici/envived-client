@@ -2,7 +2,6 @@ package com.envived.android.features.people;
 
 import java.util.List;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.envived.android.R;
-import com.envived.android.api.user.ResearchSubProfile;
+import com.envived.android.api.user.researchprofile.ResearchSubProfile;
+import com.envived.android.api.user.exhibitionprofile.ExhibitionSubProfile;
+import com.envived.android.api.user.leisureprofile.LeisureSubProfile;
 import com.envived.android.api.user.User;
 import com.envived.android.api.user.UserProfileConfig.UserSubProfileType;
 
