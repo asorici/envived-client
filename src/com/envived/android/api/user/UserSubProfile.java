@@ -7,7 +7,7 @@ import com.envived.android.api.user.UserProfileConfig.UserSubProfileType;
 
 public abstract class UserSubProfile {
 	protected UserSubProfileType profileType;
-	protected boolean populated = false;
+	//protected boolean populated = false;
 	
 	public UserSubProfile(UserSubProfileType type) {
 		profileType = type;
@@ -17,13 +17,13 @@ public abstract class UserSubProfile {
 		return profileType;
 	}
 	
-	protected boolean isPopulated() {
+	/*protected boolean isPopulated() {
 		return populated;
 	}
 
 	protected void setPopulated(boolean populated) {
 		this.populated = populated;
-	}
+	}*/
 	
 	protected abstract UserSubProfile parseProfileData(JSONObject user);
 	protected abstract JSONObject toJSON() throws JSONException;

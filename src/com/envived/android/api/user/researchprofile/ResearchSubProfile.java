@@ -21,18 +21,17 @@ public class ResearchSubProfile extends UserSubProfile {
 		super(type);
 		this.affiliation = affiliation;
 		this.researchInterests = researchInterests;
-		
-		setPopulated(true);
+		//setPopulated(true);
 	}
 	
 	@Override
-	protected UserSubProfile parseProfileData(JSONObject subProfiles) {
+	protected UserSubProfile parseProfileData(JSONObject user) {
 		String affiliation = "n.a.";
 		String[] researchInterests = {"n.a."};
 		
 		//System.err.println("[DEBUG]>> user profile JSONObject: " + user.toString());
 		
-		JSONObject research_profile = (JSONObject)subProfiles.opt(UserSubProfileType.researchprofile.name());
+		JSONObject research_profile = (JSONObject)user.opt(UserSubProfileType.researchprofile.name());
 		
 		if (research_profile != null) {
 			affiliation = research_profile.optString("affiliation", "n.a.");
@@ -66,7 +65,7 @@ public class ResearchSubProfile extends UserSubProfile {
 		
 		//System.err.println("[DEBUG]>> checked in people research_interests: " + research_interests);
 		
-		// build reseatrch_profile hash
+		// build research_profile hash
 		
 		research_profile.put("affiliation", affiliation);
 		research_profile.put("research_interests", research_interests);
