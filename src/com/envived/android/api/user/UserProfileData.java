@@ -19,7 +19,7 @@ public class UserProfileData {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		if (type == UserSubProfileType.baseprofile)
+		if (type == UserSubProfileType.base)
 			this.subProfile = null;
 		else
 			initSubProfile(type);
@@ -27,11 +27,11 @@ public class UserProfileData {
 	}
 	
 	private void initSubProfile(UserSubProfileType type) {
-		if (type.equals(UserSubProfileType.researchprofile))
+		if (type.equals(UserSubProfileType.research))
 			subProfile = new ResearchSubProfile(type);
-		if (type.equals(UserSubProfileType.leisureprofile))
+		if (type.equals(UserSubProfileType.leisure))
 			subProfile = new LeisureSubProfile(type);
-		if (type.equals(UserSubProfileType.exhibitionprofile))
+		if (type.equals(UserSubProfileType.exhibition))
 			subProfile = new ExhibitionSubProfile(type);
 	}
 	
@@ -84,13 +84,13 @@ public class UserProfileData {
 		if (email.isEmpty())  
 			email = "n.a.";
 		if (type.equalsIgnoreCase("leisure"))
-			subType = UserSubProfileType.leisureprofile;
+			subType = UserSubProfileType.leisure;
 		else if (type.equalsIgnoreCase("research"))
-			subType = UserSubProfileType.researchprofile;
+			subType = UserSubProfileType.research;
 		else if (type.equalsIgnoreCase("exhibition"))
-			subType = UserSubProfileType.exhibitionprofile;
+			subType = UserSubProfileType.exhibition;
 		else
-			subType = UserSubProfileType.baseprofile;
+			subType = UserSubProfileType.base;
 		 
 		UserProfileData profileData = new UserProfileData(firstName, lastName, email, subType);
 		

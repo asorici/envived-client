@@ -35,7 +35,7 @@ public class ExhibitionSubProfile extends UserSubProfile {
 		
 		//System.err.println("[DEBUG]>> user profile JSONObject: " + user.toString());
 		
-		JSONObject exhibition_profile = (JSONObject)user.opt(UserSubProfileType.exhibitionprofile.name());
+		JSONObject exhibition_profile = (JSONObject)user.opt(UserSubProfileType.exhibition.name());
 		
 		if (exhibition_profile != null) {
 			organization = exhibition_profile.optString("organization", "n.a.");
@@ -51,7 +51,7 @@ public class ExhibitionSubProfile extends UserSubProfile {
 				}
 			}
 			
-			return new ExhibitionSubProfile(UserSubProfileType.exhibitionprofile, organization, role, exhibitionInterests);
+			return new ExhibitionSubProfile(UserSubProfileType.exhibition, organization, role, exhibitionInterests);
 		}
 		
 		return null;

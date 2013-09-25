@@ -27,7 +27,7 @@ public class LeisureSubProfile extends UserSubProfile {
 		
 		//System.err.println("[DEBUG]>> user profile JSONObject: " + user.toString());
 		
-		JSONObject leisure_profile = (JSONObject)user.opt(UserSubProfileType.leisureprofile.name());
+		JSONObject leisure_profile = (JSONObject)user.opt(UserSubProfileType.leisure.name());
 		
 		if (leisure_profile != null) {
 			
@@ -41,7 +41,7 @@ public class LeisureSubProfile extends UserSubProfile {
 				}
 			}
 			
-			return new LeisureSubProfile(UserSubProfileType.leisureprofile, leisureInterests);
+			return new LeisureSubProfile(UserSubProfileType.leisure, leisureInterests);
 		}
 		
 		return null;
