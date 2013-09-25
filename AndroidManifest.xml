@@ -156,6 +156,11 @@
             android:name="com.envived.android.api.user.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
+        <activity
+            android:name="com.envived.android.api.user.UserProfileSettings"
+            android:label="@string/title_activity_user_profile_settings" 
+            android:theme="@android:style/Theme.Black" >
+        </activity>
     </application>
 
 </manifest>

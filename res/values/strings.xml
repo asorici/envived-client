@@ -9,6 +9,15 @@
     <string name="title_envived_notifications_preference">Notification preference</string>
     <string name="summary_on_envived_notifications_toggle_preference">Notifications enabled.</string>
     <string name="summary_off_envived_notifications_toggle_preference">Notifications disabled</string>
+    
+    <string name="user_availability_preference">Availability</string>
+    <string name="pref_user_availability">Set Availability</string>
+    <string name="pref_user_availability_summary">Set your availability to others</string>
+    
+    <string name="display_email_preference">Email</string>
+    <string name="pref_display_email">Display Email</string>
+    <string name="pref_display_email_summary">Allow others to see your email</string>
+    
 
     <!-- Search labels -->
     <!-- The label for use as a searchable item -->
@@ -62,6 +71,14 @@
     <string name="btn_c2dm_unreg">Unregister GCM</string>
 
     <!-- Labels -->
+    <string name="lbl_subprofile_research">Research Profile</string>
+    <string name="lbl_subprofile_leisure">Leisure Profile</string>
+    <string name="lbl_subprofile_exhibition">Exhibition Profile</string>
+    <string name="lbl_affiliation">Affiliation</string>
+    <string name="lbl_organization">Organization</string>
+    <string name="lbl_role">Role</string>
+    <string name="lbl_interests">Interests</string>
+    <string name="lbl_interest">Android</string>
     <string name="lbl_notification">Notification</string>
     <string name="lbl_attention">Attention</string>
     <string name="lbl_warning">Warning</string>
@@ -77,9 +94,6 @@
     <string name="lbl_password">Password</string>
     <string name="lbl_first">First Name</string>
     <string name="lbl_last">Last Name</string>
-    <string name="lbl_affiliation">Affiliation</string>
-    <string name="lbl_interests">Interests</string>
-    <string name="lbl_interest">Android</string>
     <string name="lbl_group">Group</string>
     <string name="lbl_item">Item</string>
     <string name="lbl_no_orders">No orders.</string>
@@ -196,5 +210,6 @@
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_user_profile_settings">UserProfileSettings</string>
 
 </resources>

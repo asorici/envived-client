@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/user_availability_preference" >
+        <ListPreference
+            android:entries="@array/userAvailability"
+            android:entryValues="@array/userAvailabilityValues"
+            android:key="prefAvailability"
+            android:summary="@string/pref_user_availability_summary"
+            android:title="@string/pref_user_availability"
+            android:defaultValue="0"/>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/display_email_preference" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefDisplayEmail"
+            android:summary="@string/pref_display_email_summary"
+            android:title="@string/pref_display_email" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+</PreferenceScreen>
