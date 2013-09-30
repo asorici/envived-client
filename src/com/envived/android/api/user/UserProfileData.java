@@ -54,9 +54,9 @@ public class UserProfileData {
 	public static UserProfileData parseProfileData(JSONObject user) throws JSONException {
 		String firstName = user.optString("first_name", "Anonymous");
 		String lastName = user.optString("last_name", "Guest");
-		if (firstName.isEmpty())
+		if (firstName.length() == 0)
 			firstName = "Anonymous";
-		if (lastName.isEmpty())  
+		if (lastName.length() == 0)  
 			lastName = "Guest";
 		
 		UserProfileData profileData = new UserProfileData(firstName, lastName);
