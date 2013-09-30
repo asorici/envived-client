@@ -42,7 +42,7 @@ public class RegisterActivity extends SherlockActivity implements
 	private EditText mTxtLast;
 	// private EditText mTxtAffiliation;
 	// private EditText mTxtInterests;
-	private MultiAutoCompleteTextView mAutocompleteSuggestTags;
+	private MultiAutoCompleteTextView mAutocmpltInterests;
 	private Button mBtnSubmit;
 
 	private ProgressDialog mLoadingDialog;
@@ -65,13 +65,13 @@ public class RegisterActivity extends SherlockActivity implements
 		/*
 		 * SUGGESTIONS
 		 */
-		mAutocompleteSuggestTags = (MultiAutoCompleteTextView) this.findViewById(R.id.txt_interests);
+		mAutocmpltInterests = (MultiAutoCompleteTextView) this.findViewById(R.id.txt_interests);
 		ArrayAdapter<String> arrayTokens = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				Utils.suggestedWords);
-		mAutocompleteSuggestTags.setAdapter(arrayTokens);
-		mAutocompleteSuggestTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-		Log.d(TAG, "CHOOSE INTERESTS REGISTER: " + mAutocompleteSuggestTags.getText().toString());
+		mAutocmpltInterests.setAdapter(arrayTokens);
+		mAutocmpltInterests.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+		Log.d(TAG, "CHOOSE INTERESTS REGISTER: " + mAutocmpltInterests.getText().toString());
 
 		mBtnSubmit = (Button) findViewById(R.id.btn_submit);
 		mBtnSubmit.setOnClickListener(this);
@@ -89,9 +89,8 @@ public class RegisterActivity extends SherlockActivity implements
 		private String mPassword;
 		private String mFirst;
 		private String mLast;
-
 		// private String mAffiliation;
-		// private String mInterests;
+		private String mInterests;
 
 		@Override
 		protected void onPreExecute() {
@@ -102,7 +101,7 @@ public class RegisterActivity extends SherlockActivity implements
 			mFirst = mTxtFirst.getText().toString();
 			mLast = mTxtLast.getText().toString();
 			// mAffiliation = mTxtAffiliation.getText().toString();
-			// mInterests = mTxtInterests.getText().toString();
+			mInterests = mAutocmpltInterests.getText().toString();
 		}
 
 		@Override
@@ -115,7 +114,7 @@ public class RegisterActivity extends SherlockActivity implements
 						null);
 			} else {
 				return ActionHandler.register(RegisterActivity.this, mEmail,
-						mPassword, mFirst, mLast);
+						mPassword, mFirst, mLast, mInterests);
 			}
 		}
 

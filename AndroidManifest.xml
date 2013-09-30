@@ -4,135 +4,163 @@
     android:versionCode="5"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8"
-        		android:targetSdkVersion="17" />
-    
-    <permission android:name="com.envived.android.permission.C2D_MESSAGE" 
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <permission
+        android:name="com.envived.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <permission android:name="com.envived.android.permission.NOTIFICATION" 
+    <permission
+        android:name="com.envived.android.permission.NOTIFICATION"
         android:protectionLevel="signature" />
-    <permission android:name="com.envived.android.permission.FEATURE_RETRIEVE_DATA" 
+    <permission
+        android:name="com.envived.android.permission.FEATURE_RETRIEVE_DATA"
         android:protectionLevel="signature" />
-    
+
     <uses-permission android:name="com.envived.android.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.envived.android.permission.NOTIFICATION" />
     <uses-permission android:name="com.envived.android.permission.FEATURE_RETRIEVE_DATA" />
-    
+
     <!-- App receives GCM messages. -->
-	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-	
-	<!-- GCM connects to Google Services. -->
-	<uses-permission android:name="android.permission.INTERNET" /> 
-	
-	<!-- GCM requires a Google account. -->
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	
-	<!-- Keeps the processor from sleeping when a message is received. -->
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	
-	<!-- The caching mechanism adapted from Jake Wharton and the Google example uses these -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- GCM connects to Google Services. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- The caching mechanism adapted from Jake Wharton and the Google example uses these -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	
+
     <application
-    	android:name="com.envived.android.Envived"
+        android:name="com.envived.android.Envived"
         android:icon="@drawable/ic_envived_white"
-        android:theme="@style/Theme.Envived"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Envived" >
         <activity
             android:name="com.envived.android.EnvivedAppActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <!-- Searchable activities -->
-        <activity android:name=".HomeSearchableActivity" 
-        		  android:launchMode="singleTop" >
-	        <intent-filter>
-	            <action android:name="android.intent.action.SEARCH" />
-	        </intent-filter>
-	        <meta-data android:name="android.app.searchable"
-	                   android:resource="@xml/searchable_main"/>
-    	</activity>
-    	
-    	<activity android:name=".DetailsSearchableActivity"
-    			  android:launchMode="singleTop" >
-	        <intent-filter>
-	            <action android:name="android.intent.action.SEARCH" />
-	        </intent-filter>
-	        <meta-data android:name="android.app.searchable"
-	                   android:resource="@xml/searchable_feature"/>
-    	</activity>
-        
-    	<activity android:name=".EnvivedSettings" 
-    	    android:theme="@android:style/Theme.Black"/>
-    	
-        <activity android:name=".HomeActivity" >
-        	<meta-data android:name="android.app.default_searchable"
-                   	   android:value=".HomeSearchableActivity" />
+        <activity
+            android:name="com.envived.android.HomeSearchableActivity"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_main" />
         </activity>
-        
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true" />
-        <activity android:name=".RegisterActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true" />
-        <activity android:name=".DetailsActivity"
+        <activity
+            android:name="com.envived.android.DetailsSearchableActivity"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_feature" />
+        </activity>
+        <activity
+            android:name="com.envived.android.EnvivedSettings"
+            android:theme="@android:style/Theme.Black" />
+        <activity android:name="com.envived.android.HomeActivity" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".HomeSearchableActivity" />
+        </activity>
+        <activity
+            android:name="com.envived.android.LoginActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.envived.android.RegisterActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.envived.android.DetailsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
-        	<meta-data android:name="android.app.default_searchable"
-            		   android:value=".DetailsSearchableActivity" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".DetailsSearchableActivity" />
         </activity>
-        
-        <activity android:name=".BrowseLocationsActivity" />
-        <activity android:name=".features.socialmedia.SocialMediaActivity" />
-        <activity android:name=".features.socialmedia.SocialMediaLinkActivity" />
-        
-        <activity android:name=".features.description.DescriptionActivity" />
-        <activity android:name=".features.description.BoothDescriptionActivity" />
-        <activity android:name=".features.description.BoothDescriptionProductDetailsActivity" />
-        <activity android:name=".features.description.CommentsActivity" />
-        
-        <activity android:name=".features.program.ProgramActivity" />
-        <activity android:name=".features.program.PresentationDetailsActivity" />
-        <activity android:name=".features.program.PresentationCommentsActivity" />
-        <activity android:name=".features.program.SpeakerDetailsActivity" />
-        
+        <activity android:name="com.envived.android.BrowseLocationsActivity" />
+        <activity android:name="com.envived.android.features.socialmedia.SocialMediaActivity" />
+        <activity android:name="com.envived.android.features.socialmedia.SocialMediaLinkActivity" />
+        <activity android:name="com.envived.android.features.description.DescriptionActivity" />
+        <activity android:name="com.envived.android.features.description.BoothDescriptionActivity" />
+        <activity android:name="com.envived.android.features.description.BoothDescriptionProductDetailsActivity" />
+        <activity android:name="com.envived.android.features.description.CommentsActivity" />
+        <activity android:name="com.envived.android.features.program.ProgramActivity" />
+        <activity android:name="com.envived.android.features.program.PresentationDetailsActivity" />
+        <activity android:name="com.envived.android.features.program.PresentationCommentsActivity" />
+        <activity android:name="com.envived.android.features.program.SpeakerDetailsActivity" />
         <activity
-            android:name=".features.order.ResolvedOrderRequestDialogActivity"
+            android:name="com.envived.android.features.order.ResolvedOrderRequestDialogActivity"
             android:screenOrientation="portrait" />
-        
-        <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver"
+
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
-        
-        <service android:name=".GCMIntentService"
+
+        <service
+            android:name="com.envived.android.GCMIntentService"
             android:exported="false" />
-        
-        <service android:name=".EnvivedFeatureDataRetrievalService"
+        <service
+            android:name="com.envived.android.EnvivedFeatureDataRetrievalService"
             android:exported="false" />
-        
-        <receiver android:name=".utils.EnvivedNotificationDispatcher"
+
+        <receiver
+            android:name="com.envived.android.utils.EnvivedNotificationDispatcher"
             android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>
                 <action android:name="com.envived.android.intent.RECEIVE_NOTIFICATION" />
+
                 <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
-        
-        <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
-        
-        <activity android:name="com.facebook.LoginActivity" android:label="@string/app_name"></activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.envived.android.api.user.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+        </activity>
+        <activity
+            android:name="com.envived.android.api.user.UserProfileSettings"
+            android:label="@string/title_activity_user_profile_settings" 
+            android:theme="@android:style/Theme.Black" >
+        </activity>
     </application>
 
 </manifest>

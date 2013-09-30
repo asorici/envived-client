@@ -26,7 +26,6 @@ public class User {
 	private String mUri;
 	
 	public User(Location location, UserProfileData userdata) {
-		
 		mLocation = location;
 		mUserData = userdata;
 	}
@@ -35,7 +34,6 @@ public class User {
 		this(location, userdata);
 		mUri = uri;
 	}
-	
 	
 	public static List<User> getUsers(Context context, Location location, String showprofile, String jsonString) throws Exception {
 		if (jsonString == null) { 
@@ -149,8 +147,6 @@ public class User {
 			for (int i = 0; i < len; i++) {
 				User userdata = users.get(i);
 				
-				
-				
 				//System.err.println("[DEBUG]>> checked in people research_profile: " + research_profile);
 				
 				// build user object hash
@@ -160,7 +156,7 @@ public class User {
 				userJSON.put("last_name", userdata.getUserData().getLastName());
 				
 				// add subprofiles if existent
-				List<Map<String, JSONObject>> subProfiles = userdata.getUserData().subProfilesToJson();
+				/*List<Map<String, JSONObject>> subProfiles = userdata.getUserData().subProfilesToJson();
 				if (subProfiles != null && !subProfiles.isEmpty()) {
 					JSONObject subProfileJSON = new JSONObject();
 					
@@ -171,7 +167,7 @@ public class User {
 					}
 					
 					userJSON.put("subprofiles", subProfileJSON);
-				}
+				}*/
 				
 				userListJSON.put(userJSON);
 			}
