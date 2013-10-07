@@ -69,6 +69,8 @@
     <string name="btn_submit">Submit</string>
     <string name="btn_c2dm_reg">Register GCM</string>
     <string name="btn_c2dm_unreg">Unregister GCM</string>
+	<string name="btn_add">Add</string>    
+	<string name="btn_save">Save</string>
 
     <!-- Labels -->
     <string name="lbl_subprofile_research">Research Profile</string>
