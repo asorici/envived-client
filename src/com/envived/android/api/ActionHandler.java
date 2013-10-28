@@ -281,7 +281,7 @@ public class ActionHandler {
 	}
 
 	public static ResponseHolder register(Context context, String email, String password, 
-			String firstName, String lastName, String interests) {
+			String firstName, String lastName) {
 		
 		AppClient client = new AppClient(context);
 		
@@ -292,7 +292,6 @@ public class ActionHandler {
 		data.add(new BasicNameValuePair("password2", password));
 		data.add(new BasicNameValuePair("first_name", firstName));
 		data.add(new BasicNameValuePair("last_name", lastName));
-		data.add(new BasicNameValuePair("interests", interests));
 		Log.d(TAG, "register data " + data.toString());
 		
 		/*
