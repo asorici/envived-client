@@ -122,6 +122,8 @@
     <string name="tab_people">People</string>
 
     <!-- Message -->
+    <string name="msg_subprofile_saved">Subprofile saved.</string>
+    <string name="msg_bad_subprofile_response">Could not fetch saved subprofile.</string>
     <string name="no_network_connection_toast">No network connection.</string>
     <string name="msg_internal_error">Oops. Internal Error.</string>
     <string name="msg_malformed_checkin_url">The scanned QR Code is not an Envived QR code.</string>
