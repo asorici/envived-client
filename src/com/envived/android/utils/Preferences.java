@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,6 +27,87 @@ public final class Preferences {
 	private static final String PEOPLE_IN_LOCATION = "people_in_location";
 	private static final String FEATURE_LRU_TRACKER = "feature_lru_tracker";
 	private static final String LOCATION_HISTORY = "location_history";
+	private static final String AFFILIATION = "affiliation";
+	private static final String ORGANIZATION = "organization";
+	private static final String ROLE = "role";
+	private static final String RINTERESTS = "researchInterests";
+	private static final String LINTERESTS = "leisureInterests";
+	private static final String EINTERESTS = "exhibitionInterests";
+	
+	public static void saveResearchSubProfile(Context context, String affiliation, String interests) {
+	    setStringPreference(context, AFFILIATION, affiliation);
+	    setStringPreference(context, RINTERESTS, interests);
+	}
+	
+	public static JSONObject getResearchSubProfile(Context context) throws JSONException {
+        String affiliation = (getStringPreference(context, AFFILIATION) == null) ? "" : getStringPreference(context, AFFILIATION);
+        String interests = (getStringPreference(context, RINTERESTS) == null) ? "" : getStringPreference(context, RINTERESTS);
+        
+        JSONObject subProfile = new JSONObject();
+        subProfile.put(AFFILIATION, affiliation);
+        if (interests.endsWith(", "))
+            subProfile.put(RINTERESTS, interests.substring(0, interests.length() - 2));
+        else if (interests.endsWith(","))
+            subProfile.put(RINTERESTS, interests.substring(0, interests.length() - 1));
+        else
+            subProfile.put(RINTERESTS, interests);
+        
+        return subProfile;
+    }
+	
+	public static boolean isResearchSubProfile(Context context) throws JSONException {
+        return getResearchSubProfile(context) != null;
+    }
+	
+	public static void saveExhibitionSubProfile(Context context, String organization, String role, String interests) {
+        setStringPreference(context, ORGANIZATION, organization);
+        setStringPreference(context, ROLE, role);
+        setStringPreference(context, EINTERESTS, interests);
+    }
+    
+    public static JSONObject getExhibitionSubProfile(Context context) throws JSONException {
+        String organization = (getStringPreference(context, ORGANIZATION) == null) ? "" : getStringPreference(context, ORGANIZATION);
+        String role = (getStringPreference(context, ROLE) == null) ? "" : getStringPreference(context, ROLE);
+        String interests = (getStringPreference(context, EINTERESTS) == null) ? "" : getStringPreference(context, EINTERESTS);
+        
+        JSONObject subProfile = new JSONObject();
+        subProfile.put(ORGANIZATION, organization);
+        subProfile.put(ROLE, role);
+        if (interests.endsWith(", "))
+            subProfile.put(EINTERESTS, interests.substring(0, interests.length() - 2));
+        else if (interests.endsWith(","))
+            subProfile.put(EINTERESTS, interests.substring(0, interests.length() - 1));
+        else
+            subProfile.put(EINTERESTS, interests);
+        
+        return subProfile;
+    }
+    
+    public static boolean isExhibitionSubProfile(Context context) throws JSONException {
+        return getExhibitionSubProfile(context) != null;
+    }
+	
+	public static void saveLeisureSubProfile(Context context, String interests) {
+        setStringPreference(context, LINTERESTS, interests);
+    }
+    
+    public static JSONObject getLeisureSubProfile(Context context) throws JSONException {
+        String interests = (getStringPreference(context, LINTERESTS) == null) ? "" : getStringPreference(context, LINTERESTS);
+        
+        JSONObject subProfile = new JSONObject();
+        if (interests.endsWith(", "))
+            subProfile.put(LINTERESTS, interests.substring(0, interests.length() - 2));
+        else if (interests.endsWith(","))
+            subProfile.put(LINTERESTS, interests.substring(0, interests.length() - 1));
+        else
+            subProfile.put(LINTERESTS, interests);
+        
+        return subProfile;
+    }
+    
+    public static boolean isLeisureSubProfile(Context context) throws JSONException {
+        return getLeisureSubProfile(context) != null;
+    }
 	
 	public static void login(Context context, String email, String firstName, String lastName, String uri) {
 		setStringPreference(context, EMAIL, email);
