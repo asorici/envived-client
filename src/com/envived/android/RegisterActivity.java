@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.api.user.UserProfileActivity;
 import com.envived.android.features.program.PresentationDetailsActivity;
+import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.Utils;
 
@@ -40,11 +43,16 @@ public class RegisterActivity extends SherlockActivity implements
 	private EditText mTxtPassword;
 	private EditText mTxtFirst;
 	private EditText mTxtLast;
+	
+	private LinearLayout mResearch;
+	private LinearLayout mLeisure;
+	private LinearLayout mExhibition;
 	// private EditText mTxtAffiliation;
 	// private EditText mTxtInterests;
-	private MultiAutoCompleteTextView mAutocmpltInterests;
 	private Button mBtnSubmit;
+	private Button mBtnAdd;
 
+	
 	private ProgressDialog mLoadingDialog;
 
 	@Override
@@ -56,30 +64,58 @@ public class RegisterActivity extends SherlockActivity implements
 
 		mTxtEmail = (EditText) findViewById(R.id.txt_email);
 		mTxtPassword = (EditText) findViewById(R.id.txt_password);
-
 		mTxtFirst = (EditText) findViewById(R.id.txt_first);
 		mTxtLast = (EditText) findViewById(R.id.txt_last);
+		mResearch = (LinearLayout) findViewById(R.id.layout_subprofile_research);
+		mLeisure = (LinearLayout) findViewById(R.id.layout_subprofile_leisure);
+		mExhibition = (LinearLayout) findViewById(R.id.layout_subprofile_exhibition);
 		// mTxtAffiliation = (EditText) findViewById(R.id.txt_affiliation);
 		// mTxtInterests = (EditText) findViewById(R.id.txt_interests);
+        mBtnSubmit = (Button) findViewById(R.id.btn_submit);
+        mBtnAdd = (Button) findViewById(R.id.btn_add);
+		
+		// Verify existence of subprofiles
+        verifySubProfiles();
 
-		/*
-		 * SUGGESTIONS
-		 */
-		mAutocmpltInterests = (MultiAutoCompleteTextView) this.findViewById(R.id.txt_interests);
-		ArrayAdapter<String> arrayTokens = new ArrayAdapter<String>(this,
-				android.R.layout.simple_dropdown_item_1line,
-				Utils.suggestedWords);
-		mAutocmpltInterests.setAdapter(arrayTokens);
-		mAutocmpltInterests.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-		Log.d(TAG, "CHOOSE INTERESTS REGISTER: " + mAutocmpltInterests.getText().toString());
-
-		mBtnSubmit = (Button) findViewById(R.id.btn_submit);
+        mResearch.setOnClickListener(this);
+        mLeisure.setOnClickListener(this);
+        mExhibition.setOnClickListener(this);
+        
 		mBtnSubmit.setOnClickListener(this);
+		mBtnAdd.setOnClickListener(this);
+		
 	}
+	
+	private void verifySubProfiles() {
+        try {
+            if (Preferences.isResearchSubProfile(this)) {
+                mResearch.setVisibility(View.VISIBLE);
+            }
+            if (Preferences.isLeisureSubProfile(this)) {
+                mLeisure.setVisibility(View.VISIBLE);
+            }
+            if (Preferences.isExhibitionSubProfile(this)) {
+                mExhibition.setVisibility(View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            Log.d(TAG, "Exception in getting subprofile " + e.getMessage());
+        }
+    }
 
 	public void onClick(View v) {
 		if (v == mBtnSubmit) {
 			new LoginTask().execute();
+		} else if (v == mResearch) {
+		    startActivity(new Intent(this, UserProfileActivity.class));
+		} else if (v == mLeisure) {
+            startActivity(new Intent(this, UserProfileActivity.class));
+        } else if (v == mExhibition) {
+            startActivity(new Intent(this, UserProfileActivity.class));
+        } else if (v == mBtnAdd) {
+		    // 1. Save stuff completed by user (email / name / etc)
+		    // TODO
+		    // 2. Go to Profile Activity
+		    startActivity(new Intent(this, UserProfileActivity.class));
 		}
 	}
 
@@ -90,7 +126,6 @@ public class RegisterActivity extends SherlockActivity implements
 		private String mFirst;
 		private String mLast;
 		// private String mAffiliation;
-		private String mInterests;
 
 		@Override
 		protected void onPreExecute() {
@@ -101,7 +136,6 @@ public class RegisterActivity extends SherlockActivity implements
 			mFirst = mTxtFirst.getText().toString();
 			mLast = mTxtLast.getText().toString();
 			// mAffiliation = mTxtAffiliation.getText().toString();
-			mInterests = mAutocmpltInterests.getText().toString();
 		}
 
 		@Override
@@ -114,7 +148,7 @@ public class RegisterActivity extends SherlockActivity implements
 						null);
 			} else {
 				return ActionHandler.register(RegisterActivity.this, mEmail,
-						mPassword, mFirst, mLast, mInterests);
+						mPassword, mFirst, mLast);
 			}
 		}
 
