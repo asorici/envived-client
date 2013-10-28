@@ -1,5 +1,8 @@
 package com.envived.android.api.user.leisureprofile;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.R;
 import com.envived.android.api.user.UserProfileSettings;
+import com.envived.android.api.user.UserProfileConfig.UserSubProfileType;
+import com.envived.android.api.user.researchprofile.ResearchSubProfile;
+import com.envived.android.utils.Preferences;
 import com.envived.android.utils.Utils;
 
 public class LeisureSubProfileFragment extends SherlockFragment implements OnClickListener {
@@ -25,6 +32,8 @@ public class LeisureSubProfileFragment extends SherlockFragment implements OnCli
     
     private MultiAutoCompleteTextView mInterests;
     private Button mBtnSubmit;
+    
+    private LeisureSubProfile profile;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,17 +57,43 @@ public class LeisureSubProfileFragment extends SherlockFragment implements OnCli
         mInterests.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         Log.d(TAG, "CHOOSE INTERESTS REGISTER: " + mInterests.getText().toString());
         
+        // Verify existence of shared preferences
+        verifySharedPrefs();
+        
         mBtnSubmit.setOnClickListener(this);
         
         return view;
     }
 
-
     @Override
     public void onClick(View v) {
         if (v == mBtnSubmit) {
+            saveSubProfile();
             //new ProfileSaveTask().execute();
         }
     }
+    
+    private void verifySharedPrefs() {
+        try {
+            if (Preferences.isResearchSubProfile(getActivity())) {
+                mInterests.setText(getInterests());
+            }
+        } catch (JSONException e) {
+            Toast toast = Toast.makeText(getActivity(), R.string.msg_bad_subprofile_response, Toast.LENGTH_LONG);
+            toast.show();
+            Log.d(TAG, "Exception in getting subprofile " + e.getMessage());
+        }
+    }
 
+    private void saveSubProfile() {
+        Preferences.saveLeisureSubProfile(getActivity(), mInterests.getText().toString());
+        Toast toast = Toast.makeText(getActivity(), R.string.msg_subprofile_saved, Toast.LENGTH_LONG);
+        toast.show();
+    }
+    
+    private String getInterests() throws JSONException {
+        JSONObject jo = Preferences.getLeisureSubProfile(getActivity());
+        return jo.get("leisureInterests").toString();
+    }
+    
 }
