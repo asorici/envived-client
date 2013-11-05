@@ -81,7 +81,7 @@ public class PeopleListAdapter extends BaseAdapter {
 		User u = mPeople.get(position);
 		if (u != null) {
 			holder.name.setText(u.getUserData().getLastName().toUpperCase() + ", " + u.getUserData().getFirstName());
-			ResearchSubProfile subProfile = (ResearchSubProfile)u.getUserData().getSubProfile(UserSubProfileType.researchprofile);
+			ResearchSubProfile subProfile = (ResearchSubProfile)u.getUserData().getSubProfile(UserSubProfileType.research);
 			
 			if (subProfile != null) {
 				holder.affiliation.setText(subProfile.getAffiliation());
