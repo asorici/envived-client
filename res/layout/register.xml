@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:padding="10dip">
-    
+    android:orientation="vertical"
+    android:padding="10dip" >
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -14,30 +14,34 @@
         android:text="@string/lbl_register"
         android:textSize="16sp"
         android:textStyle="bold" />
-    
-    <EditText android:id="@+id/txt_email"
+
+    <EditText
+        android:id="@+id/txt_email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/lbl_email"
         android:inputType="textEmailAddress" />
-    
-    <EditText android:id="@+id/txt_password"
+
+    <EditText
+        android:id="@+id/txt_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/lbl_password" />
-    
-    <EditText android:id="@+id/txt_first"
+        android:hint="@string/lbl_password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/txt_first"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/lbl_first" />
-    
-    <EditText android:id="@+id/txt_last"
+
+    <EditText
+        android:id="@+id/txt_last"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/lbl_last" />
-    
-    <!-- 
+
+    <!--
     <EditText android:id="@+id/txt_affiliation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -47,21 +51,109 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/lbl_interests" />
-	-->
-	
-	<MultiAutoCompleteTextView
-        android:id="@+id/txt_interests"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/lbl_interests"
-        android:ems="10"  />
+    -->
 
-    <Button
-        android:id="@+id/btn_submit"
-        style="@style/Widget.Envived.Button"
+
+    <!-- The 3 subprofiles - hardcoded -->
+
+    <LinearLayout
+        android:id="@+id/layout_subprofile_research"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="@string/btn_submit" />
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/feature_program_presentation_list_item"
+        android:orientation="horizontal"
+        android:paddingBottom="2dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:paddingTop="2dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textview_subprofile_research"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/lbl_subprofile_research" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_subprofile_leisure"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/feature_program_presentation_list_item"
+        android:orientation="horizontal"
+        android:paddingBottom="2dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:paddingTop="2dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textview_subprofile_leisure"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/lbl_subprofile_leisure" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_subprofile_exhibition"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/feature_program_presentation_list_item"
+        android:orientation="horizontal"
+        android:paddingBottom="2dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:paddingTop="2dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textview_subprofile_exhibition"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/lbl_subprofile_exhibition" />
+    </LinearLayout>
+
+    <!-- Empty view to make button stay at the bottom of the screen -->
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_weight="1" />
+
+    <!-- The buttons for adding a subprofile and submitting the registration -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dip"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/Widget.Envived.Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dip"
+            android:layout_weight="0.5"
+            android:text="@string/btn_add" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/Widget.Envived.Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dip"
+            android:layout_weight="0.5"
+            android:text="@string/btn_submit" />
+    </LinearLayout>
 
 </LinearLayout>
