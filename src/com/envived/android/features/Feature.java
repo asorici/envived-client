@@ -288,7 +288,7 @@ public abstract class Feature implements Serializable {
 	/**
 	 * Specifies if this feature has a local cache of it's relevant data.
 	 * If the data is not present, it has to be retrieved from the server.
-	 * @return
+	 * @return true if this feature has a local cache of its data, false otherwise
 	 */
 	public boolean hasData() {
 		if (retrievedData != null) {
