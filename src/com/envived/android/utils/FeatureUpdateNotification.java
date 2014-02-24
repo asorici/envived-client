@@ -15,7 +15,7 @@ public abstract class FeatureUpdateNotification extends EnvivedNotification {
 	private String mUpdateType;
 	
 	public FeatureUpdateNotification(Context context, Intent intent,
-			EnvivedNotificationContents notificationContents) {
+			EnvivedUpdateContents notificationContents) {
 		super(context, intent, notificationContents);
 		
 		mFeature = notificationContents.getFeature();
@@ -34,10 +34,10 @@ public abstract class FeatureUpdateNotification extends EnvivedNotification {
 
 		// Add extras
 		launcher.putExtra(GCMIntentService.NOTIFICATION, true);
-		launcher.putExtra(EnvivedNotificationContents.LOCATION_URI, mNotificationContents.getLocationUrl());
-		launcher.putExtra(EnvivedNotificationContents.FEATURE, mNotificationContents.getFeature());
-		launcher.putExtra(EnvivedNotificationContents.RESOURCE_URI, mNotificationContents.getResourceUrl());
-		launcher.putExtra(EnvivedNotificationContents.PARAMS, mNotificationContents.getParams().toString());
+		launcher.putExtra(EnvivedUpdateContents.LOCATION_URI, mNotificationContents.getLocationUrl());
+		launcher.putExtra(EnvivedUpdateContents.FEATURE, mNotificationContents.getFeature());
+		launcher.putExtra(EnvivedUpdateContents.RESOURCE_URI, mNotificationContents.getResourceUrl());
+		launcher.putExtra(EnvivedUpdateContents.PARAMS, mNotificationContents.getParams().toString());
 	}
 
 }

@@ -10,8 +10,8 @@ public abstract class EnvivedReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		EnvivedNotificationContents notificationContents = 
-				EnvivedNotificationContents.extractFromIntent(context, intent);
+		EnvivedUpdateContents notificationContents = 
+				EnvivedUpdateContents.extractFromIntent(context, intent);
 		
 		if (notificationContents != null && handleNotification(context, intent, notificationContents)) {
 			abortBroadcast();
@@ -23,5 +23,5 @@ public abstract class EnvivedReceiver extends BroadcastReceiver {
 	}
 	
 	public abstract boolean handleNotification(Context context, 
-			Intent intent, EnvivedNotificationContents notificationContents);
+			Intent intent, EnvivedUpdateContents notificationContents);
 }

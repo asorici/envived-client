@@ -3,10 +3,8 @@ package com.envived.android;
 import org.apache.http.HttpStatus;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,15 +31,14 @@ import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment.OrderNoticeAlertDialogListener;
+import com.envived.android.utils.EnvivedMessageService;
 import com.envived.android.utils.FeatureLRUTracker;
 import com.envived.android.utils.LocationHistory;
 import com.envived.android.utils.Preferences;
-import com.envived.android.utils.RegisterEnvivedNotificationsTask;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.imagemanager.ImageCache;
 import com.envived.android.utils.imagemanager.ImageFetcher;
 import com.facebook.Session;
-import com.google.android.gcm.GCMRegistrar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -55,8 +52,8 @@ public class HomeActivity extends SherlockFragmentActivity
 	private static final String SIGN_OUT = "Sign out";
 	private static final String QUIT_ANONYMOUS = "Quit Anonymous";
 	private static final String CHECK_OUT = "Check out";
-	private static final String REGISTER_GCM_ITEM = "Notifications On";
-	private static final String UNREGISTER_GCM_ITEM = "Notifications Off";
+	
+	private Intent serviceIntent;
 	
 	private Button mBtnCheckin;
 	private LinearLayout mFeaturedLocationsView;
@@ -70,7 +67,6 @@ public class HomeActivity extends SherlockFragmentActivity
 	
 	private ImageFetcher mImageFetcher;
 	
-	private RegisterEnvivedNotificationsTask mGCMRegisterTask;
 	private LogoutTask mLogoutTask;
 	private CheckoutTask mCheckoutTask;
 	
@@ -78,7 +74,6 @@ public class HomeActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         //Log.d(TAG, "--- onCreate called in HomeActivity");
 		super.onCreate(savedInstanceState);
-        
 		
 		// -------------------------- feature LRU tracker loading ------------------------- //
 		// look in the shared preferences to see if we have a FeatureLRUTracker
@@ -108,18 +103,6 @@ public class HomeActivity extends SherlockFragmentActivity
         
         // make it gloabally accessible in the application
         Envived.setLocationHistory(locationHistory);
-        
-        
-        // -------------------------- gcm notification registration ------------------------- //
-        // register GCM status receiver
-        registerReceiver(mHandleGCMMessageReceiver,
-                new IntentFilter(GCMIntentService.ACTION_DISPLAY_GCM_MESSAGE));
-		
-        // setup GCM notification registration
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this); 
-        if (preferences.getBoolean(EnvivedSettings.KEY_ENVIVED_NOTIFICATIONS, true)) {
-        	setupGCMRegistration();
-        }
         
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -151,6 +134,10 @@ public class HomeActivity extends SherlockFragmentActivity
         
         fillFeaturedLocations();
         fillLocationHistory();
+        
+        // ------ start the message service which broadcasts messages from the server ------- //
+        serviceIntent = new Intent(this, EnvivedMessageService.class);
+        startService(serviceIntent);
 	}
 	
 	
@@ -188,18 +175,6 @@ public class HomeActivity extends SherlockFragmentActivity
         if (locationHistory != null) {
         	Preferences.setLocationHistory(getApplicationContext(), locationHistory);
         }
-        
-        // -------------------------- gcm notification deregister ------------------------- //
-        // stop the GCM 3rd party server registration process if it is on the way
-     	if (mGCMRegisterTask != null) {
-     		mGCMRegisterTask.cancel(true);
-     	}
-        
-     	// unregister the GCM broadcast receiver
-     	GCMRegistrar.onDestroy(getApplicationContext());
-     		
-     	// unregister the GCM status receiver
-     	unregisterReceiver(mHandleGCMMessageReceiver);
      	
      	// -------------------------------- other operations ------------------------------- //
         
@@ -208,6 +183,8 @@ public class HomeActivity extends SherlockFragmentActivity
      	
      	// close facebook session if existant
      	doFacebookLogout();
+     	
+     	stopService(serviceIntent);
      	
      	super.onDestroy();
 	}
@@ -264,71 +241,6 @@ public class HomeActivity extends SherlockFragmentActivity
         mImageFetcher = Envived.getImageFetcherInstance(getSupportFragmentManager(), 
         		cacheParams, R.drawable.placeholder_small);
 	}
-	
-	
-	private void setupGCMRegistration() {
-		// Look for the GCM registrationId stored in the GCMRegistrar
-		// If not found, register automatically. The user will be able to disable them afterwards.
-		final Context context = getApplicationContext();
-		
-		try {
-			GCMRegistrar.checkManifest(context);
-			GCMRegistrar.checkDevice(context);
-		}
-		catch (UnsupportedOperationException ex) {
-			// TODO : see how to handle non-existent GSF package
-			// this easy solution just catches an exception and presents a toast message
-			Log.d(TAG, ex.getMessage());
-			Toast toast = Toast.makeText(this, 
-					"GSF package missing. Will not receive notifications. " +
-					"Consider installing the Google Play App.", Toast.LENGTH_LONG);
-			toast.show();
-		}
-		
-		// check if device is has an active registraionId and get one if not
-		final String regId = GCMRegistrar.getRegistrationId(context);
-        if (regId == null || "".equals(regId)) {
-        	//Log.d(TAG, "need to register for notifications");
-        	GCMRegistrar.register(this, GCMIntentService.SENDER_ID);
-        	//NotificationRegistrationDialog dialog = NotificationRegistrationDialog.newInstance();
-        	//dialog.show(getSupportFragmentManager(), "dialog");
-        }
-        
-        // check if we are also registered with the Envived server
-        // this will only be done if a valid user URI exists. In anonymous mode one will only get
-        // such an URI after checkin, so this action is deferred to DetailsActivity
-        if (Preferences.getUserUri(context) != null && !GCMRegistrar.isRegisteredOnServer(context)) {
-        	mGCMRegisterTask = new RegisterEnvivedNotificationsTask(this);
-        	mGCMRegisterTask.execute(regId);
-        }
-	}
-	
-	
-	private void disableGCMRegistrations() {
-		final Context context = getApplicationContext();
-		
-		GCMRegistrar.unregister(context);
-		GCMRegistrar.setRegisteredOnServer(context, false);
-		
-		// for now we are not interested that much in the response for unregistration from our 3rd party server
-		ActionHandler.unregisterWithServer(context);
-	}
-	
-	
-	private final BroadcastReceiver mHandleGCMMessageReceiver =
-            new BroadcastReceiver() {
-        
-		@Override
-        public void onReceive(Context context, Intent intent) {
-            /*
-			String newGCMMessage = intent.getExtras().getString(GCMIntentService.EXTRA_GCM_MESSAGE);
-            Log.d(TAG, "RECEIVED GCM MESSAGE: " + newGCMMessage);
-            
-            Toast toast = Toast.makeText(HomeActivity.this, newGCMMessage, Toast.LENGTH_LONG);
-			toast.show();
-			*/
-        }
-    };
 	
     
 	private void doFacebookLogout() {
@@ -539,12 +451,6 @@ public class HomeActivity extends SherlockFragmentActivity
 				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		        boolean notificationsEnabled = sharedPref.getBoolean(EnvivedSettings.KEY_ENVIVED_NOTIFICATIONS, true);
 		        
-		        if (notificationsEnabled) {
-		        	setupGCMRegistration();
-		        }
-		        else {
-		        	disableGCMRegistrations();
-		        }
 				break;
 			default: 
 				break;
@@ -647,8 +553,6 @@ public class HomeActivity extends SherlockFragmentActivity
 			}
 			
 			if (!response.hasError() && response.getCode() == HttpStatus.SC_OK) {
-				// unregister from our server notifications
-				GCMRegistrar.setRegisteredOnServer(context, false);
 				
 				// also checkout before going back to the main activity
 				Preferences.checkout(context);

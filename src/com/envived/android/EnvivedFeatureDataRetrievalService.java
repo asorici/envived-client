@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.envived.android.api.Location;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 import com.envived.android.utils.Preferences;
 
 public class EnvivedFeatureDataRetrievalService extends IntentService {
@@ -27,8 +27,8 @@ public class EnvivedFeatureDataRetrievalService extends IntentService {
 		String userUrl = Preferences.getUserUri(getApplicationContext());
 		Location location = Preferences.getCheckedInLocation(getApplicationContext());
 		
-		EnvivedNotificationContents notificationContents = 
-			(EnvivedNotificationContents)intent.getSerializableExtra(DATA_RETRIEVE_SERVICE_INPUT);
+		EnvivedUpdateContents notificationContents = 
+			(EnvivedUpdateContents)intent.getSerializableExtra(DATA_RETRIEVE_SERVICE_INPUT);
 		String featureLocationUrl = notificationContents.getLocationUrl();
 		
 		/* 

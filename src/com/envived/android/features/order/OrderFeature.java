@@ -9,7 +9,7 @@ import com.envived.android.Envived;
 import com.envived.android.R;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationDispatcher;
+import com.envived.android.utils.EnvivedAppUpdateDispatcher;
 import com.envived.android.utils.EnvivedNotificationHandler;
 import com.envived.android.utils.FeatureDbHelper;
 
@@ -60,7 +60,7 @@ public class OrderFeature extends Feature {
 	protected void featureInit(boolean insert) throws EnvSocialContentException {
 		// register order notification handler
 		notificationHandler = new OrderFeatureNotificationHandler();
-		EnvivedNotificationDispatcher.registerNotificationHandler(notificationHandler);
+		EnvivedAppUpdateDispatcher.registerNotificationHandler(notificationHandler);
 
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
@@ -102,7 +102,7 @@ public class OrderFeature extends Feature {
 		featureCleanup(context);
 		
 		// unregister notification handler
-		EnvivedNotificationDispatcher.unregisterNotificationHandler(notificationHandler);
+		EnvivedAppUpdateDispatcher.unregisterNotificationHandler(notificationHandler);
 	}
 
 	

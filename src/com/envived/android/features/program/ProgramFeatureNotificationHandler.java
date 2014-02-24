@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.envived.android.EnvivedFeatureDataRetrievalService;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 import com.envived.android.utils.EnvivedNotificationHandler;
 
 public class ProgramFeatureNotificationHandler extends EnvivedNotificationHandler {
@@ -17,7 +17,7 @@ public class ProgramFeatureNotificationHandler extends EnvivedNotificationHandle
 	
 	@Override
 	public boolean handleNotification(Context context, Intent intent,
-			EnvivedNotificationContents notificationContents) {
+			EnvivedUpdateContents notificationContents) {
 		
 		String feature = notificationContents.getFeature();
 		

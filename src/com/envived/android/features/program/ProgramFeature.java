@@ -13,7 +13,7 @@ import com.envived.android.api.Location;
 import com.envived.android.api.Url;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationDispatcher;
+import com.envived.android.utils.EnvivedAppUpdateDispatcher;
 import com.envived.android.utils.EnvivedNotificationHandler;
 import com.envived.android.utils.FeatureDbHelper;
 
@@ -70,7 +70,7 @@ public class ProgramFeature extends Feature {
 	protected void featureInit(boolean insert) throws EnvSocialContentException {
 		// register program notification handler
 		notificationHandler = new ProgramFeatureNotificationHandler();
-		EnvivedNotificationDispatcher.registerNotificationHandler(notificationHandler);
+		EnvivedAppUpdateDispatcher.registerNotificationHandler(notificationHandler);
 		
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
@@ -110,7 +110,7 @@ public class ProgramFeature extends Feature {
 		featureCleanup(context);
 		
 		// unregister notification handler
-		EnvivedNotificationDispatcher.unregisterNotificationHandler(notificationHandler);
+		EnvivedAppUpdateDispatcher.unregisterNotificationHandler(notificationHandler);
 	}
 
 	

@@ -39,7 +39,7 @@ import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 import com.envived.android.utils.EnvivedReceiver;
 import com.envived.android.utils.UIUtils;
 import com.envived.android.utils.Utils;
@@ -307,7 +307,7 @@ public class OrderManagerFragment extends SherlockFragment {
 		
 		@Override
 		public boolean handleNotification(Context context, Intent intent,
-				EnvivedNotificationContents notificationContents) {
+				EnvivedUpdateContents notificationContents) {
 			
 			JSONObject paramsJSON = notificationContents.getParams();
 			

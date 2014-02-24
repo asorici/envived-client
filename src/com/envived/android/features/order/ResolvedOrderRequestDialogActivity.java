@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.envived.android.R;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 
 public class ResolvedOrderRequestDialogActivity extends SherlockFragmentActivity implements OnClickListener {
 	private static final String TAG = "ResolvedOrderDialogActivity";
@@ -23,7 +23,7 @@ public class ResolvedOrderRequestDialogActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        String jsonParams = getIntent().getStringExtra(EnvivedNotificationContents.INTENT_EXTRA_PARAMS);
+        String jsonParams = getIntent().getStringExtra(EnvivedUpdateContents.INTENT_EXTRA_PARAMS);
         
         
         try {

@@ -30,7 +30,6 @@ public class BrowseLocationsListAdapter extends BaseAdapter {
 		this.mImageFetcher = imageFetcher;
 	}
 	
-	
 	@Override
 	public int getCount() {
 		return mLocation.getAreaInfoList().size();

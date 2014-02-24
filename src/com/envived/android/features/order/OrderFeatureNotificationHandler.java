@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.envived.android.EnvivedFeatureDataRetrievalService;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 import com.envived.android.utils.EnvivedNotificationHandler;
 
 public class OrderFeatureNotificationHandler extends EnvivedNotificationHandler {
@@ -18,9 +18,12 @@ public class OrderFeatureNotificationHandler extends EnvivedNotificationHandler 
 	
 	@Override
 	public boolean handleNotification(Context context, Intent intent,
-			EnvivedNotificationContents notificationContents) {
+			EnvivedUpdateContents notificationContents) {
 		
 		String feature = notificationContents.getFeature();
+		
+		JSONObject paramsJSON1 = notificationContents.getParams();
+		Log.d(TAG, "AICI " + paramsJSON1.optString("content"));
 		
 		// big if-else statement to determine appropriate handler class
 		if (feature.compareTo(Feature.ORDER) == 0) {

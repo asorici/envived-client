@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import com.envived.android.GCMIntentService;
 import com.envived.android.R;
 import com.envived.android.utils.EnvivedNotification;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 
 public class NewOrderRequestNotification extends EnvivedNotification {
 	
@@ -22,7 +22,7 @@ public class NewOrderRequestNotification extends EnvivedNotification {
 	private String mMessage;
 	
 	public NewOrderRequestNotification(Context context, Intent intent,
-			EnvivedNotificationContents notificationContents) {
+			EnvivedUpdateContents notificationContents) {
 		super(context, intent, notificationContents);
 		
 		mId = R.string.incoming_order_request;
@@ -70,10 +70,10 @@ public class NewOrderRequestNotification extends EnvivedNotification {
 
 		// Add extras
 		launcher.putExtra(GCMIntentService.NOTIFICATION, true);
-		launcher.putExtra(EnvivedNotificationContents.LOCATION_URI, mNotificationContents.getLocationUrl());
-		launcher.putExtra(EnvivedNotificationContents.FEATURE, mNotificationContents.getFeature());
-		launcher.putExtra(EnvivedNotificationContents.RESOURCE_URI, mNotificationContents.getResourceUrl());
-		launcher.putExtra(EnvivedNotificationContents.PARAMS, mNotificationContents.getParams().toString());
+		launcher.putExtra(EnvivedUpdateContents.LOCATION_URI, mNotificationContents.getLocationUrl());
+		launcher.putExtra(EnvivedUpdateContents.FEATURE, mNotificationContents.getFeature());
+		launcher.putExtra(EnvivedUpdateContents.RESOURCE_URI, mNotificationContents.getResourceUrl());
+		launcher.putExtra(EnvivedUpdateContents.PARAMS, mNotificationContents.getParams().toString());
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, launcher, PendingIntent.FLAG_ONE_SHOT);
 		

@@ -27,7 +27,7 @@ import com.envived.android.features.order.OrderFeature;
 import com.envived.android.features.people.PeopleFeature;
 import com.envived.android.features.program.ProgramFeature;
 import com.envived.android.features.socialmedia.SocialMediaFeature;
-import com.envived.android.utils.EnvivedNotificationContents;
+import com.envived.android.utils.EnvivedUpdateContents;
 import com.envived.android.utils.FeatureDbHelper;
 import com.envived.android.utils.FeatureLRUEntry;
 import com.envived.android.utils.FeatureLRUTracker;
@@ -182,7 +182,7 @@ public abstract class Feature implements Serializable {
 			return;
 		}
 
-		EnvivedNotificationContents notificationContents = new EnvivedNotificationContents(
+		EnvivedUpdateContents notificationContents = new EnvivedUpdateContents(
 				locationUri, category, resourceUrl, paramsJSON.toString());
 
 		Intent updateService = new Intent(context, EnvivedFeatureDataRetrievalService.class);

@@ -23,15 +23,18 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:hint="@string/lbl_email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:text="alex.dan.tomescu@gmail.com" />
     
-    <EditText android:id="@+id/txt_password"
+    <EditText
+        android:id="@+id/txt_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:hint="@string/lbl_password"
         android:inputType="textPassword"
-        android:hint="@string/lbl_password" />
+        android:text="215894" />
     
     <Button
         android:id="@+id/btn_login"
