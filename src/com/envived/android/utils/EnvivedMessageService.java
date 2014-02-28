@@ -22,12 +22,17 @@ import android.util.Log;
 
 public class EnvivedMessageService extends IntentService {
 	private static final String TAG = "EnvivedMessageService";
-	public static final String LONG_POLL_URL = "http://192.168.1.192:8080/envived/client/notifications/me/";
+	public static final String LONG_POLL_URL = "http://192.168.0.103:8080/envived/client/notifications/me/";
 	public static final int MSG_TIMEOUT_MILLIS = 60000;
 	private boolean stopFlag = false;
 	
 	private HttpGet mGetRequest;
-	public static final String NOTIFICATION = "com.envived.android.permission.NOTIFICATION";
+	public static final String UPDATE_NOTIFICATION = "com.envived.android.permission.UPDATE_NOTIFICATION";
+	public static final String MESSAGE_NOTIFICATION = "com.envived.android.permission.MESSAGE_NOTIFICATION";
+	public static final String EVENT_NOTIFICATION = "com.envived.android.permission.EVENT_NOTIFICATION";
+	public final static String ACTION_RECEIVE_UPDATE_NOTIFICATION = "com.envived.android.intent.RECEIVE_UPDATE_NOTIFICATION";
+	public final static String ACTION_RECEIVE_MESSAGE_NOTIFICATION = "com.envived.android.intent.RECEIVE_MESSAGE_NOTIFICATION";
+	public final static String ACTION_RECEIVE_EVENT_NOTIFICATION = "com.envived.android.intent.RECEIVE_EVENT_NOTIFICATION";
 
 	public EnvivedMessageService() {
 		super("EnvivedMessageService");
@@ -44,7 +49,6 @@ public class EnvivedMessageService extends IntentService {
 	    HttpResponse response;
 	    while(!stopFlag) {
 			try {
-				Log.d(TAG, "test3");
 				mGetRequest = new HttpGet(LONG_POLL_URL);
 				
 				String sessionCookie = Preferences.getStringPreference(EnvivedMessageService.this, com.envived.android.api.AppClient.SESSIONID);
@@ -53,19 +57,34 @@ public class EnvivedMessageService extends IntentService {
 				}
 				response = retrieveMsgClient.execute(mGetRequest);
 				
-				Log.d(TAG, "test4");
-				
 				ResponseHolder holder = ResponseHolder.parseResponse(response);
-				JSONObject messagesWrapper = new JSONObject(holder.getResponseBody()).getJSONObject("data");
+				JSONArray messages = holder.getJsonContent().getJSONObject("data").getJSONArray("messages");
 				
-				//EnvivedMessage message = gson.fromJson(messagesWrapper.toString(), EnvivedMessage.class);
-				
-				Log.d(TAG, messagesWrapper.toString());
-				
-				Intent intent = new Intent();
-				intent.putExtra("type", "blargh");
-				
-				sendBroadcast(intent);
+				for (int i = 0; i < messages.length(); i++) {
+					JSONObject jsonMsg = new JSONObject(messages.getString(i));
+		        	String msgData = jsonMsg.getString("data");
+		        	
+		        	JSONObject msgJSON = new JSONObject(msgData);
+		        	JSONObject contentJSON = msgJSON.getJSONObject("content");
+	        		
+	        		Intent broadcastIntent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
+	        		broadcastIntent.putExtra("location_uri", contentJSON.getString("location_uri"));
+	        		broadcastIntent.putExtra("resource_uri", contentJSON.getString("resource_uri"));
+	        		broadcastIntent.putExtra("feature", contentJSON.getString("feature"));
+	        		broadcastIntent.putExtra("params", contentJSON.getString("params"));
+	        		
+	        		if (msgJSON.getString("type").equals("envived_app_update")) {
+	        			Log.d(TAG, "update");
+	        			sendOrderedBroadcast(broadcastIntent, UPDATE_NOTIFICATION);
+	        		}
+	        		else if (msgJSON.getString("type").equals("envived_app_message")) {
+	        			Log.d(TAG, "message");
+	        			sendOrderedBroadcast(broadcastIntent, MESSAGE_NOTIFICATION);
+	        		}
+	        		else if (msgJSON.getString("type").equals("envived_event")) {
+	        			sendOrderedBroadcast(broadcastIntent, EVENT_NOTIFICATION);
+	        		}
+				}
 			
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();

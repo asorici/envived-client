@@ -5,6 +5,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * Acts like a factory class dispatching Envived GCM Notification messages
@@ -38,7 +39,6 @@ public class EnvivedAppUpdateDispatcher extends EnvivedReceiver {
 		
 		// just cycle through all EnvivedNotificationHandlers until one returns true
 		// discrimination is made on the value of the feature category - so no duplicates will exist
-		
 		for (EnvivedNotificationHandler handler : notificationHandlers) {
 			if (handler.handleNotification(context, intent, notificationContents)) {
 				// we have found our notification handler, break and return

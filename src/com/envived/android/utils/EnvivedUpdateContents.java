@@ -12,8 +12,7 @@ import android.util.Log;
 public class EnvivedUpdateContents implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private static final String TAG = "EnvivedNotificationContents"; 
-	
+	private static final String TAG = "EnvivedNotificationContents";
 	public static final String FEATURE = "feature";
 	public static final String LOCATION_URI = "location_uri";
 	public static final String RESOURCE_URI = "resource_uri";

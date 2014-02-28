@@ -22,9 +22,6 @@ public class OrderFeatureNotificationHandler extends EnvivedNotificationHandler 
 		
 		String feature = notificationContents.getFeature();
 		
-		JSONObject paramsJSON1 = notificationContents.getParams();
-		Log.d(TAG, "AICI " + paramsJSON1.optString("content"));
-		
 		// big if-else statement to determine appropriate handler class
 		if (feature.compareTo(Feature.ORDER) == 0) {
 			JSONObject paramsJSON = notificationContents.getParams();

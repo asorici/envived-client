@@ -1,11 +1,20 @@
 package com.envived.android.utils;
 
-public class EnvivedMessage {
-	String msgTimestamp;
-    String msgType;
-    String msgContent;
+import java.io.Serializable;
+
+import org.json.JSONObject;
+
+public class EnvivedMessage implements Serializable {
+	private static final long serialVersionUID = 1L;
+	String type;
+    String timestamp;
+    JSONObject content;
+    
+    public EnvivedMessage() {
+    	
+    }
     
     public String toString() {
-		return msgContent;
+		return "type: " + type + "\ncontent: " + content + "\ntimestamp: " + timestamp;
     }
 }
