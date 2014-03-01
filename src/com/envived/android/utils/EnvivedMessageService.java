@@ -22,7 +22,7 @@ import android.util.Log;
 
 public class EnvivedMessageService extends IntentService {
 	private static final String TAG = "EnvivedMessageService";
-	public static final String LONG_POLL_URL = "http://192.168.0.103:8080/envived/client/notifications/me/";
+	public static final String LONG_POLL_URL = "http://192.168.1.192:8080/envived/client/notifications/me/";
 	public static final int MSG_TIMEOUT_MILLIS = 60000;
 	private boolean stopFlag = false;
 	
@@ -30,9 +30,7 @@ public class EnvivedMessageService extends IntentService {
 	public static final String UPDATE_NOTIFICATION = "com.envived.android.permission.UPDATE_NOTIFICATION";
 	public static final String MESSAGE_NOTIFICATION = "com.envived.android.permission.MESSAGE_NOTIFICATION";
 	public static final String EVENT_NOTIFICATION = "com.envived.android.permission.EVENT_NOTIFICATION";
-	public final static String ACTION_RECEIVE_UPDATE_NOTIFICATION = "com.envived.android.intent.RECEIVE_UPDATE_NOTIFICATION";
-	public final static String ACTION_RECEIVE_MESSAGE_NOTIFICATION = "com.envived.android.intent.RECEIVE_MESSAGE_NOTIFICATION";
-	public final static String ACTION_RECEIVE_EVENT_NOTIFICATION = "com.envived.android.intent.RECEIVE_EVENT_NOTIFICATION";
+	public final static String ACTION_RECEIVE_NOTIFICATION = "com.envived.android.intent.RECEIVE_NOTIFICATION";
 
 	public EnvivedMessageService() {
 		super("EnvivedMessageService");
@@ -67,7 +65,7 @@ public class EnvivedMessageService extends IntentService {
 		        	JSONObject msgJSON = new JSONObject(msgData);
 		        	JSONObject contentJSON = msgJSON.getJSONObject("content");
 	        		
-	        		Intent broadcastIntent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
+	        		Intent broadcastIntent = new Intent(ACTION_RECEIVE_NOTIFICATION);
 	        		broadcastIntent.putExtra("location_uri", contentJSON.getString("location_uri"));
 	        		broadcastIntent.putExtra("resource_uri", contentJSON.getString("resource_uri"));
 	        		broadcastIntent.putExtra("feature", contentJSON.getString("feature"));
