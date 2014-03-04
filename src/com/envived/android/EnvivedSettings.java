@@ -7,7 +7,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 
 public class EnvivedSettings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
-	public static final String KEY_ENVIVED_NOTIFICATIONS = "envived_gcm_notifications";
+	public static final String KEY_ENVIVED_NOTIFICATIONS = "envived_notifications";
     
     private CheckBoxPreference mEnvivedNotificationsPreference;
     

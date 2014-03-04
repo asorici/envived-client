@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -136,8 +137,15 @@ public class HomeActivity extends SherlockFragmentActivity
         fillLocationHistory();
         
         // ------ start the message service which broadcasts messages from the server ------- //
-        serviceIntent = new Intent(this, EnvivedMessageService.class);
-        startService(serviceIntent);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean notificationsEnabled = sharedPref.getBoolean(EnvivedSettings.KEY_ENVIVED_NOTIFICATIONS, true);
+        if (notificationsEnabled) {
+	        serviceIntent = new Intent(this, EnvivedMessageService.class);
+	        startService(serviceIntent);
+	        Editor preferencesEditor = sharedPref.edit();
+	        preferencesEditor.putBoolean(EnvivedSettings.KEY_ENVIVED_NOTIFICATIONS, true);
+	        preferencesEditor.commit();
+        }
 	}
 	
 	
