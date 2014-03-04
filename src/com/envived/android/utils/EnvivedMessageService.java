@@ -84,6 +84,10 @@ public class EnvivedMessageService extends IntentService {
 	        		if (msgJSON.getString("type").equals("envived_app_update")) {
 	        			Log.d(TAG, "Update notification received");
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
+	        			broadcastIntent.putExtra("location_uri", contentJSON.getString("location_uri"));
+		        		broadcastIntent.putExtra("resource_uri", contentJSON.getString("resource_uri"));
+		        		broadcastIntent.putExtra("feature", contentJSON.getString("feature"));
+		        		broadcastIntent.putExtra("params", contentJSON.getString("params"));
 	        		}
 	        		else if (msgJSON.getString("type").equals("envived_app_message")) {
 	        			Log.d(TAG, "Message notification received");
@@ -93,11 +97,6 @@ public class EnvivedMessageService extends IntentService {
 	        			Log.d(TAG, "Event notification received");
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_EVENT_NOTIFICATION);
 	        		}
-
-	        		broadcastIntent.putExtra("location_uri", contentJSON.getString("location_uri"));
-	        		broadcastIntent.putExtra("resource_uri", contentJSON.getString("resource_uri"));
-	        		broadcastIntent.putExtra("feature", contentJSON.getString("feature"));
-	        		broadcastIntent.putExtra("params", contentJSON.getString("params"));
 	        		
 	        		sendBroadcast(broadcastIntent);
 				}
