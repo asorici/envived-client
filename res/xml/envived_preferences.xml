@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-            android:key="envived_gcm_notifications"
+            android:key="envived_notifications"
             android:title="@string/title_envived_notifications_preference"
             android:summaryOn="@string/summary_on_envived_notifications_toggle_preference" 
             android:summaryOff="@string/summary_off_envived_notifications_toggle_preference" 
