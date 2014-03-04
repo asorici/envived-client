@@ -123,25 +123,25 @@
             android:exported="false" />
         
         <receiver android:name=".utils.EnvivedAppUpdateDispatcher"
-            android:permission="com.envived.android.permission.UPDATE_NOTIFICATION" >
+            android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>
-                <action android:name="com.envived.android.intent.RECEIVE_NOTIFICATION" />
+                <action android:name="com.envived.android.intent.RECEIVE_UPDATE_NOTIFICATION" />
                 <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
         
         <receiver android:name=".utils.EnvivedAppMessageDispatcher"
-            android:permission="com.envived.android.permission.MESSAGE_NOTIFICATION" >
+            android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>
-                <action android:name="com.envived.android.intent.RECEIVE_NOTIFICATION" />
+                <action android:name="com.envived.android.intent.RECEIVE_MESSAGE_NOTIFICATION" />
                 <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>
         
         <receiver android:name=".utils.EnvivedEventDispatcher"
-            android:permission="com.envived.android.permission.EVENT_NOTIFICATION" >
+            android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>
-                <action android:name="com.envived.android.intent.RECEIVE_NOTIFICATION" />
+                <action android:name="com.envived.android.intent.RECEIVE_EVENT_NOTIFICATION" />
                 <category android:name="com.envived.android" />
             </intent-filter>
         </receiver>

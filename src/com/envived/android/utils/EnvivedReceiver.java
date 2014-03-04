@@ -10,7 +10,6 @@ public abstract class EnvivedReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d(TAG, "AICI");
 		EnvivedUpdateContents notificationContents = 
 				EnvivedUpdateContents.extractFromIntent(context, intent);
 		
