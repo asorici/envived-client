@@ -1,6 +1,7 @@
 package com.envived.android.utils;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -103,9 +104,11 @@ public class EnvivedMessageService extends IntentService {
 			
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (SocketTimeoutException e) {
+				Log.d(TAG, "Message service long polling timeout");
 			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	    }
