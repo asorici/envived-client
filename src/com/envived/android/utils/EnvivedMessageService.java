@@ -81,7 +81,7 @@ public class EnvivedMessageService extends IntentService {
 		        	JSONObject contentJSON = msgJSON.getJSONObject("content");
 	        		
 	        		Intent broadcastIntent;
-	        		
+
 	        		if (msgJSON.getString("type").equals("envived_app_update")) {
 	        			Log.d(TAG, "Update notification received");
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
@@ -99,7 +99,9 @@ public class EnvivedMessageService extends IntentService {
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_EVENT_NOTIFICATION);
 	        		}
 	        		
-	        		sendBroadcast(broadcastIntent);
+	        		if (!stopFlag) {
+	        			sendBroadcast(broadcastIntent);
+	        		}
 				}
 			
 			} catch (ClientProtocolException e) {
