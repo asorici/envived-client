@@ -19,6 +19,8 @@ public class ProgramFeatureNotificationHandler extends EnvivedNotificationHandle
 	public boolean handleNotification(Context context, Intent intent,
 			EnvivedUpdateContents notificationContents) {
 		
+		//Log.d(TAG,"Received the following program update contents:" + notificationContents);
+		
 		String feature = notificationContents.getFeature();
 		
 		// big if-else statement to determine appropriate handler class
@@ -35,9 +37,10 @@ public class ProgramFeatureNotificationHandler extends EnvivedNotificationHandle
 				
 				context.startService(updateService);
 			}
-			
-			Log.d(TAG, "Program notification dispatch error: 'type` parameter missing or unknown in " 
+			else {
+				Log.d(TAG, "Program notification dispatch error: 'type` parameter missing or unknown in " 
 						+ paramsJSON.toString());
+			}
 		}
 		
 		return false;

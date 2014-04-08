@@ -91,5 +91,11 @@ public class EnvivedUpdateContents implements Serializable {
 		}
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "[" + "feature: " + mFeature + ", " 
+					+ "resourceURI: " + mResourceUrl + ", "
+					+ "locationURI: " + mLocationUrl + ", "
+					+ "params: " + mJSONSerializedParams + "]";
+	}
 }

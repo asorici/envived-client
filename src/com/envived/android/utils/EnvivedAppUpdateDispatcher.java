@@ -15,7 +15,7 @@ import android.util.Log;
  */
 public class EnvivedAppUpdateDispatcher extends EnvivedReceiver {
 	
-	private static final String TAG = "EnvivedNotificationDispatcher";
+	private static final String TAG = "EnvivedAppUpdateDispatcher";
 	private static Set<EnvivedNotificationHandler> notificationHandlers;
 	static {
 		notificationHandlers = new HashSet<EnvivedNotificationHandler>();
@@ -36,6 +36,7 @@ public class EnvivedAppUpdateDispatcher extends EnvivedReceiver {
 	@Override
 	public boolean handleNotification(Context context, Intent intent,
 			EnvivedUpdateContents notificationContents) {
+		//Log.d(TAG,"Received the following update notification contents:" + notificationContents);
 		
 		// just cycle through all EnvivedNotificationHandlers until one returns true
 		// discrimination is made on the value of the feature category - so no duplicates will exist

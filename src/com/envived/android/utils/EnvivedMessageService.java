@@ -34,7 +34,7 @@ public class EnvivedMessageService extends IntentService {
 	private static final String TAG = "EnvivedMessageService";
 	private static final String URL_BASE = Url.HTTP + Url.HOSTNAME;
 	public static final String LONG_POLL_URL = URL_BASE + "/envived/client/notifications/me/";
-	public static final int MSG_TIMEOUT_MILLIS = 100000;
+	public static final int MSG_TIMEOUT_MILLIS = 300000;
 	private boolean stopFlag = false;
 	
 	private HttpGet mGetRequest;
@@ -70,6 +70,8 @@ public class EnvivedMessageService extends IntentService {
 				response = retrieveMsgClient.execute(mGetRequest);
 				
 				ResponseHolder holder = ResponseHolder.parseResponse(response);
+				Log.d(TAG, "NOTIFICATION_MESSAGE: " + holder.getResponseBody());
+				
 				JSONArray messages = holder.getJsonContent().getJSONObject("data").getJSONArray("messages");
 				
 				// extract the content from all the messages and send it to the appropriate receiver.
@@ -98,6 +100,8 @@ public class EnvivedMessageService extends IntentService {
 	        			Log.d(TAG, "Event notification received");
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_EVENT_NOTIFICATION);
 	        		}
+	        		
+	        		Log.d(TAG, "broadcast content: " + broadcastIntent.getExtras());
 	        		
 	        		if (!stopFlag) {
 	        			sendBroadcast(broadcastIntent);
