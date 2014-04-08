@@ -11,7 +11,7 @@ public class Url {
 	//public static final String HOSTNAME = "envived.com:8800";
 	//public static final String HOSTNAME = "192.168.100.101:8080";
 	//public static final String HOSTNAME = "192.168.1.102:8080";
-	public static final String HOSTNAME = "192.168.1.192:8080";
+	public static final String HOSTNAME = "192.168.100.107:8080";
 	
 	public static final String BASE_URL = "/envived/client/v2/";
 	public static final String ACTION_RELATIVE_URL = BASE_URL + "actions/";

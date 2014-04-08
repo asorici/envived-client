@@ -6,6 +6,7 @@ import java.net.SocketTimeoutException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -34,7 +35,8 @@ public class EnvivedMessageService extends IntentService {
 	private static final String TAG = "EnvivedMessageService";
 	private static final String URL_BASE = Url.HTTP + Url.HOSTNAME;
 	public static final String LONG_POLL_URL = URL_BASE + "/envived/client/notifications/me/";
-	public static final int MSG_TIMEOUT_MILLIS = 100000;
+	public static final String UNSUBSCRIBE_URL = URL_BASE + "/envived/client/notifications/unsubscribe/";
+	public static final int MSG_TIMEOUT_MILLIS = 30000;
 	private boolean stopFlag = false;
 	
 	private HttpGet mGetRequest;
@@ -45,6 +47,33 @@ public class EnvivedMessageService extends IntentService {
 
 	public EnvivedMessageService() {
 		super("EnvivedMessageService");
+	}
+	
+	private void unsubscribe() {
+		DefaultHttpClient retrieveMsgClient = new DefaultHttpClient();
+	    HttpParams httpParameters = new BasicHttpParams();
+	    HttpConnectionParams.setSoTimeout(httpParameters, MSG_TIMEOUT_MILLIS);
+	    retrieveMsgClient.setParams(httpParameters);
+	    HttpResponse response;
+	    
+		HttpPost mUnsubscribeRequest = new HttpPost(UNSUBSCRIBE_URL);
+		
+		String sessionCookie = Preferences.getStringPreference(EnvivedMessageService.this, com.envived.android.api.AppClient.SESSIONID);
+		if (sessionCookie != null) {
+			mUnsubscribeRequest.setHeader("Cookie", sessionCookie);
+		}
+		
+		try {
+			response = retrieveMsgClient.execute(mUnsubscribeRequest);
+			
+			ResponseHolder holder = ResponseHolder.parseResponse(response);
+			
+			System.out.println(holder.getResponseBody());
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -60,7 +89,6 @@ public class EnvivedMessageService extends IntentService {
 	    // while the service is not stopped keep polling the server
 	    while(!stopFlag) {
 			try {
-				mGetRequest = new HttpGet(LONG_POLL_URL);
 				
 				// retrieve a session id from the program and add it to the header of the request for authentication.
 				String sessionCookie = Preferences.getStringPreference(EnvivedMessageService.this, com.envived.android.api.AppClient.SESSIONID);
@@ -114,6 +142,8 @@ public class EnvivedMessageService extends IntentService {
 				e.printStackTrace();
 			}
 	    }
+	    
+	    unsubscribe();
 	}
 	
 	@Override
