@@ -117,6 +117,13 @@ public class EnvivedMessageService extends IntentService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				Log.d(TAG, "This shouldn't happen to a dog.");
+			}
 	    }
 	}
 	
