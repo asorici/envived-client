@@ -2,7 +2,6 @@ package com.envived.android.utils;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Iterator;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -22,8 +21,7 @@ import android.util.Log;
 
 import com.envived.android.api.Url;
 import com.envived.android.api.agent.AgentBridge;
-import com.envived.android.api.agent.Event;
-import com.envived.android.api.agent.Fact;
+import com.google.gson.Gson;
 
 /**
  * EnvivedMessageService runs as a service in the background, not visible to the user. It implements the long polling mechanism
@@ -52,59 +50,6 @@ public class EnvivedMessageService extends IntentService {
 	public EnvivedMessageService() {
 		super("EnvivedMessageService");
 	}
-	
-	private Intent generateIntent(JSONObject json) {
-		Intent intent = new Intent();
-		
-		String msgData;
-		try {
-			msgData = json.getString("data");
-			JSONObject msgJSON = new JSONObject(msgData);
-	    	JSONObject contentJSON = msgJSON.getJSONObject("content");
-	    	
-	    	intent.putExtra("msg_type", msgJSON.getString("type"));
-	    	
-	    	Iterator<Object> keys = contentJSON.keys();
-	    	
-	    	while (keys.hasNext()) {
-	    		String key = (String)keys.next();
-	    		//Object value = keys.next();
-	    		JSONArray jsonArray;
-	    		if ((jsonArray = contentJSON.optJSONArray(key)) != null) {
-	    			if (key.equals("facts")) {
-	    				for (int i = 0; i < jsonArray.length(); i++) {
-	    					JSONObject jsonFact = new JSONObject(jsonArray.getString(i));
-	    					Fact fact = new Fact(
-	    							jsonFact.getString("fact_label"),
-	    							jsonFact.getString("subject_label"),
-	    							jsonFact.getString("object_label"));
-	    					intent.putExtra("fact" + i, fact);
-	    				}
-	    			} else if (key.equals("events")) {
-	    				for (int i = 0; i < jsonArray.length(); i++) {
-	    					JSONObject jsonEvent = new JSONObject(jsonArray.getString(i));
-	    					Event event = new Event(
-	    							jsonEvent.getString("performative"),
-	    							jsonEvent.getString("event_label"),
-	    							jsonEvent.getString("subject_label"),
-	    							jsonEvent.getString("object_label"));
-	    					intent.putExtra("event" + i, event);
-	    				}
-	    			}
-	    			continue;
-	    		}
-	    		intent.putExtra(key, contentJSON.getString(key));
-	    	}
-	    	
-	    	
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//Log.d(TAG, intent.toString());
-		return intent;
-	}
-
 	@Override
 	protected void onHandleIntent(Intent arg) {
 		// set up the connection to the server
@@ -132,36 +77,40 @@ public class EnvivedMessageService extends IntentService {
 				
 				JSONArray messages = holder.getJsonContent().getJSONObject("data").getJSONArray("messages");
 				
+				/*msgData = json.getString("data");
+				JSONObject msgJSON = new JSONObject(msgData);
+		    	JSONObject contentJSON = msgJSON.getJSONObject("content");
+		    	
+		    	intent.putExtra("msg_type", msgJSON.getString("type"));*/
+				
 				// extract the content from all the messages and send it to the appropriate receiver.
 				for (int i = 0; i < messages.length(); i++) {
 					JSONObject jsonMsg = new JSONObject(messages.getString(i));
-					Intent intent = generateIntent(jsonMsg);
-					
 		        	String msgData = jsonMsg.getString("data");
+		        	JSONObject msgJson = new JSONObject(msgData);
+		        	Intent intent = null;
 		        	
-		        	JSONObject msgJSON = new JSONObject(msgData);
-		        	JSONObject contentJSON = msgJSON.getJSONObject("content");
-
-	        		if (msgJSON.getString("type").equals("envived_app_update")) {
-	        			Log.d(TAG, "Update notification received");
-	        			intent.setAction(ACTION_RECEIVE_UPDATE_NOTIFICATION);
-	        		}
-	        		else if (msgJSON.getString("type").equals("envived_app_message")) {
-	        			Log.d(TAG, "Message notification received");
-	        			intent.setAction(ACTION_RECEIVE_MESSAGE_NOTIFICATION);
-	        		}
-	        		else {
-	        			Log.d(TAG, "Event notification received");
-	        			intent.setClass(this, AgentBridge.class);
+		        	Gson gson = new Gson();
+		        	if (msgJson.getString("type").equals("envived_app_update")) {
+		        		EnvivedAppUpdate appUpdate = gson.fromJson(msgJson.getString("content"), EnvivedAppUpdate.class);
+		        		intent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
+		        		intent.putExtra("envived_app_update", appUpdate);
+		        		Log.d(TAG, appUpdate.toString());
+		        	} else if (msgJson.getString("type").equals("envived_event")) {
+		        		EnvivedEvent event = gson.fromJson(msgJson.getString("content"), EnvivedEvent.class);
+		        		intent = new Intent(this, AgentBridge.class);
+	        			intent.putExtra("envived_event", event);
 	        			startService(intent);
-	        		}
+	        			Log.d(TAG, event.toString());
+	        			continue;
+		        	} else {
+		        		// TODO
+		        	}
 	        		
-	        		
-	        		if (!stopFlag && intent.getAction() != null) {
+	        		if (!stopFlag) {
 	        			sendBroadcast(intent);
 	        		}
 				}
-			
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (SocketTimeoutException e) {

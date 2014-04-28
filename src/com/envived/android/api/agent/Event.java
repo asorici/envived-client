@@ -2,49 +2,55 @@ package com.envived.android.api.agent;
 
 import java.io.Serializable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Event implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String performative;
-	private String label;
-	private String subject;
-	private String object;
+	private EventPerformative performative;
+	@SerializedName("event_label") private String eventLabel;
+	@SerializedName("subject_label") private String subjectLabel;
+	@SerializedName("object_label") private String objectLabel;
 	
-	public Event(String performative, String label, String subject, String object) {
-		this.performative = performative;
-		this.label = label;
-		this.subject = subject;
-		this.object = object;
+	public enum EventPerformative {
+		INSERT, DELETE
 	}
-
-	public String getPerformative() {
+	
+	public EventPerformative getPerformative() {
 		return performative;
 	}
-
-	public void setPerformative(String performative) {
+	
+	public void setPerformative(EventPerformative performative) {
 		this.performative = performative;
 	}
-
-	public String getLabel() {
-		return label;
+	
+	public String getEventLabel() {
+		return eventLabel;
 	}
-
-	public void setLabel(String label) {
-		this.label = label;
+	
+	public void setEventLabel(String eventLabel) {
+		this.eventLabel = eventLabel;
 	}
-
-	public String getSubject() {
-		return subject;
+	
+	public String getSubjectLabel() {
+		return subjectLabel;
 	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
+	
+	public void setSubjectLabel(String subjectLabel) {
+		this.subjectLabel = subjectLabel;
 	}
-
-	public String getObject() {
-		return object;
+	
+	public String getObjectLabel() {
+		return objectLabel;
 	}
-
-	public void setObject(String object) {
-		this.object = object;
+	
+	public void setObjectLabel(String objectLabel) {
+		this.objectLabel = objectLabel;
+	}
+	
+	@Override
+	public String toString() {
+		return "Event [performative=" + performative + ", eventLabel="
+				+ eventLabel + ", subjectLabel=" + subjectLabel
+				+ ", objectLabel=" + objectLabel + "]";
 	}
 }

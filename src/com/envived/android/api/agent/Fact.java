@@ -2,43 +2,41 @@ package com.envived.android.api.agent;
 
 import java.io.Serializable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Fact implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String label;
-	private String subject;
-	private String object;
+	@SerializedName("fact_label") private String factLabel;
+	@SerializedName("subject_label") private String subjectLabel;
+	@SerializedName("object_label") private String objectLabel;
 	
-	public Fact(String label, String subject, String object) {
-		this.label = label;
-		this.subject = subject;
-		this.object = object;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getObject() {
-		return object;
-	}
-
-	public void setObject(String object) {
-		this.object = object;
+	public String getFactLabel() {
+		return factLabel;
 	}
 	
+	public void setFactLabel(String factLabel) {
+		this.factLabel = factLabel;
+	}
+	
+	public String getSubjectLabel() {
+		return subjectLabel;
+	}
+	
+	public void setSubjectLabel(String subjectLabel) {
+		this.subjectLabel = subjectLabel;
+	}
+	
+	public String getObjectLabel() {
+		return objectLabel;
+	}
+	
+	public void setObjectLabel(String objectLabel) {
+		this.objectLabel = objectLabel;
+	}
+
+	@Override
 	public String toString() {
-		return label + " " + subject + " " + object;
+		return "Fact [factLabel=" + factLabel + ", subjectLabel="
+				+ subjectLabel + ", objectLabel=" + objectLabel + "]";
 	}
 }
