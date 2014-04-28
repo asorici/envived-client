@@ -77,12 +77,6 @@ public class EnvivedMessageService extends IntentService {
 				
 				JSONArray messages = holder.getJsonContent().getJSONObject("data").getJSONArray("messages");
 				
-				/*msgData = json.getString("data");
-				JSONObject msgJSON = new JSONObject(msgData);
-		    	JSONObject contentJSON = msgJSON.getJSONObject("content");
-		    	
-		    	intent.putExtra("msg_type", msgJSON.getString("type"));*/
-				
 				// extract the content from all the messages and send it to the appropriate receiver.
 				for (int i = 0; i < messages.length(); i++) {
 					JSONObject jsonMsg = new JSONObject(messages.getString(i));
