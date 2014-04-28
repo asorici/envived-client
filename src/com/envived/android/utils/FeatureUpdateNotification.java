@@ -15,11 +15,11 @@ public abstract class FeatureUpdateNotification extends EnvivedNotification {
 	private String mUpdateType;
 	
 	public FeatureUpdateNotification(Context context, Intent intent,
-			EnvivedUpdateContents notificationContents) {
-		super(context, intent, notificationContents);
+			EnvivedAppUpdate appUpdate) {
+		super(context, intent, appUpdate);
 		
-		mFeature = notificationContents.getFeature();
-		mUpdateType = notificationContents.getParams().optString("type");
+		mFeature = appUpdate.getFeature();
+		mUpdateType = appUpdate.getParam("type");
 	}
 	
 	@Override
@@ -34,10 +34,10 @@ public abstract class FeatureUpdateNotification extends EnvivedNotification {
 
 		// Add extras
 		launcher.putExtra(GCMIntentService.NOTIFICATION, true);
-		launcher.putExtra(EnvivedUpdateContents.LOCATION_URI, mNotificationContents.getLocationUrl());
-		launcher.putExtra(EnvivedUpdateContents.FEATURE, mNotificationContents.getFeature());
-		launcher.putExtra(EnvivedUpdateContents.RESOURCE_URI, mNotificationContents.getResourceUrl());
-		launcher.putExtra(EnvivedUpdateContents.PARAMS, mNotificationContents.getParams().toString());
+		launcher.putExtra(EnvivedAppUpdate.LOCATION_URI, mNotificationContents.getLocationUri());
+		launcher.putExtra(EnvivedAppUpdate.FEATURE, mNotificationContents.getFeature());
+		launcher.putExtra(EnvivedAppUpdate.RESOURCE_URI, mNotificationContents.getResourceUri());
+		launcher.putExtra(EnvivedAppUpdate.PARAMS, mNotificationContents.getParams()); // TODO: see where this ends up and check if it's used ok
 	}
 
 }

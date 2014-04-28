@@ -11,8 +11,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.envived.android.R;
 import com.envived.android.api.Url;
+import com.envived.android.utils.EnvivedAppUpdate;
 import com.envived.android.utils.EnvivedNotification;
-import com.envived.android.utils.EnvivedUpdateContents;
 
 public class ResolvedOrderRequestNotification extends EnvivedNotification {
 	private static final String TAG = "ResolvedOrderRequestNotification";
@@ -25,8 +25,8 @@ public class ResolvedOrderRequestNotification extends EnvivedNotification {
 	private String mMessage;
 	
 	public ResolvedOrderRequestNotification(Context context, Intent intent,
-			EnvivedUpdateContents notificationContents) {
-		super(context, intent, notificationContents);
+			EnvivedAppUpdate appUpdate) {
+		super(context, intent, appUpdate);
 		
 		mId = counter++;
 		mIconId = R.drawable.ic_envived_white;
@@ -72,8 +72,8 @@ public class ResolvedOrderRequestNotification extends EnvivedNotification {
 				| Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 
 		// Add extras
-		launcher.setData(Uri.parse(Uri.encode(Url.getFullPath(mNotificationContents.getResourceUrl()))));
-		launcher.putExtra(EnvivedUpdateContents.INTENT_EXTRA_PARAMS,
+		launcher.setData(Uri.parse(Uri.encode(Url.getFullPath(mNotificationContents.getResourceUri()))));
+		launcher.putExtra(EnvivedAppUpdate.INTENT_EXTRA_PARAMS,
 				mNotificationContents.getParams().toString());
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, launcher, 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.envived.android.R;
-import com.envived.android.utils.EnvivedUpdateContents;
+import com.envived.android.utils.EnvivedAppUpdate;
 import com.envived.android.utils.FeatureUpdateNotification;
 
 public class OrderFeatureUpdateNotification extends FeatureUpdateNotification {
@@ -15,8 +15,8 @@ public class OrderFeatureUpdateNotification extends FeatureUpdateNotification {
 	private String mMessage;
 	
 	public OrderFeatureUpdateNotification(Context context, Intent intent,
-			EnvivedUpdateContents notificationContents) {
-		super(context, intent, notificationContents);
+			EnvivedAppUpdate appUpdate) {
+		super(context, intent, appUpdate);
 		
 		mId = R.string.update_order_feature;
 		mIconId = R.drawable.ic_launcher;

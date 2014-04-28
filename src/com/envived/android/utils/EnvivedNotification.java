@@ -9,12 +9,12 @@ import android.net.Uri;
 
 public abstract class EnvivedNotification {
 	
-	protected EnvivedUpdateContents mNotificationContents;
+	protected EnvivedAppUpdate mNotificationContents;
 	protected Context mContext;
 	protected Intent mIntent;
 	
 	protected EnvivedNotification(Context context, Intent intent, 
-		EnvivedUpdateContents notificationContents) {
+		EnvivedAppUpdate notificationContents) {
 		mContext = context;
 		mIntent = intent;
 		mNotificationContents = notificationContents;

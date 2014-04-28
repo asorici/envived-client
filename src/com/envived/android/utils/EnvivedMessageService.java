@@ -89,13 +89,13 @@ public class EnvivedMessageService extends IntentService {
 		        		EnvivedAppUpdate appUpdate = gson.fromJson(msgJson.getString("content"), EnvivedAppUpdate.class);
 		        		intent = new Intent(ACTION_RECEIVE_UPDATE_NOTIFICATION);
 		        		intent.putExtra("envived_app_update", appUpdate);
-		        		Log.d(TAG, appUpdate.toString());
+		        		//Log.d(TAG, appUpdate.toString());
 		        	} else if (msgJson.getString("type").equals("envived_event")) {
 		        		EnvivedEvent event = gson.fromJson(msgJson.getString("content"), EnvivedEvent.class);
 		        		intent = new Intent(this, AgentBridge.class);
 	        			intent.putExtra("envived_event", event);
 	        			startService(intent);
-	        			Log.d(TAG, event.toString());
+	        			//Log.d(TAG, event.toString());
 	        			continue;
 		        	} else {
 		        		// TODO
