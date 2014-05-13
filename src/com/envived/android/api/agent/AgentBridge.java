@@ -7,9 +7,14 @@ import net.xqhs.graphs.graph.Node;
 import net.xqhs.graphs.graph.SimpleEdge;
 import net.xqhs.graphs.graph.SimpleGraph;
 import net.xqhs.graphs.graph.SimpleNode;
+import android.R;
+import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Build;
 
 import com.envived.android.utils.EnvivedEvent;
 
@@ -27,6 +32,7 @@ public class AgentBridge extends IntentService {
 		update_event_graphs = new ArrayList<SimpleGraph>();
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if (intent.getSerializableExtra("envived_event") != null) {
@@ -55,6 +61,23 @@ public class AgentBridge extends IntentService {
 					update_event_graphs.add(g);
 				}
 			}
+		}
+		
+		if (Build.VERSION.SDK_INT >= 11) {
+			Intent i = new Intent(this, AgentBridge.class);
+			PendingIntent pIntent = PendingIntent.getActivity(this, 0, i, 0);
+			
+			Notification n  = new Notification.Builder(this)
+	        .setContentTitle("Notification")
+	        .setContentText("Test subject")
+	        .setSmallIcon(R.drawable.ic_dialog_info)
+	        .setContentIntent(pIntent)
+	        .setAutoCancel(true).build();
+			
+			NotificationManager notificationManager = 
+					  (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	
+			notificationManager.notify(0, n);
 		}
 	}
 }
