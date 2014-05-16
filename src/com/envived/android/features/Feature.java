@@ -3,6 +3,7 @@ package com.envived.android.features;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
@@ -20,6 +21,7 @@ import com.envived.android.EnvivedFeatureDataRetrievalService;
 import com.envived.android.api.AppClient;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
+import com.envived.android.api.agent.FactParam;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.description.BoothDescriptionFeature;
 import com.envived.android.features.description.DescriptionFeature;
@@ -27,7 +29,7 @@ import com.envived.android.features.order.OrderFeature;
 import com.envived.android.features.people.PeopleFeature;
 import com.envived.android.features.program.ProgramFeature;
 import com.envived.android.features.socialmedia.SocialMediaFeature;
-import com.envived.android.utils.EnvivedUpdateContents;
+import com.envived.android.utils.EnvivedAppUpdate;
 import com.envived.android.utils.FeatureDbHelper;
 import com.envived.android.utils.FeatureLRUEntry;
 import com.envived.android.utils.FeatureLRUTracker;
@@ -173,23 +175,17 @@ public abstract class Feature implements Serializable {
 		Context context = Envived.getContext();
 		String locationUri = (environmentUrl != null) ? environmentUrl : areaUrl;
 		JSONObject paramsJSON = new JSONObject();
+		
+		ArrayList<FactParam> params = new ArrayList<FactParam>();
+		params.add(new FactParam("type", Feature.RETRIEVE_CONTENT_NOTIFICATION));
 
-		try {
-			paramsJSON.put("type", Feature.RETRIEVE_CONTENT_NOTIFICATION);
-		} catch (JSONException e) {
-			Log.d(TAG, "ERROR constructing paramsJSON object for feature data retrieval request", e);
-
-			// should never actually happen, but if it does, abort the process
-			return;
-		}
-
-		EnvivedUpdateContents notificationContents = new EnvivedUpdateContents(
-				locationUri, category, resourceUrl, paramsJSON.toString());
+		EnvivedAppUpdate appUpdate = new EnvivedAppUpdate(
+				locationUri, category, resourceUrl, params);
 
 		Intent updateService = new Intent(context, EnvivedFeatureDataRetrievalService.class);
 		updateService.putExtra(
 				EnvivedFeatureDataRetrievalService.DATA_RETRIEVE_SERVICE_INPUT,
-				notificationContents);
+				appUpdate);
 
 		context.startService(updateService);
 	}

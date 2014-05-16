@@ -3,11 +3,10 @@ package com.envived.android;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.envived.android.api.Location;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedUpdateContents;
+import com.envived.android.utils.EnvivedAppUpdate;
 import com.envived.android.utils.Preferences;
 
 public class EnvivedFeatureDataRetrievalService extends IntentService {
@@ -27,9 +26,9 @@ public class EnvivedFeatureDataRetrievalService extends IntentService {
 		String userUrl = Preferences.getUserUri(getApplicationContext());
 		Location location = Preferences.getCheckedInLocation(getApplicationContext());
 		
-		EnvivedUpdateContents notificationContents = 
-			(EnvivedUpdateContents)intent.getSerializableExtra(DATA_RETRIEVE_SERVICE_INPUT);
-		String featureLocationUrl = notificationContents.getLocationUrl();
+		EnvivedAppUpdate appUpdate = 
+			(EnvivedAppUpdate)intent.getSerializableExtra(DATA_RETRIEVE_SERVICE_INPUT);
+		String featureLocationUrl = appUpdate.getLocationUri();
 		
 		/* 
 		 * if we are updating a feature that is attached to the physical 
@@ -46,8 +45,8 @@ public class EnvivedFeatureDataRetrievalService extends IntentService {
 		if (userUrl != null) {
 			// get the contents from the GCM message
 			
-			String featureCategory = notificationContents.getFeature();
-			String featureResourceUrl = notificationContents.getResourceUrl();
+			String featureCategory = appUpdate.getFeature();
+			String featureResourceUrl = appUpdate.getResourceUri();
 			
 			Feature updatedFeature = Feature.getFromServer(getApplicationContext(), 
 												featureCategory, featureResourceUrl, virtualAccess);

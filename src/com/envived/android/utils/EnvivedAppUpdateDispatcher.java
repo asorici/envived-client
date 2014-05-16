@@ -35,13 +35,13 @@ public class EnvivedAppUpdateDispatcher extends EnvivedReceiver {
 	
 	@Override
 	public boolean handleNotification(Context context, Intent intent,
-			EnvivedUpdateContents notificationContents) {
+			EnvivedAppUpdate appUpdate) {
 		//Log.d(TAG,"Received the following update notification contents:" + notificationContents);
 		
 		// just cycle through all EnvivedNotificationHandlers until one returns true
 		// discrimination is made on the value of the feature category - so no duplicates will exist
 		for (EnvivedNotificationHandler handler : notificationHandlers) {
-			if (handler.handleNotification(context, intent, notificationContents)) {
+			if (handler.handleNotification(context, intent, appUpdate)) {
 				// we have found our notification handler, break and return
 				return true;
 			}

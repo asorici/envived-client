@@ -9,5 +9,5 @@ public abstract class EnvivedNotificationHandler implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public abstract boolean handleNotification(Context context, Intent intent, 
-			EnvivedUpdateContents notificationContents);
+			EnvivedAppUpdate appUpdate);
 }

@@ -1,5 +1,6 @@
 package com.envived.android.features.order;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +39,9 @@ import com.envived.android.R;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Annotation;
 import com.envived.android.api.Location;
+import com.envived.android.api.agent.FactParam;
 import com.envived.android.features.Feature;
-import com.envived.android.utils.EnvivedUpdateContents;
+import com.envived.android.utils.EnvivedAppUpdate;
 import com.envived.android.utils.EnvivedReceiver;
 import com.envived.android.utils.UIUtils;
 import com.envived.android.utils.Utils;
@@ -307,13 +309,11 @@ public class OrderManagerFragment extends SherlockFragment {
 		
 		@Override
 		public boolean handleNotification(Context context, Intent intent,
-				EnvivedUpdateContents notificationContents) {
+				EnvivedAppUpdate appUpdate) {
 			
-			JSONObject paramsJSON = notificationContents.getParams();
-			
-			if (notificationContents.getFeature().equals(Feature.ORDER) 
-				&& paramsJSON.optString("type", null) != null 
-				&& paramsJSON.optString("type").equalsIgnoreCase(OrderFeature.NEW_REQUEST_NOTIFICATION)) {
+			if (appUpdate.getFeature().equals(Feature.ORDER) 
+				&& appUpdate.getParam("type") != null 
+				&& appUpdate.getParam("type").equalsIgnoreCase(OrderFeature.NEW_REQUEST_NOTIFICATION)) {
 				
 				getRequests(mLastRefreshTimestamp, false);
 				return true;

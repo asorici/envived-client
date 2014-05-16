@@ -122,6 +122,8 @@
         <service android:name=".EnvivedFeatureDataRetrievalService"
             android:exported="false" />
         
+        <service android:name=".api.agent.AgentBridge" />
+        
         <receiver android:name=".utils.EnvivedAppUpdateDispatcher"
             android:permission="com.envived.android.permission.NOTIFICATION" >
             <intent-filter>

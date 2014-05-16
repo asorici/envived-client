@@ -28,6 +28,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.Location;
 import com.envived.android.api.Url;
+import com.envived.android.api.agent.AgentBridge;
 import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment;
@@ -146,6 +147,8 @@ public class HomeActivity extends SherlockFragmentActivity
 	        preferencesEditor.putBoolean(EnvivedSettings.KEY_ENVIVED_NOTIFICATIONS, true);
 	        preferencesEditor.commit();
         }
+        // ------ start the Agent Bridge Service ------//
+        AgentBridge agent = new AgentBridge();
 	}
 	
 	

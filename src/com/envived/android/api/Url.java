@@ -9,8 +9,8 @@ public class Url {
 	public static final String HTTP = "http://";
 	public static final String HTTPS = "https://";
 	//public static final String HOSTNAME = "envived.com:8800";
-	public static final String HOSTNAME = "192.168.100.102:8080";
-	//public static final String HOSTNAME = "192.168.1.105:8080";
+	//public static final String HOSTNAME = "192.168.100.101:8080";
+	public static final String HOSTNAME = "192.168.1.192:8080";
 	//public static final String HOSTNAME = "192.168.1.192:8080";
 
 	public static final String BASE_URL = "/envived/client/v2/";
