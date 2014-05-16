@@ -50,6 +50,7 @@ public abstract class Feature implements Serializable {
 	public static final String PEOPLE 				= 	"people";
 	public static final String PROGRAM 				= 	"program";
 	public static final String SOCIAL_MEDIA 		= 	"social_media";
+	public static final String CONFERENCE_ROLE 		= 	"conference_role";
 	
 	public static final String TAG 				= 	"Feature";
 	public static final String SEARCH_FEATURE 	= 	"Search_Feature";

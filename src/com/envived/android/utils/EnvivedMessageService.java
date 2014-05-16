@@ -35,8 +35,12 @@ public class EnvivedMessageService extends IntentService {
 	private static final String TAG = "EnvivedMessageService";
 	private static final String URL_BASE = Url.HTTP + Url.HOSTNAME;
 	public static final String LONG_POLL_URL = URL_BASE + "/envived/client/notifications/me/";
+<<<<<<< HEAD
 	public static final String UNSUBSCRIBE_URL = URL_BASE + "/envived/client/notifications/unsubscribe/";
 	public static final int MSG_TIMEOUT_MILLIS = 30000;
+=======
+	public static final int MSG_TIMEOUT_MILLIS = 300000;
+>>>>>>> master
 	private boolean stopFlag = false;
 	
 	private HttpGet mGetRequest;
@@ -98,6 +102,8 @@ public class EnvivedMessageService extends IntentService {
 				response = retrieveMsgClient.execute(mGetRequest);
 				
 				ResponseHolder holder = ResponseHolder.parseResponse(response);
+				Log.d(TAG, "NOTIFICATION_MESSAGE: " + holder.getResponseBody());
+				
 				JSONArray messages = holder.getJsonContent().getJSONObject("data").getJSONArray("messages");
 				
 				// extract the content from all the messages and send it to the appropriate receiver.
@@ -127,6 +133,8 @@ public class EnvivedMessageService extends IntentService {
 	        			broadcastIntent = new Intent(ACTION_RECEIVE_EVENT_NOTIFICATION);
 	        		}
 	        		
+	        		Log.d(TAG, "broadcast content: " + broadcastIntent.getExtras());
+	        		
 	        		if (!stopFlag) {
 	        			sendBroadcast(broadcastIntent);
 	        		}
@@ -140,6 +148,13 @@ public class EnvivedMessageService extends IntentService {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+			
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				Log.d(TAG, "This shouldn't happen to a dog.");
 			}
 	    }
 	    
