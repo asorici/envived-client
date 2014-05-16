@@ -124,8 +124,6 @@ public class EnvivedMessageService extends IntentService {
 				Log.d(TAG, "This shouldn't happen to a dog.");
 			}
 	    }
-
-	    unsubscribe();
 	}
 
 	@Override
