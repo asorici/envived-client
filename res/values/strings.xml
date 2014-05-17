@@ -109,7 +109,15 @@
     <string name="lbl_authenticated_users">Authenticated Users:</string>
     <string name="lbl_subject">Subject:</string>
     <string name="lbl_content">Content:</string>
+    <string name="lbl_chair_password">Chair Password</string>
     
+    <!-- Spinners -->
+    <string name="role_prompt">Choose a role</string>
+    <string-array name="role_array">
+        <item>Participant</item>
+        <item>Speaker</item>
+        <item>Sesssion Chair</item>
+    </string-array>    
     
     <!-- Tabs -->
     <string name="tab_description">Details</string>

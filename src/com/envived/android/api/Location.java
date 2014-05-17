@@ -220,6 +220,7 @@ public class Location implements Serializable {
 	
 	
 	public void initFeatures() throws EnvSocialContentException {
+		Log.d("Location", mFeatures.keySet().toString());
 		for (String category : mFeatures.keySet()) {
 			Feature feat = mFeatures.get(category);
 			if (feat != null ) {

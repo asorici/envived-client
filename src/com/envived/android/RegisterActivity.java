@@ -11,14 +11,20 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,19 +32,20 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.envived.android.api.ActionHandler;
 import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
-import com.envived.android.features.program.PresentationDetailsActivity;
 import com.envived.android.utils.ResponseHolder;
 
-public class RegisterActivity extends SherlockActivity implements OnClickListener {
+public class RegisterActivity extends SherlockActivity implements OnClickListener, OnItemSelectedListener {
 	private static final String TAG = "RegisterActivity";
 	
 	private EditText mTxtEmail;
 	private EditText mTxtPassword;
 	private EditText mTxtFirst;
 	private EditText mTxtLast;
+	private EditText mChairPassword;
 	// private EditText mTxtAffiliation;
 	// private EditText mTxtInterests;
 	private Button mBtnSubmit;
+	private Spinner mRoleSpinner;
 	
 	private ProgressDialog mLoadingDialog;
 	
@@ -57,9 +64,21 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
         // mTxtAffiliation = (EditText) findViewById(R.id.txt_affiliation);
         // mTxtInterests = (EditText) findViewById(R.id.txt_interests);
         
-        
         mBtnSubmit = (Button) findViewById(R.id.btn_submit);
         mBtnSubmit.setOnClickListener(this);
+        
+        mRoleSpinner = (Spinner) findViewById(R.id.role_spinner);
+        mRoleSpinner.setOnItemSelectedListener(this);
+        
+        mChairPassword = (EditText) findViewById(R.id.chair_password);
+        
+        /*mRoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });*/
 	}
 
 	public void onClick(View v) {
@@ -194,5 +213,23 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
 		});
 		
 		return builder.create();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int pos,
+			long id) {
+		Resources res = getResources();
+		String[] roles = res.getStringArray(R.array.role_array);
+		if (parent.getItemAtPosition(pos).toString().equals(roles[2])) {
+			mChairPassword.setVisibility(View.VISIBLE);
+		} else {
+			mChairPassword.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
