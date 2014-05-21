@@ -103,6 +103,8 @@
         <activity android:name=".features.program.PresentationCommentsActivity" />
         <activity android:name=".features.program.SpeakerDetailsActivity" />
         
+        <activity android:name=".features.conferencerole.ConferenceRoleActivity" />
+        
         <activity
             android:name=".features.order.ResolvedOrderRequestDialogActivity"
             android:screenOrientation="portrait" />

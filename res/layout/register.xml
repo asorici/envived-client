@@ -48,25 +48,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/lbl_interests" />
      -->
-
-    <Spinner
-        android:id="@+id/role_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:prompt="@string/role_prompt"
-        android:entries="@array/role_array" />
-
-    <EditText
-        android:id="@+id/chair_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="@string/lbl_chair_password"
-        android:visibility="gone" >
-
-        <requestFocus />
-    </EditText>
      
     <Button
         android:id="@+id/btn_submit"

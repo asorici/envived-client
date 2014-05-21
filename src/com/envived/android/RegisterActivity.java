@@ -34,18 +34,16 @@ import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.utils.ResponseHolder;
 
-public class RegisterActivity extends SherlockActivity implements OnClickListener, OnItemSelectedListener {
+public class RegisterActivity extends SherlockActivity implements OnClickListener {
 	private static final String TAG = "RegisterActivity";
 	
 	private EditText mTxtEmail;
 	private EditText mTxtPassword;
 	private EditText mTxtFirst;
 	private EditText mTxtLast;
-	private EditText mChairPassword;
 	// private EditText mTxtAffiliation;
 	// private EditText mTxtInterests;
 	private Button mBtnSubmit;
-	private Spinner mRoleSpinner;
 	
 	private ProgressDialog mLoadingDialog;
 	
@@ -66,19 +64,6 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
         
         mBtnSubmit = (Button) findViewById(R.id.btn_submit);
         mBtnSubmit.setOnClickListener(this);
-        
-        mRoleSpinner = (Spinner) findViewById(R.id.role_spinner);
-        mRoleSpinner.setOnItemSelectedListener(this);
-        
-        mChairPassword = (EditText) findViewById(R.id.chair_password);
-        
-        /*mRoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                Object item = parent.getItemAtPosition(pos);
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });*/
 	}
 
 	public void onClick(View v) {
@@ -213,23 +198,5 @@ public class RegisterActivity extends SherlockActivity implements OnClickListene
 		});
 		
 		return builder.create();
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
-		Resources res = getResources();
-		String[] roles = res.getStringArray(R.array.role_array);
-		if (parent.getItemAtPosition(pos).toString().equals(roles[2])) {
-			mChairPassword.setVisibility(View.VISIBLE);
-		} else {
-			mChairPassword.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }

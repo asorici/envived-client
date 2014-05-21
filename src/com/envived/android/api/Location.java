@@ -199,6 +199,7 @@ public class Location implements Serializable {
 		
 		// lastly initialize the context manager
 		mContextManager = new LocationContextManager(this);
+		Log.d("Location", mFeatures.keySet().toString() + " " + mName);
 	}
 	
 	
@@ -220,7 +221,6 @@ public class Location implements Serializable {
 	
 	
 	public void initFeatures() throws EnvSocialContentException {
-		Log.d("Location", mFeatures.keySet().toString());
 		for (String category : mFeatures.keySet()) {
 			Feature feat = mFeatures.get(category);
 			if (feat != null ) {

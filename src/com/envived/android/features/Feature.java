@@ -8,7 +8,6 @@ import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -23,6 +22,7 @@ import com.envived.android.api.Location;
 import com.envived.android.api.Url;
 import com.envived.android.api.agent.FactParam;
 import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.features.conferencerole.ConferenceRoleFeature;
 import com.envived.android.features.description.BoothDescriptionFeature;
 import com.envived.android.features.description.DescriptionFeature;
 import com.envived.android.features.order.OrderFeature;
@@ -411,6 +411,32 @@ public abstract class Feature implements Serializable {
 		return null;
 	}
 	
+	public static void putToServer(Context context, String category, 
+			String featureResourceUrl, boolean virtualAccess) {
+		AppClient client = new AppClient(context);
+		
+		Url url = new Url(Url.FEATURE_RESOURCE, category);
+		url.setItemId(Url.resourceIdFromUrl(featureResourceUrl));
+		
+		url.setParameters(
+				new String[] { "virtual"}, 
+				new String[] { Boolean.toString(virtualAccess)}
+			);
+		
+		
+		try {
+			HttpResponse response = client.makePutRequest(url.toString(),
+					"{'role':'session_chair'",
+					new String[] {"Content-Type", "Data-Type"},
+					new String[] {"application/json", "json"});
+			ResponseHolder holder = ResponseHolder.parseResponse(response);
+			
+			Log.d(TAG, holder.toString());
+		} catch (Exception e) {
+			Log.d(TAG, e.toString());
+		}
+	}
+	
 	public static Feature getInstance(String category, int version, Calendar timestamp, boolean isGeneral,  
 			String resourceUri, String environmentUri, String areaUri, String data, boolean virtualAccess) 
 					throws IllegalArgumentException, EnvSocialContentException {
@@ -436,6 +462,9 @@ public abstract class Feature implements Serializable {
 		}
 		else if (category.equals(SOCIAL_MEDIA)) {
 			return new SocialMediaFeature(category, version, timestamp, isGeneral, resourceUri, environmentUri, areaUri, data, virtualAccess);
+		}
+		else if (category.equals(CONFERENCE_ROLE)) {
+			return new ConferenceRoleFeature(category, version, timestamp, isGeneral, resourceUri, environmentUri, areaUri, data, virtualAccess);
 		}
 		else {
 			throw new IllegalArgumentException("No feature matching category (" + category + ").");

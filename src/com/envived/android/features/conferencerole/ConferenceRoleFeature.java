@@ -21,7 +21,7 @@ public class ConferenceRoleFeature extends Feature {
 	
 	private String mRole = null; 
 
-	protected ConferenceRoleFeature(String category, int version,
+	public ConferenceRoleFeature(String category, int version,
 			Calendar timestamp, boolean isGeneral, String resourceUrl,
 			String environmentUrl, String areaUrl, String data,
 			boolean virtualAccess) {

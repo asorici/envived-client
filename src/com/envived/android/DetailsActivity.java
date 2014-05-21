@@ -30,6 +30,7 @@ import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.Feature;
+import com.envived.android.features.conferencerole.ConferenceRoleActivity;
 import com.envived.android.features.description.BoothDescriptionActivity;
 import com.envived.android.features.description.DescriptionActivity;
 import com.envived.android.features.program.ProgramActivity;
@@ -330,7 +331,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				else if (featureCategory.equals(Feature.SOCIAL_MEDIA)) {
 					i = new Intent(getApplicationContext(), SocialMediaActivity.class);
 				}
-				
+				else if (featureCategory.equals(Feature.CONFERENCE_ROLE)) {
+					i = new Intent(getApplicationContext(), ConferenceRoleActivity.class);
+				}
 				
 				if (i != null) {
 					i.putExtra("location", mLocation);
