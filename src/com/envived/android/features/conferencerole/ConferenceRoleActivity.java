@@ -1,7 +1,14 @@
 package com.envived.android.features.conferencerole;
 
+import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -10,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.envived.android.R;
 import com.envived.android.api.EnvSocialResource;
@@ -17,13 +25,22 @@ import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.EnvivedFeatureActivity;
 import com.envived.android.features.Feature;
+import com.envived.android.features.description.DescriptionFeature;
+import com.envived.android.utils.ResponseHolder;
 
 public class ConferenceRoleActivity extends EnvivedFeatureActivity implements OnItemSelectedListener, OnClickListener {
+	private static final String TAG = "ConferenceRoleActivity";
+	
+	private static final String PARTICIPANT_ROLE = "participant";
+	private static final String SPEAKER_ROLE = "speaker";
+	private static final String CHAIR_ROLE = "session_chair";
 	
 	private LinearLayout mMainView;
 	private Spinner mRoleSpinner;
 	private EditText mChairPassword;
 	private Button mButton;
+	
+	private ConferenceRoleFeature mConferenceFeature;
 	
 	
 	@Override
@@ -73,17 +90,32 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 		}
 		return conferenceRoleFeature;
 	}
+	
+	private void bindData() {
+		String role = mConferenceFeature.getRole();
+		if (role.equals(PARTICIPANT_ROLE)) {
+			this.mRoleSpinner.setSelection(0);
+		} else if (role.equals(SPEAKER_ROLE)) {
+			this.mRoleSpinner.setSelection(1);
+		} else {
+			this.mRoleSpinner.setSelection(2);
+		}
+	}
 
 	@Override
 	protected void onFeatureDataInitialized(Feature newFeature, boolean success) {
-		// TODO Auto-generated method stub
-		
+		if (success) {
+			mConferenceFeature = (ConferenceRoleFeature) newFeature;
+			bindData();
+		}
 	}
 
 	@Override
 	protected void onFeatureDataUpdated(Feature updatedFeature, boolean success) {
-		// TODO Auto-generated method stub
-		
+		if (success) {
+			mConferenceFeature = (ConferenceRoleFeature) updatedFeature;
+			bindData();
+		}
 	}
 
 	@Override
@@ -110,7 +142,42 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
+		PutDataTask putTask = new PutDataTask();
+		putTask.execute(mLocation);
+	}
+	
+	private class PutDataTask extends  AsyncTask<Location, Void, ResponseHolder> {
+
+		@Override
+		protected ResponseHolder doInBackground(Location... arg0) {
+			String data = "";
+			if (mRoleSpinner.getSelectedItemId() == 2) {
+				data = "{\"role\":\"session_chair\", \"chair_password\":\"" + mChairPassword.getText().toString() + "\"}";
+			} else {
+				data = "{\"role\":\"" + mRoleSpinner.getSelectedItem().toString().toLowerCase() + "\"}";
+			}
+			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
+					"conference_role", mConferenceFeature.getResourceUri(),
+					false, data);
+			return holder;
+		}
+		
+		@Override
+		protected void onPostExecute(ResponseHolder holder) {
+			if (holder != null && !holder.hasError()) {
+				if (holder.getCode() == 204) {
+					Toast t = Toast.makeText(getApplicationContext(), "Role changed!", Toast.LENGTH_SHORT);
+					t.show();
+					finish();
+				} else if (holder.getCode() == 401) {
+					Toast t = Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG);
+					t.show();
+				}
+			}
+			else {
+				//Log.d(TAG, holder.getResponseBody(), holder.getError());
+			}
+		}
 		
 	}
 

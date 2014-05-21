@@ -67,7 +67,7 @@ public abstract class Feature implements Serializable {
 	protected Calendar timestamp;
 	protected boolean isGeneral = false;
 	
-	protected String resourceUrl;
+	protected String featureResourceUrl;
 	protected String environmentUrl;
 	protected String areaUrl;
 	protected boolean virtualAccess;
@@ -87,13 +87,13 @@ public abstract class Feature implements Serializable {
 	private transient boolean initialized = false;
 	
 	protected Feature(String category, int version, Calendar timestamp, boolean isGeneral, 
-			String resourceUrl, String environmentUrl, String areaUrl, String data, boolean virtualAccess) {
+			String featureResourceUrl, String environmentUrl, String areaUrl, String data, boolean virtualAccess) {
 		this.category = category;
 		this.version = version;		// TO BE USED IN THE FUTURE
 		this.timestamp = timestamp;
 		this.isGeneral = isGeneral;
 		
-		this.resourceUrl = resourceUrl;
+		this.featureResourceUrl = featureResourceUrl;
 		this.environmentUrl = environmentUrl;
 		this.areaUrl = areaUrl;
 		this.retrievedData = data;
@@ -146,7 +146,8 @@ public abstract class Feature implements Serializable {
 				featureInit(true);
 				
 				// after initialization allow retrieved serialized data to be garbage collected
-				retrievedData = null;
+				// TODO: not sure if commenting the line below is ok, but it doesn't allow me to use the data retrieved
+				//retrievedData = null;
 			}
 			
 			
@@ -180,7 +181,7 @@ public abstract class Feature implements Serializable {
 		params.add(new FactParam("type", Feature.RETRIEVE_CONTENT_NOTIFICATION));
 
 		EnvivedAppUpdate appUpdate = new EnvivedAppUpdate(
-				locationUri, category, resourceUrl, params);
+				locationUri, category, featureResourceUrl, params);
 
 		Intent updateService = new Intent(context, EnvivedFeatureDataRetrievalService.class);
 		updateService.putExtra(
@@ -194,6 +195,8 @@ public abstract class Feature implements Serializable {
 	public void doUpdate() throws EnvSocialContentException {
 		if (hasData()) {
 			featureUpdate();
+			
+			Log.d(TAG, "doUpdate");
 			
 			// after update allow retrieved serialized data to be garbage collected
 			retrievedData = null;
@@ -262,7 +265,7 @@ public abstract class Feature implements Serializable {
 	}
 	
 	public String getResourceUri() {
-		return resourceUrl;
+		return featureResourceUrl;
 	}
 
 	public String getEnvironmentUri() {
@@ -336,7 +339,7 @@ public abstract class Feature implements Serializable {
 	
 	@Override
 	public String toString() {
-		String info = "Feature (" + category + ", " + resourceUrl + ")\n";
+		String info = "Feature (" + category + ", " + featureResourceUrl + ")\n";
 		info += "Feature Data: " + retrievedData;
 		info += "\n";
 		return info;
@@ -411,30 +414,30 @@ public abstract class Feature implements Serializable {
 		return null;
 	}
 	
-	public static void putToServer(Context context, String category, 
-			String featureResourceUrl, boolean virtualAccess) {
+	public static ResponseHolder putToServer(Context context, String category, 
+			String featureResourceUrl, boolean virtualAccess, String data) {
 		AppClient client = new AppClient(context);
 		
 		Url url = new Url(Url.FEATURE_RESOURCE, category);
 		url.setItemId(Url.resourceIdFromUrl(featureResourceUrl));
 		
 		url.setParameters(
-				new String[] { "virtual"}, 
-				new String[] { Boolean.toString(virtualAccess)}
+				new String[] { "virtual", "format"}, 
+				new String[] { Boolean.toString(virtualAccess), "json"}
 			);
-		
-		
+
 		try {
 			HttpResponse response = client.makePutRequest(url.toString(),
-					"{'role':'session_chair'",
-					new String[] {"Content-Type", "Data-Type"},
-					new String[] {"application/json", "json"});
+					data,
+					new String[] {"content-type"},
+					new String[] {"application/json"});//'content-type': 'application/json'
 			ResponseHolder holder = ResponseHolder.parseResponse(response);
 			
-			Log.d(TAG, holder.toString());
+			return holder;
 		} catch (Exception e) {
 			Log.d(TAG, e.toString());
 		}
+		return null;
 	}
 	
 	public static Feature getInstance(String category, int version, Calendar timestamp, boolean isGeneral,  

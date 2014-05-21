@@ -116,7 +116,7 @@
     <string-array name="role_array">
         <item>Participant</item>
         <item>Speaker</item>
-        <item>Sesssion Chair</item>
+        <item>Session Chair</item>
     </string-array>    
     
     <!-- Tabs -->

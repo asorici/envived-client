@@ -184,8 +184,6 @@ public class DescriptionActivity extends EnvivedFeatureActivity {
 		}
 	}
 	
-
-
 	@Override
 	protected Feature getLocationFeature(Location location) throws EnvSocialContentException {
 		// return the Description feature associated with the given location
