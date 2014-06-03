@@ -1,21 +1,14 @@
 package com.envived.android.features.conferencerole;
 
-import org.apache.http.HttpStatus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,7 +18,7 @@ import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.EnvivedFeatureActivity;
 import com.envived.android.features.Feature;
-import com.envived.android.features.description.DescriptionFeature;
+import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 
 public class ConferenceRoleActivity extends EnvivedFeatureActivity implements OnItemSelectedListener, OnClickListener {
@@ -35,7 +28,6 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 	private static final String SPEAKER_ROLE = "speaker";
 	private static final String CHAIR_ROLE = "session_chair";
 	
-	private LinearLayout mMainView;
 	private Spinner mRoleSpinner;
 	private EditText mChairPassword;
 	private Button mButton;
@@ -49,7 +41,6 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
         
         setContentView(R.layout.conference_role);
         
-        mMainView = (LinearLayout) findViewById(R.id.conference_role);
         mRoleSpinner = (Spinner) findViewById(R.id.role_spinner);
         mChairPassword = (EditText) findViewById(R.id.chair_password);
         mButton = (Button) findViewById(R.id.choose_role_button);
@@ -147,15 +138,19 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 	}
 	
 	private class PutDataTask extends  AsyncTask<Location, Void, ResponseHolder> {
-
+		private String role = "";
+		
 		@Override
 		protected ResponseHolder doInBackground(Location... arg0) {
 			String data = "";
 			if (mRoleSpinner.getSelectedItemId() == 2) {
-				data = "{\"role\":\"session_chair\", \"chair_password\":\"" + mChairPassword.getText().toString() + "\"}";
+				data = "{\"role\":\"" + CHAIR_ROLE + "\", \"chair_password\":\""
+						+ mChairPassword.getText().toString() + "\"}";
 			} else {
 				data = "{\"role\":\"" + mRoleSpinner.getSelectedItem().toString().toLowerCase() + "\"}";
 			}
+			
+			role = mRoleSpinner.getSelectedItem().toString().toLowerCase();
 			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
 					"conference_role", mConferenceFeature.getResourceUri(),
 					false, data);
@@ -168,6 +163,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 				if (holder.getCode() == 204) {
 					Toast t = Toast.makeText(getApplicationContext(), "Role changed!", Toast.LENGTH_SHORT);
 					t.show();
+					Preferences.setUserConferenceRole(getApplicationContext(), role);
 					finish();
 				} else if (holder.getCode() == 401) {
 					Toast t = Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG);

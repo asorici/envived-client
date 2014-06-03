@@ -26,6 +26,7 @@ public final class Preferences {
 	private static final String PEOPLE_IN_LOCATION = "people_in_location";
 	private static final String FEATURE_LRU_TRACKER = "feature_lru_tracker";
 	private static final String LOCATION_HISTORY = "location_history";
+	private static final String CONFERENCE_ROLE = "conference_role";
 	
 	public static void login(Context context, String email, String firstName, String lastName, String uri) {
 		setStringPreference(context, EMAIL, email);
@@ -249,5 +250,13 @@ public final class Preferences {
 		SharedPreferences.Editor editor = settings.edit();
 		editor.remove(name);
 		editor.commit();
+	}
+	
+	public static void setUserConferenceRole(Context context, String role) {
+		setStringPreference(context, CONFERENCE_ROLE, role);
+	}
+	
+	public static String getUserConferenceRole(Context context) {
+		return getStringPreference(context, CONFERENCE_ROLE);
 	}
 }

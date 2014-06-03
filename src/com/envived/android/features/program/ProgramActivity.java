@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +20,7 @@ import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.EnvivedFeatureActivity;
 import com.envived.android.features.Feature;
+import com.envived.android.utils.Preferences;
 
 public class ProgramActivity extends EnvivedFeatureActivity implements ProgramUpdateObserver {
 	private static final String TAG = "ProgramActivity";
