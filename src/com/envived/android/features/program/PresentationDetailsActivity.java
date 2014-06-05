@@ -10,15 +10,19 @@ import java.util.LinkedList;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml.Encoding;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -29,6 +33,8 @@ import com.envived.android.HomeActivity;
 import com.envived.android.R;
 import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.utils.Preferences;
+import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.Utils;
 import com.envived.android.utils.imagemanager.ImageCache;
 import com.envived.android.utils.imagemanager.ImageFetcher;
@@ -50,6 +56,8 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 	private String mSessionTitle;
 	private String mStartTime;
 	private String mEndTime;
+	private String startHour;
+	private String endHour;
 	private LinkedList<PresentationSpeakerInfo> mSpeakerInfoList;
 	
 	private TextView mTitleView;
@@ -58,6 +66,10 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 	private TextView mLocationNameView;
 	private TextView mTagsView;
 	private WebView mAbstractView;
+	
+	private EditText mStartTimeEdit;
+	private EditText mEndTimeEdit;
+	private Button mSaveTimeButton;
 	
 	private LinearLayout mSpeakersLayout;
 	
@@ -91,6 +103,12 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		mTagsView = (TextView) findViewById(R.id.tags);
 		mAbstractView = (WebView) findViewById(R.id.presentation_abstract);
 		mAbstractView.getSettings().setBuiltInZoomControls(true);
+		
+		mStartTimeEdit = (EditText) findViewById(R.id.startingTime);
+		mEndTimeEdit = (EditText) findViewById(R.id.endingTime);
+		mSaveTimeButton = (Button) findViewById(R.id.saveTimeButton);
+		
+		mSaveTimeButton.setOnClickListener(new SaveTimeButtonClickListener());
 		
 		mSpeakersLayout = (LinearLayout) findViewById(R.id.presentation_speakers_layout);
 		
@@ -226,20 +244,25 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 			// ======================= binding ========================
 			mTitleView.setText(mTitle);
 			
-			Calendar startDate = null;
+			Calendar startDate = null, endDate = null;
 			try {
 				startDate = Utils.stringToCalendar(mStartTime, "yyyy-MM-dd'T'HH:mm:ss");
+				endDate = Utils.stringToCalendar(mEndTime, "yyyy-MM-dd'T'HH:mm:ss");
 			} catch (ParseException e) {
 				Log.d(TAG, "Error parsing presentation start time string: " + mStartTime);
 			}
 			
 			if (startDate != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		        String startHour = sdf.format(startDate.getTime());
+		        startHour = sdf.format(startDate.getTime());
+		        endHour = sdf.format(endDate.getTime());
 		        
 		        sdf.applyPattern("dd MMM yyyy");
 		        String startDay = sdf.format(startDate.getTime());
 				mDatetimeView.setText(startHour + ",  " + startDay);
+				
+				mStartTimeEdit.setText(startHour);
+				mEndTimeEdit.setText(endHour);
 			}
 			else {
 				mDatetimeView.setText("Unknown");
@@ -351,6 +374,17 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		}
 	}
 	
+	private class SaveTimeButtonClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Toast t = Toast.makeText(getApplicationContext(), "Schedule Updated", Toast.LENGTH_LONG);
+			t.show();
+			PutDataTask task = new PutDataTask();
+			task.execute();
+		}
+	}
+	
 	
 	static class PresentationSpeakerInfo implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -384,6 +418,76 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		public String getLastName() {
 			return mLastName;
 		}
+	}
+	
+	private class PutDataTask extends  AsyncTask<Void, Void, ResponseHolder> {
+		private String role = "";
+		
+		/*protected ResponseHolder doInBackground() {
+			
+			
+			/*String data = "";
+			if (mRoleSpinner.getSelectedItemId() == 2) {
+				data = "{\"role\":\"" + CHAIR_ROLE + "\", \"chair_password\":\""
+						+ mChairPassword.getText().toString() + "\"}";
+			} else {
+				data = "{\"role\":\"" + mRoleSpinner.getSelectedItem().toString().toLowerCase() + "\"}";
+			}
+			
+			role = mRoleSpinner.getSelectedItem().toString().toLowerCase();
+			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
+					"conference_role", mConferenceFeature.getResourceUri(),
+					false, data);
+			return holder;
+		}*/
+		
+		@Override
+		protected ResponseHolder doInBackground(Void... params) {
+			String oldStartTime, newStartTime;
+			String oldEndTime, newEndTime;
+			
+			Calendar startDate = null, endDate = null;
+			
+			try {
+				startDate = Utils.stringToCalendar(mStartTime, "yyyy-MM-dd'T'HH:mm:ss");
+				endDate = Utils.stringToCalendar(mEndTime, "yyyy-MM-dd'T'HH:mm:ss");
+			} catch (ParseException e) {
+				Log.d(TAG, "Error parsing presentation start time string: " + mStartTime);
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			
+	        oldStartTime = sdf.format(startDate.getTime());
+	        oldEndTime = sdf.format(endDate.getTime());
+	        
+	        newStartTime = mStartTimeEdit.getText().toString();
+	        newEndTime = mEndTimeEdit.getText().toString();
+	        
+	        ResponseHolder holder = mProgramFeature.putToServer(getApplicationContext(), "program", mProgramFeature.getResourceUri(), false, "{\"test\" : \"true\"}");
+			
+	        Log.d(TAG, holder.getCode() + " " + holder.getError() + " " + holder.getResponseBody());
+	        
+			return holder;
+		}
+		
+		@Override
+		protected void onPostExecute(ResponseHolder holder) {
+			if (holder != null && !holder.hasError()) {
+				if (holder.getCode() == 204) {
+					Toast t = Toast.makeText(getApplicationContext(), "Role changed!", Toast.LENGTH_SHORT);
+					t.show();
+					Preferences.setUserConferenceRole(getApplicationContext(), role);
+					finish();
+				} else if (holder.getCode() == 401) {
+					Toast t = Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG);
+					t.show();
+				}
+			}
+			else {
+				//Log.d(TAG, holder.getResponseBody(), holder.getError());
+			}
+		}
+		
 	}
 	
 }
