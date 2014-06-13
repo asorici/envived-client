@@ -39,7 +39,7 @@ public class EnvivedMessageService extends IntentService {
 	private static final String URL_BASE = Url.HTTP + Url.HOSTNAME;
 	public static final String LONG_POLL_URL = URL_BASE + "/envived/client/notifications/me/";
 	public static final String UNSUBSCRIBE_URL = URL_BASE + "/envived/client/notifications/unsubscribe/";
-	public static final int MSG_TIMEOUT_MILLIS = 30000;
+	public static final int MSG_TIMEOUT_MILLIS = 300000;
 	private boolean stopFlag = false;
 	Context context;
 
@@ -86,6 +86,8 @@ public class EnvivedMessageService extends IntentService {
 		        	JSONObject msgJson = new JSONObject(msgData);
 		        	Intent intent = null;
 
+		        	Thread.sleep(1000);
+		        	
 		        	Gson gson = new Gson();
 		        	if (msgJson.getString("type").equals("envived_app_update")) {
 		        		EnvivedAppUpdate appUpdate = gson.fromJson(msgJson.getString("content"), EnvivedAppUpdate.class);
@@ -114,6 +116,9 @@ public class EnvivedMessageService extends IntentService {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

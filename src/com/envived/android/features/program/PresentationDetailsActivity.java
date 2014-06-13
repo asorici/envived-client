@@ -378,8 +378,6 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 
 		@Override
 		public void onClick(View v) {
-			Toast t = Toast.makeText(getApplicationContext(), "Schedule Updated", Toast.LENGTH_LONG);
-			t.show();
 			PutDataTask task = new PutDataTask();
 			task.execute();
 		}
@@ -423,24 +421,6 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 	private class PutDataTask extends  AsyncTask<Void, Void, ResponseHolder> {
 		private String role = "";
 		
-		/*protected ResponseHolder doInBackground() {
-			
-			
-			/*String data = "";
-			if (mRoleSpinner.getSelectedItemId() == 2) {
-				data = "{\"role\":\"" + CHAIR_ROLE + "\", \"chair_password\":\""
-						+ mChairPassword.getText().toString() + "\"}";
-			} else {
-				data = "{\"role\":\"" + mRoleSpinner.getSelectedItem().toString().toLowerCase() + "\"}";
-			}
-			
-			role = mRoleSpinner.getSelectedItem().toString().toLowerCase();
-			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
-					"conference_role", mConferenceFeature.getResourceUri(),
-					false, data);
-			return holder;
-		}*/
-		
 		@Override
 		protected ResponseHolder doInBackground(Void... params) {
 			String oldStartTime, newStartTime;
@@ -455,15 +435,21 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 				Log.d(TAG, "Error parsing presentation start time string: " + mStartTime);
 			}
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 	        oldStartTime = sdf.format(startDate.getTime());
 	        oldEndTime = sdf.format(endDate.getTime());
 	        
-	        newStartTime = mStartTimeEdit.getText().toString();
-	        newEndTime = mEndTimeEdit.getText().toString();
+	        sdf = new SimpleDateFormat("yyyy-MM-dd");
 	        
-	        ResponseHolder holder = mProgramFeature.putToServer(getApplicationContext(), "program", mProgramFeature.getResourceUri(), false, "{\"test\" : \"true\"}");
+	        newStartTime = sdf.format(startDate.getTime()) + " " + mStartTimeEdit.getText().toString() + ":00";
+	        newEndTime = sdf.format(endDate.getTime()) + " " + mEndTimeEdit.getText().toString() + ":00";
+	        
+	        String message = "{\"old_start_time\": \"" + oldStartTime + "\", \"new_start_time\": \"" + 
+	        				newStartTime + "\", \"old_end_time\": \"" +
+	        		        oldEndTime + "\", \"new_end_time\": \"" + newEndTime + "\"}";
+	        
+	        ResponseHolder holder = mProgramFeature.putToServer(getApplicationContext(), "program", mProgramFeature.getResourceUri(), false, message);
 			
 	        Log.d(TAG, holder.getCode() + " " + holder.getError() + " " + holder.getResponseBody());
 	        
@@ -474,9 +460,8 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		protected void onPostExecute(ResponseHolder holder) {
 			if (holder != null && !holder.hasError()) {
 				if (holder.getCode() == 204) {
-					Toast t = Toast.makeText(getApplicationContext(), "Role changed!", Toast.LENGTH_SHORT);
+					Toast t = Toast.makeText(getApplicationContext(), "Schedule Updated", Toast.LENGTH_LONG);
 					t.show();
-					Preferences.setUserConferenceRole(getApplicationContext(), role);
 					finish();
 				} else if (holder.getCode() == 401) {
 					Toast t = Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG);
