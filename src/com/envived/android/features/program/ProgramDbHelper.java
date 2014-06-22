@@ -191,6 +191,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 	public void init (boolean insert) throws EnvSocialContentException {
 		// do initial program insertion here if new data available
 		if (insert) {
+			cleanupTables();
 			insertProgram();
 		}
 	}
@@ -430,7 +431,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 
 			for (int i = 0; i < n; ++i) {
 				JSONObject presentationSpeakersMap = presentationSpeakersArray.getJSONObject(i);
-
+				
 				int presentationID = 
 						presentationSpeakersMap.getInt(ProgramFeature.PRESENTATION_SPEAKERS_PRESENTATION_ID);
 				

@@ -3,6 +3,7 @@ package com.envived.android;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.envived.android.api.Location;
 import com.envived.android.features.Feature;

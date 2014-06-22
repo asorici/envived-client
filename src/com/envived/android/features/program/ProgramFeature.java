@@ -5,12 +5,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.envived.android.Envived;
 import com.envived.android.R;
-import com.envived.android.api.AppClient;
-import com.envived.android.api.Location;
-import com.envived.android.api.Url;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.Feature;
 import com.envived.android.utils.EnvivedAppUpdateDispatcher;
@@ -20,7 +18,7 @@ import com.envived.android.utils.FeatureDbHelper;
 public class ProgramFeature extends Feature {
 	private static final long serialVersionUID = 1L;
 	
-	private EnvivedNotificationHandler notificationHandler;
+	private static EnvivedNotificationHandler notificationHandler = new ProgramFeatureNotificationHandler();;
 	private static final String TAG = "ProgramFeature";
 	
 	public static final String PRESENTATION_QUERY_TYPE = "presentation";
@@ -69,7 +67,6 @@ public class ProgramFeature extends Feature {
 	@Override
 	protected void featureInit(boolean insert) throws EnvSocialContentException {
 		// register program notification handler
-		notificationHandler = new ProgramFeatureNotificationHandler();
 		EnvivedAppUpdateDispatcher.registerNotificationHandler(notificationHandler);
 		
 		// instantiate local database
@@ -88,7 +85,6 @@ public class ProgramFeature extends Feature {
 	protected void featureUpdate() throws EnvSocialContentException {
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
-		
 		if (dbHelper == null) {
 			dbHelper = new ProgramDbHelper(Envived.getContext(), databaseName, this, version);
 		}
@@ -108,9 +104,6 @@ public class ProgramFeature extends Feature {
 	protected void featureClose(Context context) {
 		// first do cleanup
 		featureCleanup(context);
-		
-		// unregister notification handler
-		EnvivedAppUpdateDispatcher.unregisterNotificationHandler(notificationHandler);
 	}
 
 	

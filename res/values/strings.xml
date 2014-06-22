@@ -119,6 +119,8 @@
         <item>Session Chair</item>
     </string-array>    
     
+    <string name="role_header">Please choose your role within the conference!</string>
+    
     <!-- Tabs -->
     <string name="tab_description">Details</string>
     <string name="tab_program">Program</string>

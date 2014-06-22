@@ -31,6 +31,7 @@ public class EnvivedAppUpdateDispatcher extends EnvivedReceiver {
 		if (handler != null) {
 			notificationHandlers.remove(handler);
 		}
+		Log.d("double", "dupa: " + notificationHandlers.toString());
 	}
 	
 	@Override

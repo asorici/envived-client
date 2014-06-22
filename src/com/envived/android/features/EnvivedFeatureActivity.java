@@ -231,7 +231,6 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
 										dialog.cancel();
-										
 										mInitFeatureTask = new InitializeFeatureTask(updatedFeature, true);
 										mInitFeatureTask.execute();
 									}
