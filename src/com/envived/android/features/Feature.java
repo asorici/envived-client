@@ -107,6 +107,8 @@ public abstract class Feature implements Serializable {
 		if (hasData()) {
 			String featureCacheFileName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
 			
+			Log.d(TAG, "init()");
+			
 			if (retrievedData == null) {
 				// check that data is not out-of-date
 				FeatureLRUTracker featureLruTracker = Envived.getFeatureLRUTracker();
@@ -146,8 +148,7 @@ public abstract class Feature implements Serializable {
 				featureInit(true);
 				
 				// after initialization allow retrieved serialized data to be garbage collected
-				// TODO: not sure if commenting the line below is ok, but it doesn't allow me to use the data retrieved
-				//retrievedData = null;
+				retrievedData = null;
 			}
 			
 			
@@ -196,7 +197,7 @@ public abstract class Feature implements Serializable {
 		if (hasData()) {
 			featureUpdate();
 			
-			Log.d(TAG, "doUpdate");
+			Log.d(TAG, "doUpdate AICI");
 			
 			// after update allow retrieved serialized data to be garbage collected
 			retrievedData = null;

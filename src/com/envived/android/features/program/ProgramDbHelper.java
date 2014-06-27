@@ -231,6 +231,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 			JSONArray speakersArray = (JSONArray) program.getJSONArray("speakers");
 			JSONArray presentationSpeakersArray = (JSONArray) program.getJSONArray("presentation_speakers");
 			
+			
 			insertSessions(sessionsArray);
 			insertPresentations(presentationsArray);
 			insertSpeakers(speakersArray);
@@ -252,7 +253,6 @@ public class ProgramDbHelper extends FeatureDbHelper {
 		
 		try {
 			database.beginTransaction();
-			
 			for (int i = 0; i < n; ++ i) {
 				JSONObject session = sessionsArray.getJSONObject(i);
 				int sessionID = session.getInt(ProgramFeature.SESSION_ID);

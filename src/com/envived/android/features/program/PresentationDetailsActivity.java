@@ -89,6 +89,7 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		
 		// initialize feature
 		try {
+			Log.d(TAG, "initializing");
 			mProgramFeature.init();
 		} catch (EnvSocialContentException e) {
 			Log.d(TAG, "Error initializing program feature.", e);

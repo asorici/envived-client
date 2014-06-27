@@ -72,6 +72,8 @@ public class ProgramFeature extends Feature {
 		// instantiate local database
 		String databaseName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
 		
+		Log.d(TAG, "dbHelper from featureInit():" + dbHelper);
+		
 		if (dbHelper == null) {
 			dbHelper = new ProgramDbHelper(Envived.getContext(), databaseName, this, version);
 		}
@@ -178,6 +180,7 @@ public class ProgramFeature extends Feature {
 	
 	
 	public Cursor getPresentationDetails(int presentationId) {
+		Log.d(TAG, "dbHelper from getPresentationDetails() " + dbHelper);
 		if (dbHelper != null) {
 			return dbHelper.getPresentationDetails(presentationId);
 		}
