@@ -78,6 +78,7 @@ public abstract class Feature implements Serializable {
 	 * cached locally in a SQLite database, or stored in the specific fields of classes that extend this base class.
 	 */
 	protected String retrievedData;
+	protected boolean hasRetrievedData = false;
 	
 	/**
 	 * Feature initialization will have to be performed every time an instance is created for this feature.
@@ -97,6 +98,7 @@ public abstract class Feature implements Serializable {
 		this.environmentUrl = environmentUrl;
 		this.areaUrl = areaUrl;
 		this.retrievedData = data;
+		if (retrievedData != null) hasRetrievedData = true;
 		this.virtualAccess = virtualAccess;
 		
 		//this.displayThumbnail = com.envived.android.R.drawable.ic_envived_white;
@@ -109,7 +111,7 @@ public abstract class Feature implements Serializable {
 			
 			Log.d(TAG, "init()");
 			
-			if (retrievedData == null) {
+			if (!hasRetrievedData) {
 				// check that data is not out-of-date
 				FeatureLRUTracker featureLruTracker = Envived.getFeatureLRUTracker();
 				
@@ -148,7 +150,8 @@ public abstract class Feature implements Serializable {
 				featureInit(true);
 				
 				// after initialization allow retrieved serialized data to be garbage collected
-				retrievedData = null;
+				//retrievedData = null;
+				hasRetrievedData = false;
 			}
 			
 			

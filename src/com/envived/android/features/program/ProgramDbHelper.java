@@ -223,6 +223,8 @@ public class ProgramDbHelper extends FeatureDbHelper {
 		
 		String programJSON = feature.getSerializedData();
 		
+		Log.d(TAG, programJSON + " AAAAAAAAAAAAAAAAA");
+		
 		try {
 			// Parse program's JSON
 			JSONObject program = (JSONObject) new JSONObject(programJSON).getJSONObject("program");

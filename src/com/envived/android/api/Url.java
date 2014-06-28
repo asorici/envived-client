@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Url {
 
-	public static final String HTTP = "http://";
+	public static final String HTTP = "http://"; 
 	public static final String HTTPS = "https://";
 	//public static final String HOSTNAME = "envived.com:8800";
 	//public static final String HOSTNAME = "192.168.100.101:8080";

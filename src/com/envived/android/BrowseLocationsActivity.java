@@ -19,7 +19,7 @@ import com.envived.android.utils.imagemanager.ImageCache;
 import com.envived.android.utils.imagemanager.ImageFetcher;
 
 public class BrowseLocationsActivity extends SherlockFragmentActivity implements OnItemClickListener {
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") 
 	private static final String TAG = "BrowseLocationsActivity";
 	
 	private Location mLocation;
