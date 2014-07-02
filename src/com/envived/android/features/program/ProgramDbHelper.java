@@ -34,6 +34,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 	protected static final String COL_PRESENTATION_ABSTRACT = "abstract";
 	protected static final String COL_PRESENTATION_START_TIME = "startTime";
 	protected static final String COL_PRESENTATION_END_TIME = "endTime";
+	protected static final String COL_PRESENTATION_MARKED = "marked";
 	
 	protected static final String SESSION_TABLE = "session";
 	protected static final String COL_SESSION_ID = BaseColumns._ID;
@@ -98,6 +99,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 					COL_PRESENTATION_ABSTRACT + " TEXT, " +
 					COL_PRESENTATION_START_TIME + " TEXT, " +
 					COL_PRESENTATION_END_TIME + " TEXT, " + 
+					COL_PRESENTATION_MARKED + " INTEGER NOT NULL, " +
 					COL_PRESENTATION_SESSIONID + " INTEGER NOT NULL, " + 
 					"FOREIGN KEY (" + COL_PRESENTATION_SESSIONID + ") REFERENCES " 
 					+ SESSION_TABLE + "(" + COL_SESSION_ID + "));");
@@ -223,8 +225,6 @@ public class ProgramDbHelper extends FeatureDbHelper {
 		
 		String programJSON = feature.getSerializedData();
 		
-		Log.d(TAG, programJSON + " AAAAAAAAAAAAAAAAA");
-		
 		try {
 			// Parse program's JSON
 			JSONObject program = (JSONObject) new JSONObject(programJSON).getJSONObject("program");
@@ -309,6 +309,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 				values.put(COL_PRESENTATION_TITLE, presentationTitle);
 				values.put(COL_PRESENTATION_START_TIME, presentationStartTime);
 				values.put(COL_PRESENTATION_END_TIME, presentationEndTime);
+				values.put(COL_PRESENTATION_MARKED, 0);
 				
 				if (presentationTags != null) {
 					values.put(COL_PRESENTATION_TAGS, presentationTags);
@@ -500,6 +501,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 				PRESENTATION_TABLE + "." + COL_PRESENTATION_TITLE + " AS " + COL_PRESENTATION_TITLE,
 				"SUBSTR(" + COL_PRESENTATION_START_TIME + ", " + "12, 5) AS " + COL_PRESENTATION_START_TIME ,
 				"SUBSTR(" + COL_PRESENTATION_END_TIME + ", " + "12, 5) AS " + COL_PRESENTATION_END_TIME ,
+				PRESENTATION_TABLE + "." + COL_PRESENTATION_MARKED + " AS " + COL_PRESENTATION_MARKED,
 				SESSION_TABLE + "." + COL_SESSION_TITLE + " AS " + ProgramFeature.SESSION,
 				COL_SESSION_LOCATION_NAME
 		};
@@ -552,6 +554,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 				PRESENTATION_TABLE + "." + COL_PRESENTATION_TITLE + " AS " + COL_PRESENTATION_TITLE,
 				"SUBSTR(" + COL_PRESENTATION_START_TIME + ", " + "12, 5) AS " + COL_PRESENTATION_START_TIME ,
 				"SUBSTR(" + COL_PRESENTATION_END_TIME + ", " + "12, 5) AS " + COL_PRESENTATION_END_TIME ,
+				PRESENTATION_TABLE + "." + COL_PRESENTATION_MARKED + " AS " + COL_PRESENTATION_MARKED,
 				SESSION_TABLE + "." + COL_SESSION_TITLE + " AS " + ProgramFeature.SESSION,
 				COL_SESSION_LOCATION_NAME
 		};
@@ -606,6 +609,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 				"e1." + COL_PRESENTATION_ABSTRACT + ", " + 
 				"e1." + COL_PRESENTATION_START_TIME + ", " +
 				"e1." + COL_PRESENTATION_END_TIME + " " + 
+				"e1." + COL_PRESENTATION_MARKED + " " +
 			"FROM presentation e1, " +
 				 "(SELECT " + COL_PRESENTATION_ID + ", " + COL_PRESENTATION_SESSIONID + ", " + 
 				 				COL_PRESENTATION_START_TIME + ", " + COL_PRESENTATION_END_TIME + " " +
@@ -629,6 +633,7 @@ public class ProgramDbHelper extends FeatureDbHelper {
 			presentation.put(COL_PRESENTATION_ABSTRACT, c.getString(3));
 			presentation.put(COL_PRESENTATION_START_TIME, c.getString(4));
 			presentation.put(COL_PRESENTATION_END_TIME, c.getString(5));
+			presentation.put(COL_PRESENTATION_MARKED, c.getString(6));
 			entries.add(presentation);
 
 			c.moveToNext();
@@ -653,7 +658,8 @@ public class ProgramDbHelper extends FeatureDbHelper {
 				COL_PRESENTATION_START_TIME,
 				COL_PRESENTATION_END_TIME,
 				COL_PRESENTATION_TAGS,
-				COL_PRESENTATION_ABSTRACT,				
+				COL_PRESENTATION_ABSTRACT,
+				COL_PRESENTATION_MARKED,
 				SESSION_TABLE + "." + COL_SESSION_TITLE + " AS " + ProgramFeature.SESSION,
 				COL_SESSION_LOCATION_NAME,
 				COL_SESSION_LOCATION_URL
@@ -744,5 +750,14 @@ public class ProgramDbHelper extends FeatureDbHelper {
 		*/
 		
 		return null;
+	}
+	
+	
+	public void updateMarked(int id, boolean marked) {
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		String filter = COL_PRESENTATION_ID + "=" + id;
+		ContentValues args = new ContentValues();
+		args.put(COL_PRESENTATION_MARKED, marked ? 1 : 0);
+		database.update(PRESENTATION_TABLE, args, filter, null);
 	}
 }

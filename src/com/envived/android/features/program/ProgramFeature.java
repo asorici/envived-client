@@ -210,5 +210,12 @@ public class ProgramFeature extends Feature {
 		}
 		return null;
 	}
+	
+	
+	public void setPresentationMarked(int id, boolean marked) {
+		if (dbHelper != null) {
+			dbHelper.updateMarked(id, marked);
+		}
+	}
 
 }

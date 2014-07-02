@@ -3,6 +3,7 @@ package com.envived.android.features.conferencerole;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -74,6 +75,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 	protected Feature getLocationFeature(Location location)
 			throws EnvSocialContentException {
 		Feature conferenceRoleFeature = location.getFeature(Feature.CONFERENCE_ROLE);
+		Log.d(TAG, conferenceRoleFeature.toString());
 		if (conferenceRoleFeature == null) {
 			EnvSocialResource locationResource = 
 					location.isEnvironment() ? EnvSocialResource.ENVIRONMENT : EnvSocialResource.AREA;
@@ -95,6 +97,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 
 	@Override
 	protected void onFeatureDataInitialized(Feature newFeature, boolean success) {
+		Log.d(TAG, success + "AAAAA");
 		if (success) {
 			mConferenceFeature = (ConferenceRoleFeature) newFeature;
 			bindData();
@@ -151,6 +154,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 			}
 			
 			role = mRoleSpinner.getSelectedItem().toString().toLowerCase();
+			Log.d(TAG, mConferenceFeature.toString());
 			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
 					"conference_role", mConferenceFeature.getResourceUri(),
 					false, data);

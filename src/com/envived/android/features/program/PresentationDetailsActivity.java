@@ -8,16 +8,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.util.Xml.Encoding;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +38,8 @@ import com.envived.android.HomeActivity;
 import com.envived.android.R;
 import com.envived.android.api.Location;
 import com.envived.android.api.exceptions.EnvSocialContentException;
+import com.envived.android.utils.AgentMock;
+import com.envived.android.utils.AgentMock.LocalBinder;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.Utils;
@@ -66,12 +73,17 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 	private TextView mLocationNameView;
 	private TextView mTagsView;
 	private WebView mAbstractView;
+	private CheckBox mAttendCheckbox;
 	
 	private EditText mStartTimeEdit;
 	private EditText mEndTimeEdit;
 	private Button mSaveTimeButton;
 	
 	private LinearLayout mSpeakersLayout;
+	private LinearLayout mScheduleLayout;
+	
+	private AgentMock mService;
+    private boolean mBound = false;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,10 +116,14 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		mTagsView = (TextView) findViewById(R.id.tags);
 		mAbstractView = (WebView) findViewById(R.id.presentation_abstract);
 		mAbstractView.getSettings().setBuiltInZoomControls(true);
+		mAttendCheckbox = (CheckBox) findViewById(R.id.attendCheckbox);
+		mAttendCheckbox.setOnClickListener(new AttendCheckBoxClickListener(mProgramFeature, mPresentationId));
 		
 		mStartTimeEdit = (EditText) findViewById(R.id.startingTime);
 		mEndTimeEdit = (EditText) findViewById(R.id.endingTime);
 		mSaveTimeButton = (Button) findViewById(R.id.saveTimeButton);
+		
+		mScheduleLayout = (LinearLayout) findViewById(R.id.scheduleLayout);
 		
 		mSaveTimeButton.setOnClickListener(new SaveTimeButtonClickListener());
 		
@@ -121,6 +137,13 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 			Cursor presentationDetailsCursor = mProgramFeature.getPresentationDetails(mPresentationId);
 			Cursor speakerInfoCursor = mProgramFeature.getPresentationSpeakerInfo(mPresentationId);
 			bindData(presentationDetailsCursor, speakerInfoCursor);
+		}
+		
+		String role = Preferences.getUserConferenceRole(getApplicationContext());
+		if (role != null && role.equals("session chair")) {
+			mScheduleLayout.setVisibility(View.VISIBLE);
+		} else {
+			mScheduleLayout.setVisibility(View.GONE);
 		}
 	}
 	
@@ -150,12 +173,20 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		if (mImageFetcher == null || !mImageFetcher.cashOpen()) {
 			initImageFetcher();
 		}
+		
+		Intent intent = new Intent(this, AgentMock.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 	
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
 		
 		// close image fetcher cache
 		mImageFetcher.closeCache();
@@ -211,6 +242,7 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 			int startTimeIndex = presentationDetailsCursor.getColumnIndex(ProgramDbHelper.COL_PRESENTATION_START_TIME);
 			int endTimeIndex = presentationDetailsCursor.getColumnIndex(ProgramDbHelper.COL_PRESENTATION_END_TIME);
 			int abstractIndex = presentationDetailsCursor.getColumnIndex(ProgramDbHelper.COL_PRESENTATION_ABSTRACT);
+			int markedIndex = presentationDetailsCursor.getColumnIndex(ProgramDbHelper.COL_PRESENTATION_MARKED);
 			
 			int sessionTitleIndex = presentationDetailsCursor.getColumnIndex(ProgramFeature.SESSION);
 			int locationUrlIndex = presentationDetailsCursor.getColumnIndex(ProgramDbHelper.COL_SESSION_LOCATION_URL);
@@ -227,6 +259,7 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 			mSessionTitle = presentationDetailsCursor.getString(sessionTitleIndex);
 			mStartTime = presentationDetailsCursor.getString(startTimeIndex);
 			mEndTime = presentationDetailsCursor.getString(endTimeIndex);
+			mAttendCheckbox.setChecked(presentationDetailsCursor.getInt(markedIndex) == 1 ? true : false);
 			
 			if (!presentationDetailsCursor.isNull(tagsIndex)) {
 				mTags = presentationDetailsCursor.getString(tagsIndex);
@@ -384,6 +417,36 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		}
 	}
 	
+	private class AttendCheckBoxClickListener implements OnClickListener {
+
+		ProgramFeature mProgramFeature;
+		int mPresentationId;
+		public AttendCheckBoxClickListener(ProgramFeature mProgramFeature, int mPresentationId) {
+			this.mProgramFeature = mProgramFeature;
+			this.mPresentationId = mPresentationId;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			Calendar cal = Calendar.getInstance();
+		    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		    try {
+				cal.setTime(sdf.parse(mStartTime.split("T")[1]));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			CheckBox c = (CheckBox) v;
+			if (c.isChecked()) {
+				mProgramFeature.setPresentationMarked(mPresentationId, true);
+				mService.addAlarm(cal, mTitle);
+			} else {
+				mProgramFeature.setPresentationMarked(mPresentationId, false);
+				mService.deleteAlarm(cal);
+			}
+		}
+		
+	}
+	
 	
 	static class PresentationSpeakerInfo implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -475,5 +538,22 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		}
 		
 	}
+	
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            LocalBinder binder = (LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 	
 }

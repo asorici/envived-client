@@ -78,7 +78,6 @@ public abstract class Feature implements Serializable {
 	 * cached locally in a SQLite database, or stored in the specific fields of classes that extend this base class.
 	 */
 	protected String retrievedData;
-	protected boolean hasRetrievedData = false;
 	
 	/**
 	 * Feature initialization will have to be performed every time an instance is created for this feature.
@@ -98,7 +97,6 @@ public abstract class Feature implements Serializable {
 		this.environmentUrl = environmentUrl;
 		this.areaUrl = areaUrl;
 		this.retrievedData = data;
-		if (retrievedData != null) hasRetrievedData = true;
 		this.virtualAccess = virtualAccess;
 		
 		//this.displayThumbnail = com.envived.android.R.drawable.ic_envived_white;
@@ -108,29 +106,27 @@ public abstract class Feature implements Serializable {
 	public void init() throws EnvSocialContentException {
 		if (hasData()) {
 			String featureCacheFileName = getLocalCacheFileName(category, environmentUrl, areaUrl, version);
-			
-			Log.d(TAG, "init()");
-			
-			if (!hasRetrievedData) {
+
+			if (retrievedData == null) {
 				// check that data is not out-of-date
 				FeatureLRUTracker featureLruTracker = Envived.getFeatureLRUTracker();
-				
+
 				FeatureLRUEntry featureLruEntry = null;
 				if (featureLruTracker != null) {
 					featureLruEntry = featureLruTracker.get(featureCacheFileName);
 				}
-				
+
 				if (featureLruEntry != null) {
 					Log.d(TAG, "FEATURE META DATA IN CACHE for: " + category);
-					
+
 					if (featureLruEntry.getFeatureTimestamp().compareTo(timestamp) < 0) {
 						Log.d(TAG, "REFRESHING DATA for feature: " + category + ". Will start SERVER RETRIEVE.");
-						
+
 						// cached data must be refreshed
 						// first remove current entry from lru tracker and "close" current feature data
 						featureLruTracker.remove(featureCacheFileName);
 						doClose(Envived.getContext());
-						
+
 						// afterwards start new data retrieval service
 						startFeatureDataRetrievalService();
 						return;
@@ -148,28 +144,28 @@ public abstract class Feature implements Serializable {
 			else {
 				Log.d(TAG, "USING SERVER RETRIEVED DATA for feature: " + category);
 				featureInit(true);
-				
+
 				// after initialization allow retrieved serialized data to be garbage collected
+				// TODO: not sure if commenting the line below is ok, but it doesn't allow me to use the data retrieved
 				//retrievedData = null;
-				hasRetrievedData = false;
 			}
-			
-			
+
+
 			// if feature data has been parsed correctly mark it as an entry in the feature lru tracker
 			String locationUrl = environmentUrl != null ? environmentUrl : areaUrl;
 			FeatureLRUEntry featureLruEntry = 
 					new FeatureLRUEntry(category, featureCacheFileName, locationUrl, virtualAccess, timestamp);
-			
+
 			FeatureLRUTracker featureLruTracker = Envived.getFeatureLRUTracker();
 			if (featureLruTracker != null) {
 				featureLruTracker.put(featureCacheFileName, featureLruEntry);
 			}
-			
+
 			initialized = true;
 		}
 		else {
 			Log.d(TAG, "RETRIEVING DATA ANEW for feature: " + category);
-			
+
 			// start data retrieval service
 			startFeatureDataRetrievalService();
 		}

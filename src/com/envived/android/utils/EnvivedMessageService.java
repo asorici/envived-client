@@ -39,7 +39,7 @@ public class EnvivedMessageService extends IntentService {
 	private static final String URL_BASE = Url.HTTP + Url.HOSTNAME;
 	public static final String LONG_POLL_URL = URL_BASE + "/envived/client/notifications/me/";
 	public static final String UNSUBSCRIBE_URL = URL_BASE + "/envived/client/notifications/unsubscribe/";
-	public static final int MSG_TIMEOUT_MILLIS = 300000;
+	public static final int MSG_TIMEOUT_MILLIS = 20000;
 	private boolean stopFlag = false;
 	Context context;
 

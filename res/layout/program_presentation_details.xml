@@ -7,7 +7,7 @@
 	
 	<LinearLayout android:id="@+id/presentation_details_root_layout" 
 			android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
+		    android:layout_height="match_parent"
 		    android:layout_marginTop="10dip"
 		    android:layout_marginBottom="10dip"
 		    android:orientation="vertical"
@@ -93,10 +93,17 @@
 					android:layout_gravity="left|center_vertical"
 					android:gravity="left|center_vertical"/>
 			</LinearLayout>
+
+			<CheckBox
+			    android:id="@+id/attendCheckbox"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Mark to attend" />
 			
 		</LinearLayout>
 		
 		<LinearLayout
+		    android:id="@+id/scheduleLayout"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="5dip"
@@ -119,7 +126,7 @@
 			    android:layout_marginLeft="5dip" />
 			
 			<TextView
-			    android:id="@+id/textView1"
+			    android:id="@+id/textView2"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:text="Ending Time"

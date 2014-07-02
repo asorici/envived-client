@@ -33,9 +33,11 @@ import com.envived.android.api.exceptions.EnvSocialComException;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment;
 import com.envived.android.features.order.OrderCustomAlertDialogFragment.OrderNoticeAlertDialogListener;
+import com.envived.android.utils.AgentMock;
 import com.envived.android.utils.EnvivedMessageService;
 import com.envived.android.utils.FeatureLRUTracker;
 import com.envived.android.utils.LocationHistory;
+import com.envived.android.utils.NotificationService;
 import com.envived.android.utils.Preferences;
 import com.envived.android.utils.ResponseHolder;
 import com.envived.android.utils.imagemanager.ImageCache;
@@ -149,6 +151,8 @@ public class HomeActivity extends SherlockFragmentActivity
         }
         // ------ start the Agent Bridge Service ------//
         AgentBridge agent = new AgentBridge();
+
+        startService(new Intent(this, AgentMock.class));
 	}
 	
 	
