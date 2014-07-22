@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.envived.android.Envived;
+import com.envived.android.R;
 import com.envived.android.api.EnvSocialResource;
 import com.envived.android.api.exceptions.EnvSocialContentException;
 import com.envived.android.features.Feature;
@@ -72,12 +73,12 @@ public class ConferenceRoleFeature extends Feature {
 
 	@Override
 	public int getDisplayThumbnail() {
-		return 0;
+		return R.drawable.conference_role_white;
 	}
 
 	@Override
 	public String getDisplayName() {
-		return null;
+		return "Conference role";
 	}
 
 	@Override

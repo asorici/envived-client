@@ -429,9 +429,9 @@ public class PresentationDetailsActivity extends SherlockFragmentActivity {
 		@Override
 		public void onClick(View v) {
 			Calendar cal = Calendar.getInstance();
-		    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SS");
 		    try {
-				cal.setTime(sdf.parse(mStartTime.split("T")[1]));
+				cal.setTime(sdf.parse(mStartTime));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

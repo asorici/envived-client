@@ -75,6 +75,8 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 			return;
 		}
         
+        Log.d(TAG, "EnvivedFeatureActivity onCreate: " + mFeature.toString());
+        
         // register the order feature update receiver here
      	mFeatureDataReceiver = new FeatureDataReceiver();
      	IntentFilter filter = new IntentFilter();
@@ -340,6 +342,7 @@ public abstract class EnvivedFeatureActivity extends SherlockFragmentActivity {
 				}
 				
 				// do the post init / update logic in the activities inheriting from EnvivedFeatureActivity 
+				Log.d(TAG, "batman " + success);
 				if (!mUpdate) {
 					onFeatureDataInitialized(mFeature, success);
 				}

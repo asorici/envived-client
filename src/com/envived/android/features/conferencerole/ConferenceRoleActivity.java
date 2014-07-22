@@ -75,7 +75,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 	protected Feature getLocationFeature(Location location)
 			throws EnvSocialContentException {
 		Feature conferenceRoleFeature = location.getFeature(Feature.CONFERENCE_ROLE);
-		Log.d(TAG, conferenceRoleFeature.toString());
+		Log.d(TAG, "getLocationFeature: " + conferenceRoleFeature.toString());
 		if (conferenceRoleFeature == null) {
 			EnvSocialResource locationResource = 
 					location.isEnvironment() ? EnvSocialResource.ENVIRONMENT : EnvSocialResource.AREA;
@@ -97,8 +97,8 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 
 	@Override
 	protected void onFeatureDataInitialized(Feature newFeature, boolean success) {
-		Log.d(TAG, success + "AAAAA");
 		if (success) {
+			Log.d(TAG, "succes ? " + success);
 			mConferenceFeature = (ConferenceRoleFeature) newFeature;
 			bindData();
 		}
@@ -154,7 +154,7 @@ public class ConferenceRoleActivity extends EnvivedFeatureActivity implements On
 			}
 			
 			role = mRoleSpinner.getSelectedItem().toString().toLowerCase();
-			Log.d(TAG, mConferenceFeature.toString());
+			Log.d(TAG, "Put data task: " + mConferenceFeature.toString());
 			ResponseHolder holder = mConferenceFeature.putToServer(getApplicationContext(),
 					"conference_role", mConferenceFeature.getResourceUri(),
 					false, data);

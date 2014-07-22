@@ -47,6 +47,9 @@ public class DetailsGridAdapter extends BaseAdapter {
 		
 		// then add the 
 		for (String featureName : mFeatures.keySet()) {
+			if (location.isEnvironment() && featureName.equals("description")) {
+				continue;
+			}
 			Feature currentFeature = mFeatures.get(featureName);
 			
 			mFeatureCategories.add(currentFeature.getCategory());

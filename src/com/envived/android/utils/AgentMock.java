@@ -29,14 +29,7 @@ public class AgentMock extends Service {
 	@Override
     public void onCreate() {
 		presentations = new TreeMap<Calendar, String>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date(System.currentTimeMillis()+ 10*1000));
-		presentations.put(cal, "test");
-		Intent notificationServiceIntent = new Intent(AgentMock.this , NotificationService.class);     
-		notificationServiceIntent.putExtra("title", "test");
 	    alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-	    PendingIntent pendingIntent = PendingIntent.getService(AgentMock.this, 0, notificationServiceIntent, 0);
-	    alarmManager.set(AlarmManager.RTC_WAKEUP, presentations.firstEntry().getKey().getTimeInMillis(), pendingIntent);
     }
 	
 	public class LocalBinder extends Binder {
@@ -56,12 +49,13 @@ public class AgentMock extends Service {
 	}
 	
 	public void addAlarm(Calendar time, String title) {
-		Log.d("AgentMock", time.toString() + " " + title);
+		Log.d("AgentMock", time.getTime().toString() + " " + title);
 		presentations.put(time,  title);
 		updateAlarms();
 	}
 	
 	public void deleteAlarm(Calendar time) {
+		// TODO: cancel the alarm, don't just remove it.
 		presentations.remove(time);
 	}
 	
@@ -71,6 +65,7 @@ public class AgentMock extends Service {
 			Intent intent = new Intent(AgentMock.this, NotificationService.class);
 			intent.putExtra("title", entry.getValue());
 			PendingIntent pendingIntent = PendingIntent.getService(AgentMock.this, i++, intent, 0);
+			Log.d("AgentMock", entry.getKey().getTime().toString());
 			alarmManager.set(AlarmManager.RTC_WAKEUP, entry.getKey().getTimeInMillis(), pendingIntent);
 		}
 	}

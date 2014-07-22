@@ -194,6 +194,8 @@ public class BoothDescriptionDbHelper extends FeatureDbHelper {
 				values.put(COL_BOOTH_DESCRIPTION_CONTACT_WEBSITE, boothContactWebsite);
 			}
 			
+			database.delete(BOOTH_DESCRIPTION_TABLE, null, null);
+			
 			database.insert(BOOTH_DESCRIPTION_TABLE, null, values);
 			values.clear();
 			

@@ -2,11 +2,13 @@ package com.envived.android.utils;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -42,6 +44,7 @@ public class EnvivedMessageService extends IntentService {
 	public static final int MSG_TIMEOUT_MILLIS = 20000;
 	private boolean stopFlag = false;
 	Context context;
+	Calendar lastTimestamp = null;
 
 	private HttpGet mGetRequest;
 	public static final String UPDATE_NOTIFICATION = "com.envived.android.permission.UPDATE_NOTIFICATION";
@@ -85,6 +88,17 @@ public class EnvivedMessageService extends IntentService {
 		        	String msgData = jsonMsg.getString("data");
 		        	JSONObject msgJson = new JSONObject(msgData);
 		        	Intent intent = null;
+		        	String timestampString = msgJson.getString("timestamp");
+		        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SS");
+		        	Calendar timestamp = Calendar.getInstance();
+		        	timestamp.setTime(sdf.parse(timestampString));
+		        	
+		        	if (lastTimestamp == null || lastTimestamp.compareTo(timestamp) < 0) {
+		        		lastTimestamp = timestamp;
+		        	} else {
+		        		Log.d(TAG, "continue");
+		        		continue;
+		        	}
 
 		        	Thread.sleep(1000);
 		        	
@@ -118,7 +132,8 @@ public class EnvivedMessageService extends IntentService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 
